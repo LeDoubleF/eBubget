@@ -1,0 +1,9 @@
+category;description;mandatory;variable;amount;1;2;3;4;5;6;7;8;9;10;11;12
+Assurance habitation;accident;true;true;88,17;false;false;false;false;true;false;false;false;false;false;false;false
+Loisirs;Piano;false;true;;false;false;false;false;false;false;false;false;false;false;false;false
+Loisirs;pulaar;false;true;;false;false;false;false;false;false;false;false;false;false;false;false
+Loisirs;abdo;false;true;60;false;true;false;false;false;false;false;false;true;false;false;false
+Salaire Oumar;Ippudo;true;true;-506;true;true;true;true;true;true;true;true;true;true;true;true
+Cadeaux;Oumar;false;true;40;false;false;false;true;false;false;false;false;false;false;false;false
+impôt sur revenu;frais de garde;true;true;-343;false;false;false;false;false;false;true;false;false;false;false;false
+Cadeaux;noel;false;true;300;true;true;true;true;true;true;true;true;true;true;true;true

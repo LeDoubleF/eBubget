@@ -1,0 +1,5 @@
+category;description;mandatory;variable;amount;1;2;3;4;5;6;7;8;9;10;11;12
+Loyer;loyer;true;false;856;true;true;true;true;true;true;true;true;true;true;true;true
+Salaire ;boss;true;true;-3133;true;true;true;true;true;true;true;true;true;true;true;true
+taxi;fiesta;false;true;85;false;false;false;false;false;false;false;false;true;true;true;false
+
