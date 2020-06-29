@@ -1,0 +1,31 @@
+package ebudget;
+
+import java.util.Scanner;
+
+import io.CSVReader;
+
+import java.util.*;
+
+import java.io.IOException;
+import java.util.Collection;
+
+import exception.FileReaderException;
+import exception.Message;
+
+public class Ebudget {
+
+	public static void main(String[] args) {
+		System.out.println("Ebudget");
+
+		String fileName = "csvReaderEntry.cvs";
+		String filePath = getClass().getClassLoader().getResource(fileName).getFile();
+
+		CSVReader csvReader = new CSVReader(filePath);
+
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Entrez le solde initial:");
+		String filename = sc.nextLine();
+
+	}
+
+}

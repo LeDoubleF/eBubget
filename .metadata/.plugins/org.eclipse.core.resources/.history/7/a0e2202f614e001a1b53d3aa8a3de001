@@ -1,0 +1,46 @@
+package io;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import exception.FileReaderException;
+import exception.Message;
+
+public class CSVReader extends CsvIO {
+
+	public CSVReader() {
+		super();
+
+	}
+
+	public List<Double> readFile(String filePath) throws IOException {
+		List<Double> amountList = new ArrayList<>();
+		try (BufferedReader fichierSource = new BufferedReader(new FileReader(filePath));) {
+			String line;
+
+			while ((line = fichierSource.readLine()) != null) {
+				line = line.trim();
+				System.out.println(line);
+				String[] tabValue = line.split(COMMA_DELIMITER);
+				int nbValue = tabValue.length;
+
+				if (nbValue > 2) {
+
+					String amount = tabValue[nbValue - 1];
+					amount = amount.replaceAll(",", ".");
+					amountList.add(Double.parseDouble(amount));
+				}
+
+			}
+			System.out.println(amountList);
+		} catch (FileNotFoundException e) {
+			throw new FileReaderException(Message.NO_FILE);
+		}
+		return amountList;
+	}
+
+}

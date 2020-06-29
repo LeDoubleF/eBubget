@@ -1,0 +1,1 @@
+INSERT INTO category(NAME) VALUES ("salaire");
