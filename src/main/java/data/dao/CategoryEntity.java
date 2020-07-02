@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -85,7 +86,7 @@ public class CategoryEntity implements Serializable {
 			session.getTransaction().commit();
 			logger.log(Level.INFO, "création des catégories");
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getMessage());
+			logger.log(Level.SEVERE, "File Not Found", e);
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage());
 			// Rollback in case of an error occurred.
@@ -116,6 +117,26 @@ public class CategoryEntity implements Serializable {
 
 	}
 
+	public static boolean save(String name) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction tx = null;
+		Integer stId = null;
+		try {
+
+			tx = session.beginTransaction();
+			CategoryEntity category = new CategoryEntity(name);
+			stId = (Integer) session.save(category);
+			tx.commit();
+		} catch (HibernateException ex) {
+			logger.log(Level.SEVERE, ex.getMessage());
+			if (tx != null)
+				tx.rollback();
+		} finally {
+			session.close();
+		}
+
+		return stId != null;
+	}
 	// private String getAbsolutePath(String resourceName) {
 	// // TODO acceder a ressource
 	// // ClassLoader classLoader = getClass().getClassLoader();

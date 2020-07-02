@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import calculation.Calculator;
+import data.Repository;
 import data.dao.PeriodeEntity;
 import data.dao.TransactionEntity;
 import data.dto.PeriodDTo;
@@ -19,15 +20,14 @@ public class Ebudget {
 	private View view;
 
 	public static void main(String[] args) {
-		// CategoryEntity.deleteAllCategory();
-		// CategoryEntity
-		// .createCategories("C:\\Donnees\\Perso\\projet\\budget\\eBudget\\src\\main\\resources\\category.sql");
+		String curDir = System.getProperty("user.dir");
+		System.out.println("Le répertoire courant est: " + curDir);
 		Ebudget budget = new Ebudget();
 
 		budget.run();
 		////////////
 
-		// TransactionEntity.sumByCategory();
+		TransactionEntity.sumByCategory();
 
 	}// end main
 
@@ -37,7 +37,7 @@ public class Ebudget {
 	}
 
 	public void run() {
-
+		Repository.initCategories();
 		String fileName = view.readFilePath(System.in);
 		PeriodDTo periode = new PeriodDTo(2020, 1, 1);
 		List<TransactionDto> fileContentList = view.readTransaction(fileName, periode);

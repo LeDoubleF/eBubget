@@ -13,19 +13,22 @@ public class DataTest {
 	static Logger logger = Logger.getLogger("DataTest");
 
 	public static void deleteCategory() {
-		Transaction tx2 = null;
+		Transaction tx = null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
-
-			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
-			tx2 = sessionTwo.beginTransaction();
-			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM category");
+			tx = session.beginTransaction();
+			Query queryDelete = session.createSQLQuery("DELETE FROM category");
 			queryDelete.executeUpdate();
 
-			sessionTwo.getTransaction().commit();
-		} catch (Exception e) {
-			// Rollback in case of an error occurred.
-			tx2.rollback();
+			session.getTransaction().commit();
+		} catch (RuntimeException e) {
+			if (tx != null)
+				tx.rollback();
+			throw e; // or display error message
+		} finally {
+			session.close();
 		}
+
 	}
 
 	public static void deleteTransaction() {

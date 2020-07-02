@@ -133,7 +133,6 @@ public class TransactionEntity implements Serializable {
 			TransactionEntity transactionEntity = new TransactionEntity();
 			transactionEntity.setDate(transaction.getDate());
 			// TODO gestion correcte de la date
-			System.out.println("*" + transaction.getCategory().getName() + "*");
 			if (Repository.isCategory(transaction.getCategory())) {
 				transactionEntity.setCategory(transaction.getCategory());
 				System.out.println("\t oui");

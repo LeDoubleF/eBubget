@@ -23,7 +23,6 @@ public class TransactionEntityTest {
 			// given
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
-			tx = session.beginTransaction();
 			CategoryEntity category = new CategoryEntity("alimentation");
 			session.save(category);
 			tx.commit();

@@ -10,4 +10,5 @@ public final class Message {
 	public static final String FILE_EXTENSION_KO = "Invalid file extension";
 	public static final String NO_FILE = "There is no file";
 	public static final String FILE_CONTENT_KO = "File content error";
+	public static final String UITLITY_CLASS = "Utility class";
 }
