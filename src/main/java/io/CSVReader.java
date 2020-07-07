@@ -75,7 +75,7 @@ public class CSVReader {
 		} catch (
 
 		FileNotFoundException fileNotFoundException) {
-			throw new FileReaderException(Message.FILE_PATH_KO);
+			logger.log(Level.SEVERE, "le fichier {0} nexiste pas", filePath);
 		} catch (IOException ioException) {
 			logger.log(Level.SEVERE, ioException.getMessage());
 		} catch (Exception e) {
@@ -92,6 +92,7 @@ public class CSVReader {
 			if (!(findExtension.length == 2 && findExtension[1].equalsIgnoreCase("csv")))
 				throw new FileReaderException(Message.FILE_EXTENSION_KO);
 		} else {
+			logger.log(Level.SEVERE, "le fichier {0} nexiste pas", filePath);
 			throw new FileReaderException(Message.FILE_PATH_KO);
 		}
 	}

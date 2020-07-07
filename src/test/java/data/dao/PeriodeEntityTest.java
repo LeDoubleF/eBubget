@@ -15,7 +15,7 @@ import org.junit.Test;
 import data.dto.PeriodDTo;
 
 public class PeriodeEntityTest {
-	static Logger logger = Logger.getLogger("CategoryEntityTest");
+	static Logger logger = Logger.getLogger("PeriodeEntityTest");
 
 	@Test
 	public void testEqualsPeriode() {
@@ -40,10 +40,10 @@ public class PeriodeEntityTest {
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
 			tx = session.beginTransaction();
-			PeriodDTo periode = new PeriodDTo(2020, 1, 2);
+			PeriodDTo periode = new PeriodDTo(2020, 2);
 
 			// when
-			PeriodDTo periode1 = new PeriodDTo(2020, 1, 2);
+			PeriodDTo periode1 = new PeriodDTo(2020, 2);
 			PeriodeEntity.save(periode);
 			session.save(periode);
 			tx.commit();

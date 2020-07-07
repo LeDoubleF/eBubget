@@ -17,7 +17,7 @@ public class CSVReaderTest {
 	@Test
 	public final void testNoFileToRead() {
 		try {
-			PeriodDTo periode = new PeriodDTo(2020, 1, 1);
+			PeriodDTo periode = new PeriodDTo(2020, 1);
 			csvReader.readFile("noFile", periode);
 
 		} catch (Exception aExp) {
@@ -28,7 +28,12 @@ public class CSVReaderTest {
 	@Test
 	public final void testReadFileCsv() {
 		String absolutePath = getAbsolutePath("test.csv");
-		PeriodDTo periode = new PeriodDTo(2020, 1, 1);
+		PeriodDTo periode = null;
+		try {
+			periode = new PeriodDTo(2020, 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		List<TransactionDto> transaction = csvReader.readFile(absolutePath, periode);
 
@@ -45,7 +50,7 @@ public class CSVReaderTest {
 	@Test
 	public final void testReadFileWithAmountEroorCsv() {
 		try {
-			PeriodDTo periode = new PeriodDTo(2020, 1, 1);
+			PeriodDTo periode = new PeriodDTo(2020, 1);
 			String absolutePath = getAbsolutePath("testAmountFormatError.csv");
 			csvReader.readFile(absolutePath, periode);
 
@@ -60,7 +65,7 @@ public class CSVReaderTest {
 
 		try {
 			String absolutePath = getAbsolutePath("testSeparatorError.csv");
-			PeriodDTo periode = new PeriodDTo(2020, 1, 1);
+			PeriodDTo periode = new PeriodDTo(2020, 1);
 			csvReader.readFile(absolutePath, periode);
 		} catch (Exception aExp) {
 			assert (aExp.getMessage().contains(Message.FILE_CONTENT_KO));

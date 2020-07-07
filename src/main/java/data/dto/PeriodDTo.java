@@ -1,16 +1,40 @@
 package data.dto;
 
+import exception.ComplianceException;
+import exception.Message;
+
 public class PeriodDTo {
 
 	private int annee;
 	private int trimestre;
 	private int mois;
 
-	public PeriodDTo(int annee, int trimestre, int mois) {
+	/**
+	 * 
+	 * @param annee
+	 * @param mois
+	 * @throws ComplianceException
+	 *             if you put month>12||month<1
+	 */
+	public PeriodDTo(int annee, int mois) {
 		super();
 		this.annee = annee;
-		this.trimestre = trimestre;
+		this.trimestre = calculateTrimestre(mois);
 		this.mois = mois;
+	}
+
+	private int calculateTrimestre(int month) {
+
+		if (month >= 1 && month <= 3)
+			return 1;
+		else if (month >= 4 && month <= 6)
+			return 2;
+		else if (month >= 7 && month <= 9)
+			return 3;
+		else if (month >= 8 && month <= 12)
+			return 4;
+		else
+			throw new IllegalArgumentException(Message.INVALD_MONTH);
 	}
 
 	@Override
@@ -45,24 +69,12 @@ public class PeriodDTo {
 		return annee;
 	}
 
-	public void setAnnee(int annee) {
-		this.annee = annee;
-	}
-
 	public int getTrimestre() {
 		return trimestre;
 	}
 
-	public void setTrimestre(int trimestre) {
-		this.trimestre = trimestre;
-	}
-
 	public int getMois() {
 		return mois;
-	}
-
-	public void setMois(int mois) {
-		this.mois = mois;
 	}
 
 }

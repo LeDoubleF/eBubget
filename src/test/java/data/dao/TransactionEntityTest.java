@@ -28,7 +28,7 @@ public class TransactionEntityTest {
 			tx.commit();
 
 			// when
-			PeriodDTo periode = new PeriodDTo(2020, 1, 1);
+			PeriodDTo periode = new PeriodDTo(2020, 1);
 			TransactionDto transactionDto = new TransactionDto("10/01/2020", "alimentation", "farine", "Espèce", 0.69,
 					periode);
 			TransactionEntity.save(transactionDto);
