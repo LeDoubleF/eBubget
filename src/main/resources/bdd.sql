@@ -8,6 +8,18 @@ DROP DATABASE IF EXISTS `ebudget`;
 CREATE DATABASE IF NOT EXISTS `ebudget` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `ebudget`;
 
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE IF NOT EXISTS `account` (
+  `NAME` varchar(100) NOT NULL,
+  `accountType` varchar(255) DEFAULT NULL,
+  `Description` varchar(100) NOT NULL,
+  `finalAmount` double NOT NULL,
+  `initialAmount` double NOT NULL,
+  PRIMARY KEY (`NAME`),
+  UNIQUE KEY `NAME` (`NAME`),
+  UNIQUE KEY `NAME_2` (`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE IF NOT EXISTS `category` (
   `NAME` varchar(100) NOT NULL,
@@ -42,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   KEY `FKE30A7ABEBC113A3F` (`Category`),
   CONSTRAINT `FKE30A7ABE419CDCEB` FOREIGN KEY (`annee`, `trimestre`, `mois`) REFERENCES `periode` (`annee`, `mois`, `trimestre`),
   CONSTRAINT `FKE30A7ABEBC113A3F` FOREIGN KEY (`Category`) REFERENCES `category` (`NAME`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=523 DEFAULT CHARSET=latin1;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

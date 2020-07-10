@@ -1,8 +1,8 @@
 package io;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.util.List;
 
 import org.junit.Test;
@@ -10,16 +10,18 @@ import org.junit.Test;
 import data.dto.PeriodDTo;
 import data.dto.TransactionDto;
 import exception.Message;
+import testCommon.Common;
 
 public class CSVReaderTest {
 	CSVReader csvReader = new CSVReader();
+	ClassLoader classLoader = getClass().getClassLoader();
 
 	@Test
 	public final void testNoFileToRead() {
 		try {
 			PeriodDTo periode = new PeriodDTo(2020, 1);
 			csvReader.readFile("noFile", periode);
-
+			fail("Exception not thrown");
 		} catch (Exception aExp) {
 			assert (aExp.getMessage().contains(Message.FILE_PATH_KO));
 		}
@@ -27,7 +29,7 @@ public class CSVReaderTest {
 
 	@Test
 	public final void testReadFileCsv() {
-		String absolutePath = getAbsolutePath("test.csv");
+		String absolutePath = Common.getAbsolutePath("test.csv", classLoader);
 		PeriodDTo periode = null;
 		try {
 			periode = new PeriodDTo(2020, 1);
@@ -51,11 +53,12 @@ public class CSVReaderTest {
 	public final void testReadFileWithAmountEroorCsv() {
 		try {
 			PeriodDTo periode = new PeriodDTo(2020, 1);
-			String absolutePath = getAbsolutePath("testAmountFormatError.csv");
-			csvReader.readFile(absolutePath, periode);
-
+			String absolutePath = Common.getAbsolutePath("testAmountFormatError.csv", classLoader);
+			List<TransactionDto> transaction = csvReader.readFile(absolutePath, periode);
+			fail("Exception not thrown");
 		} catch (Exception aExp) {
-			assert (aExp.getMessage().contains("NumberFormatException"));
+			System.out.println(aExp.getMessage());
+			assert (aExp.getMessage().contains(Message.FILE_CONTENT_KO));
 		}
 
 	}
@@ -64,10 +67,12 @@ public class CSVReaderTest {
 	public final void testReadFileCsvWithoutGoodSeparator() {
 
 		try {
-			String absolutePath = getAbsolutePath("testSeparatorError.csv");
+			String absolutePath = Common.getAbsolutePath("testSeparatorError.csv", classLoader);
 			PeriodDTo periode = new PeriodDTo(2020, 1);
 			csvReader.readFile(absolutePath, periode);
+			fail("Exception not thrown");
 		} catch (Exception aExp) {
+
 			assert (aExp.getMessage().contains(Message.FILE_CONTENT_KO));
 		}
 	}
@@ -75,9 +80,9 @@ public class CSVReaderTest {
 	@Test
 	public final void testverifyFileCsv() {
 		// todo code dupliqué
-		String absolutePath = getAbsolutePath("test.csv");
+		String absolutePath = Common.getAbsolutePath("test.csv", classLoader);
 		csvReader.verifyFile(absolutePath);
-		absolutePath = getAbsolutePath("test2.CSV");
+		absolutePath = Common.getAbsolutePath("test2.CSV", classLoader);
 		csvReader.verifyFile(absolutePath);
 
 	}
@@ -85,8 +90,9 @@ public class CSVReaderTest {
 	@Test
 	public final void testverifyFileFileExtensionKO() {
 		try {
-			String absolutePath = getAbsolutePath("test.jpg");
+			String absolutePath = Common.getAbsolutePath("test.jpg", classLoader);
 			csvReader.verifyFile(absolutePath);
+			fail("Exception not thrown");
 		} catch (Exception aExp) {
 			assert (aExp.getMessage().contains(Message.FILE_EXTENSION_KO));
 		}
@@ -95,8 +101,9 @@ public class CSVReaderTest {
 	@Test
 	public final void testverifyFileMultipleExtensionKO() {
 		try {
-			String absolutePath = getAbsolutePath("test.csv.csv");
+			String absolutePath = Common.getAbsolutePath("test.csv.csv", classLoader);
 			csvReader.verifyFile(absolutePath);
+			fail("Exception not thrown");
 		} catch (Exception aExp) {
 			assert (aExp.getMessage().contains(Message.FILE_EXTENSION_KO));
 		}
@@ -105,9 +112,10 @@ public class CSVReaderTest {
 	@Test
 	public final void testverifyFileNoFileKO() {
 		try {
-			String absolutePath = getAbsolutePath("test.csv");
+			String absolutePath = Common.getAbsolutePath("test.csv", classLoader);
 			absolutePath = absolutePath.replace("test", "noFile");
 			csvReader.verifyFile(absolutePath);
+			fail("Exception not thrown");
 		} catch (Exception aExp) {
 			assert (aExp.getMessage().contains(Message.FILE_PATH_KO));
 		}
@@ -116,18 +124,13 @@ public class CSVReaderTest {
 	@Test
 	public final void testverifyFileIsDirectory() {
 		try {
-			String absolutePath = getAbsolutePath("test.csv");
+			String absolutePath = Common.getAbsolutePath("test.csv", classLoader);
 			absolutePath = absolutePath.replace("\\test.csv", "");
 			csvReader.verifyFile(absolutePath);
+			fail("Exception not thrown");
 		} catch (Exception aExp) {
 			assert (aExp.getMessage().contains(Message.FILE_PATH_KO));
 		}
 	}
 
-	private String getAbsolutePath(String resourceName) {
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(resourceName).getFile());
-		String absolutePath = file.getAbsolutePath();
-		return absolutePath;
-	}
 }

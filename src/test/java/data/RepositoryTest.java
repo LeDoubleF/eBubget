@@ -9,6 +9,7 @@ import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInA
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -29,6 +30,7 @@ public class RepositoryTest {
 	public final void testNoInstanciateRepository() {
 		try {
 			new Repository();
+			fail("Exception not thrown");
 		} catch (Exception aExp) {
 			assert (aExp.getMessage().contains(Message.UITLITY_CLASS));
 		}

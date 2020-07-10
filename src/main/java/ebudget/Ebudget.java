@@ -1,10 +1,18 @@
 package ebudget;
 
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import calculation.Calculator;
+import data.Repository;
+import data.dao.AccountEntity;
+import data.dao.PeriodEntity;
 import data.dao.TransactionEntity;
+import data.dto.AccountDto;
+import data.dto.AccountType;
+import data.dto.PeriodDTo;
+import data.dto.TransactionDto;
 import io.View;
 
 public class Ebudget {
@@ -33,21 +41,23 @@ public class Ebudget {
 	}
 
 	public void run() {
-		System.out.println(view.readPeriod(System.in));
-		// Repository.initCategories();
-		// String fileName = view.readFilePath(System.in);
-		// PeriodDTo periode = new PeriodDTo(2020, 2, 1);
-		// List<TransactionDto> fileContentList = view.readTransaction(fileName,
-		// periode);
-		// PeriodeEntity.save(periode);
-		// fileContentList.forEach(item -> TransactionEntity.save(item));
-		// double transactionSum = TransactionEntity.sum();
-		//
-		// double initialBalance = view.readInitialBalance(System.in);
-		//
-		// double finalBalance = calculator.calculateFinalBalance(initialBalance,
-		// transactionSum);
-		// view.printValue("Solde final : ", Double.toString(finalBalance));
+		Repository.initCategories();
+		String fileName = view.readFilePath(System.in);
+		PeriodDTo periode = view.readPeriod(System.in);
+
+		List<TransactionDto> fileContentList = view.readTransaction(fileName, periode);
+		PeriodEntity.save(periode);
+
+		fileContentList.forEach(item -> TransactionEntity.save(item));
+		double transactionSum = TransactionEntity.sum();
+
+		double initialBalance = view.readInitialBalance(System.in);
+		double finalBalance = calculator.calculateFinalBalance(initialBalance, transactionSum);
+		view.printValue("Solde final : ", Double.toString(finalBalance));
+
+		AccountDto cpp = new AccountDto("cpp", AccountType.CPP, "compte courant", initialBalance, finalBalance);
+		AccountEntity.save(cpp);
+
 		logger.log(Level.INFO, "fin du programme");
 
 	}

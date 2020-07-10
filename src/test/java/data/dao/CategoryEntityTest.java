@@ -54,17 +54,5 @@ public class CategoryEntityTest extends TestCase {
 
 	}
 
-	// @Override
 	// TODO nettoyer la table apres chaque test
-	// protected void tearDown() {
-	//
-	// System.out.println("Running: tearDown");
-	// Session session = HibernateUtil.getSessionFactory().openSession();
-	// session.beginTransaction();
-	// // Query queryDelete = session.createSQLQuery("DROP TABLE IF EXISTS
-	// category");
-	// Query queryDelete = session.createSQLQuery("DELETE FROM category");
-	// queryDelete.executeUpdate();
-	// HibernateUtil.shutdown();
-	// }
 }

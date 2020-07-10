@@ -12,8 +12,9 @@
         <property name="show_sql">true</property>
 		<property name="hbm2ddl.auto">update</property>
         <mapping class="data.dao.CategoryEntity"></mapping>
-         <mapping class="data.dao.TransactionEntity"></mapping>
-          <mapping class="data.dao.PeriodeEntity"></mapping>
-           <mapping class="data.dao.PeriodePK"></mapping>
+        <mapping class="data.dao.TransactionEntity"></mapping>
+        <mapping class="data.dao.PeriodEntity"></mapping>
+        <mapping class="data.dao.PeriodePK"></mapping>
+        <mapping class="data.dao.AccountEntity"></mapping>
     </session-factory>
 </hibernate-configuration>

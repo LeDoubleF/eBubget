@@ -16,19 +16,19 @@ import data.dto.PeriodDTo;
 
 @Entity
 @Table(name = "Periode")
-public class PeriodeEntity implements Serializable {
+public class PeriodEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	static Logger logger = Logger.getLogger("PeriodeEntity");
 	@EmbeddedId
 	private PeriodePK id;
 
-	public PeriodeEntity(int annee, int trimestre, int mois) {
+	public PeriodEntity(int annee, int trimestre, int mois) {
 		super();
 		this.id = new PeriodePK(annee, trimestre, mois);
 	}
 
-	public PeriodeEntity() {
+	public PeriodEntity() {
 		super();
 		// pour hibernate
 	}
@@ -49,7 +49,7 @@ public class PeriodeEntity implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PeriodeEntity other = (PeriodeEntity) obj;
+		PeriodEntity other = (PeriodEntity) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -67,7 +67,7 @@ public class PeriodeEntity implements Serializable {
 	}
 
 	public static boolean save(PeriodDTo periode) {
-		return save(periode.getAnnee(), periode.getTrimestre(), periode.getMois());
+		return save(periode.getYear(), periode.getQuarter(), periode.getMonth());
 
 	}
 
@@ -78,7 +78,7 @@ public class PeriodeEntity implements Serializable {
 		PeriodePK stId = null;
 		try {
 			tx = session.beginTransaction();
-			PeriodeEntity periode = new PeriodeEntity(annee, trimestre, mois);
+			PeriodEntity periode = new PeriodEntity(annee, trimestre, mois);
 			stId = (PeriodePK) session.save(periode);
 			tx.commit();
 		} catch (HibernateException ex) {

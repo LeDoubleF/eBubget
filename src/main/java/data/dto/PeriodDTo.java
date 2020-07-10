@@ -5,25 +5,25 @@ import exception.Message;
 
 public class PeriodDTo {
 
-	private int annee;
-	private int trimestre;
-	private int mois;
+	private int year;
+	private int quarter;
+	private int month;
 
 	/**
 	 * 
-	 * @param annee
-	 * @param mois
+	 * @param year
+	 * @param month
 	 * @throws ComplianceException
 	 *             if you put month>12||month<1
 	 */
-	public PeriodDTo(int annee, int mois) {
+	public PeriodDTo(int year, int month) {
 		super();
-		this.annee = annee;
-		this.trimestre = calculateTrimestre(mois);
-		this.mois = mois;
+		this.year = year;
+		this.quarter = calculateQuater(month);
+		this.month = month;
 	}
 
-	private int calculateTrimestre(int month) {
+	private int calculateQuater(int month) {
 
 		if (month >= 1 && month <= 3)
 			return 1;
@@ -41,9 +41,9 @@ public class PeriodDTo {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + annee;
-		result = prime * result + mois;
-		result = prime * result + trimestre;
+		result = prime * result + year;
+		result = prime * result + month;
+		result = prime * result + quarter;
 		return result;
 	}
 
@@ -56,25 +56,25 @@ public class PeriodDTo {
 		if (getClass() != obj.getClass())
 			return false;
 		PeriodDTo other = (PeriodDTo) obj;
-		if (annee != other.annee)
+		if (year != other.year)
 			return false;
-		if (mois != other.mois)
+		if (month != other.month)
 			return false;
-		if (trimestre != other.trimestre)
+		if (quarter != other.quarter)
 			return false;
 		return true;
 	}
 
-	public int getAnnee() {
-		return annee;
+	public int getYear() {
+		return year;
 	}
 
-	public int getTrimestre() {
-		return trimestre;
+	public int getQuarter() {
+		return quarter;
 	}
 
-	public int getMois() {
-		return mois;
+	public int getMonth() {
+		return month;
 	}
 
 }

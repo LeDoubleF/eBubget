@@ -27,17 +27,17 @@ import data.Repository;
 @Table(name = "Category", uniqueConstraints = { @UniqueConstraint(columnNames = "NAME") })
 public class CategoryEntity implements Serializable {
 
-	@Override
-	public String toString() {
-		return "CategoryEntity : " + name;
-	}
-
 	private static final long serialVersionUID = -1798070786993154676L;
 	static Logger logger = Logger.getLogger("CategoryEntity");
 
 	@Id
 	@Column(name = "NAME", unique = true, nullable = false, length = 100)
 	private String name;
+
+	@Override
+	public String toString() {
+		return "CategoryEntity : " + name;
+	}
 
 	public String getName() {
 		return name;

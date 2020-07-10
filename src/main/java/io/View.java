@@ -42,12 +42,13 @@ public class View implements Observer {
 		return sc.nextLine();
 	}
 
-	public String readPeriod(InputStream in) {
+	public PeriodDTo readPeriod(InputStream in) {
 		Scanner sc = new Scanner(in);
 		System.out.println("Entrez l'année concernée (nombre):");
-		String period = sc.nextLine();
+		int year = Integer.valueOf(sc.nextLine());
 		System.out.println("Entrez le mois concernée (nombre):");
-		return sc.nextLine() + period;
+		int month = Integer.valueOf(sc.nextLine());
+		return new PeriodDTo(year, month);
 	}
 
 	public void printValue(String prompt, String value) {

@@ -80,6 +80,7 @@ public class CSVReader {
 			logger.log(Level.SEVERE, ioException.getMessage());
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage());
+			throw new FileReaderException(Message.FILE_CONTENT_KO);
 		}
 
 		return fileContentList;

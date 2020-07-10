@@ -42,12 +42,12 @@ public class PeriodeDtoTest {
 			PeriodDTo periode5 = new PeriodDTo(2020, 8);
 			PeriodDTo periode6 = new PeriodDTo(2020, 11);
 
-			assertEquals(1, periode1.getTrimestre());
-			assertEquals(2, periode2.getTrimestre());
-			assertEquals(2, periode3.getTrimestre());
-			assertEquals(3, periode4.getTrimestre());
-			assertEquals(3, periode5.getTrimestre());
-			assertEquals(4, periode6.getTrimestre());
+			assertEquals(1, periode1.getQuarter());
+			assertEquals(2, periode2.getQuarter());
+			assertEquals(2, periode3.getQuarter());
+			assertEquals(3, periode4.getQuarter());
+			assertEquals(3, periode5.getQuarter());
+			assertEquals(4, periode6.getQuarter());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

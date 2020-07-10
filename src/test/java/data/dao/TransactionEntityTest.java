@@ -43,8 +43,7 @@ public class TransactionEntityTest {
 
 			TransactionEntity transaction = (TransactionEntity) session.load(TransactionEntity.class,
 					(Serializable) idLlist.get(0));
-			System.out.println(transaction.getCategory().getName() + " " + transaction.getDate() + " "
-					+ transaction.getDescription());
+
 			assertEquals("10/01/2020", transaction.getDate());
 			assertEquals("alimentation", transaction.getCategory().getName());
 			assertEquals("farine", transaction.getDescription());
@@ -57,6 +56,7 @@ public class TransactionEntityTest {
 		} catch (Exception e) {
 			// Rollback in case of an error occurred.
 			tx.rollback();
+			e.printStackTrace();
 		}
 	}
 
@@ -74,7 +74,7 @@ public class TransactionEntityTest {
 		CategoryEntity category = new CategoryEntity("test1");
 		session.save(category);
 
-		PeriodeEntity.save(2020, 1, 1);
+		PeriodEntity.save(2020, 1, 1);
 
 		TransactionEntity transaction = new TransactionEntity();
 		transaction.setPeriode(2020, 1, 1);

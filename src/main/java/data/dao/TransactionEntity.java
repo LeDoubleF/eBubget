@@ -44,24 +44,23 @@ public class TransactionEntity implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "Category", nullable = false)
-	// @Column(name = "Category", unique = false, nullable = false, length = 100)
 	private CategoryEntity category;
 
 	@ManyToOne
 	@JoinColumns({ @JoinColumn(name = "annee", nullable = false), @JoinColumn(name = "trimestre", nullable = false),
 			@JoinColumn(name = "mois", nullable = false) })
-	private PeriodeEntity periode;
+	private PeriodEntity periode;
 
-	public PeriodeEntity getPeriode() {
+	public PeriodEntity getPeriode() {
 		return periode;
 	}
 
 	public void setPeriode(int annee, int trimestre, int mois) {
-		this.periode = new PeriodeEntity(annee, trimestre, mois);
+		this.periode = new PeriodEntity(annee, trimestre, mois);
 	}
 
 	public void setPeriode(PeriodDTo periode) {
-		this.periode = new PeriodeEntity(periode.getAnnee(), periode.getTrimestre(), periode.getMois());
+		this.periode = new PeriodEntity(periode.getYear(), periode.getQuarter(), periode.getMonth());
 	}
 
 	@Column(name = "Description", unique = false, nullable = false, length = 100)
@@ -144,10 +143,8 @@ public class TransactionEntity implements Serializable {
 			transactionEntity.setPayment(transaction.getPayment());
 			transactionEntity.setAmount(transaction.getAmount());
 			transactionEntity.setPeriode(transaction.getPeriode());
-			// TODO inserer la période
 			stId = (Integer) session.save(transactionEntity);
 			tx.commit();
-			// HibernateUtil.shutdown(); // end
 		} catch (HibernateException ex) {
 			logger.log(Level.SEVERE, ex.getMessage());
 			if (tx != null)
