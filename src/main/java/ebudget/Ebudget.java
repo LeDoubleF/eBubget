@@ -32,6 +32,7 @@ public class Ebudget {
 		////////////
 
 		TransactionEntity.sumByCategory();
+		TransactionEntity.sumCash();
 
 	}// end main
 
@@ -49,7 +50,7 @@ public class Ebudget {
 		PeriodEntity.save(periode);
 
 		fileContentList.forEach(item -> TransactionEntity.save(item));
-		double transactionSum = TransactionEntity.sum();
+		double transactionSum = TransactionEntity.sumAccount();
 
 		double initialBalance = view.readInitialBalance(System.in);
 		double finalBalance = calculator.calculateFinalBalance(initialBalance, transactionSum);

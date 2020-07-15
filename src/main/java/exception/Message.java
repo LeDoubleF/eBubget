@@ -12,4 +12,6 @@ public final class Message {
 	public static final String FILE_CONTENT_KO = "File content error";
 	public static final String UITLITY_CLASS = "Utility class";
 	public static final String INVALD_MONTH = "Invalid number of month";
+
+	public static final String FILE_CONTENT_KO_ARGUMENT = "File content error at line {0}";
 }

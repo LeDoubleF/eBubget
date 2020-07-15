@@ -22,6 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import data.Repository;
+import data.dto.CategoryDTo;
 
 @Entity
 @Table(name = "Category", uniqueConstraints = { @UniqueConstraint(columnNames = "NAME") })
@@ -120,13 +121,14 @@ public class CategoryEntity implements Serializable {
 	public static boolean save(String name) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = null;
-		Integer stId = null;
+		String stId = null;
 		try {
 
 			tx = session.beginTransaction();
 			CategoryEntity category = new CategoryEntity(name);
-			stId = (Integer) session.save(category);
+			stId = (String) session.save(category);
 			tx.commit();
+			Repository.addCategory(new CategoryDTo(name));
 		} catch (HibernateException ex) {
 			logger.log(Level.SEVERE, ex.getMessage());
 			if (tx != null)

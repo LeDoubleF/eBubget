@@ -13,6 +13,15 @@ public class TransactionDto {
 
 	private PeriodDTo periode;
 
+	/**
+	 * 
+	 * @param date
+	 * @param category
+	 * @param description
+	 * @param payment
+	 * @param amount
+	 * @param periode
+	 */
 	public TransactionDto(String date, CategoryDTo category, String description, String payment, Double amount,
 			PeriodDTo periode) {
 		super();
@@ -24,6 +33,15 @@ public class TransactionDto {
 		this.periode = periode;
 	}
 
+	/**
+	 * 
+	 * @param date
+	 * @param category
+	 * @param description
+	 * @param payment
+	 * @param amount
+	 * @param periode
+	 */
 	public TransactionDto(String date, String category, String description, String payment, Double amount,
 			PeriodDTo periode) {
 		this(date, new CategoryDTo(category), description, payment, amount, periode);

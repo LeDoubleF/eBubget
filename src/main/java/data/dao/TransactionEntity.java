@@ -156,18 +156,19 @@ public class TransactionEntity implements Serializable {
 		return stId != null;
 	}
 
-	public static Double sum() {
+	public static Double sumAccount() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 
-			String hql = "SELECT SUM(E.amount)FROM " + TransactionEntity.class.getName() + " E ";
-			// + "GROUP BY E.firstName";
+			String hql = "SELECT SUM(E.amount)FROM " + TransactionEntity.class.getName() + " E "
+					+ " WHERE E.payment <>'espèce' ";
 			Query query = session.createQuery(hql);
 
 			// Execute query.
+			@SuppressWarnings({ "unchecked" })
 			List<Double> sum = query.list();
 
 			// Commit data.
@@ -198,6 +199,7 @@ public class TransactionEntity implements Serializable {
 			Query query = session.createQuery(hql);
 
 			// Execute query.
+			@SuppressWarnings({ "unchecked" })
 			List<Object[]> sum = query.list();
 
 			// Commit data.
@@ -206,11 +208,38 @@ public class TransactionEntity implements Serializable {
 			for (Object[] a : sum)
 				System.out.println(a[0] + " " + a[1] + " " + a[2]);
 		} catch (Exception e) {
-			// logger.log(Level.SEVERE, e.getMessage());
+			logger.log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
-			// Rollback in case of an error occurred.
 			tx.rollback();
 		}
+	}
 
+	public static Double sumCash() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+
+			String sqlMore = "SELECT SUM(E.amount) FROM " + TransactionEntity.class.getName() + " E "
+					+ " WHERE E.payment ='espèce' ";
+			Query queryMore = session.createQuery(sqlMore);
+
+			String sqlLess = "SELECT SUM(E.amount) FROM " + TransactionEntity.class.getName() + " E "
+					+ " WHERE E.payment='retrait' ";
+			Query queryLess = session.createQuery(sqlLess);
+
+			// Execute query.
+			@SuppressWarnings({ "unchecked" })
+			List<Double> sumMore = queryMore.list();
+			@SuppressWarnings({ "unchecked" })
+			List<Double> sumLess = queryLess.list();
+
+			return sumMore.get(0) - sumLess.get(0);
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

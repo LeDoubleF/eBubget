@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -44,16 +45,18 @@ public class PeriodEntityTest {
 			// then
 			Session session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
-			Query query = session.createSQLQuery("SELECT * FROM PERIODE");
+			Query query = session.createSQLQuery("SELECT count(*) FROM PERIODE");
 			query.executeUpdate();
-			List idLlist = query.list();
+			@SuppressWarnings("unchecked")
+			List<BigInteger> nb = query.list();
 
-			PeriodEntity periodEntity = (PeriodEntity) session.load(TransactionEntity.class,
-					(Serializable) idLlist.get(0));
+			PeriodEntity periodEntity = (PeriodEntity) session.load(PeriodEntity.class,
+					(Serializable) new PeriodePK(2020, 4, 11));
 
 			assertEquals(2020, periodEntity.getId().getAnnee());
 			assertEquals(4, periodEntity.getId().getTrimestre());
 			assertEquals(11, periodEntity.getId().getMois());
+			assertEquals(new BigInteger("1"), nb.get(0));
 
 		} catch (Exception e) {
 			// Rollback in case of an error occurred.

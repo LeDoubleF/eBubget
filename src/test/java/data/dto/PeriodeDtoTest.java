@@ -52,7 +52,7 @@ public class PeriodeDtoTest {
 			e.printStackTrace();
 		}
 		try {
-			PeriodDTo periode7 = new PeriodDTo(2020, 14);
+			new PeriodDTo(2020, 14);
 			fail("Exception not thrown");
 		} catch (Exception aExp) {
 			assert (aExp.getMessage().contains(Message.INVALD_MONTH));

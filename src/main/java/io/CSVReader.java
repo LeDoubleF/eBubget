@@ -50,22 +50,26 @@ public class CSVReader {
 		int descriptionPlace = fileDescription[3];
 		int paymentPlace = fileDescription[4];
 
+		int lineNumber = 1;
+
 		try (BufferedReader fichierSource = new BufferedReader(
 				new InputStreamReader(new FileInputStream(filePath), "UTF-8"))) {
 
 			String line;
+
 			line = fichierSource.readLine();// lecture de l'entête
+
 			while ((line = fichierSource.readLine()) != null) {
+				lineNumber++;
 				line = line.trim();
 				String[] tabValue = line.split(COMMA_DELIMITER);
 				if (tabValue.length < 2)
 					throw new FileReaderException(Message.FILE_CONTENT_KO);
 				String date = tabValue[datePlace].trim();
-				String category = tabValue[categoryPlace].trim();// TODO supprimer les accents ou les gérer
+				String category = tabValue[categoryPlace].trim();
 				String description = tabValue[descriptionPlace].trim();
 				String payement = tabValue[paymentPlace].trim();
 				Double amount = Double.parseDouble(tabValue[amountPlace].replaceAll(",", "."));
-				// TODO situer ligne d'une erreur
 				TransactionDto transaction = new TransactionDto(date, category.toLowerCase(), description, payement,
 						amount, periode);
 				fileContentList.add(transaction);
@@ -79,7 +83,7 @@ public class CSVReader {
 		} catch (IOException ioException) {
 			logger.log(Level.SEVERE, ioException.getMessage());
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getMessage());
+			logger.log(Level.SEVERE, Message.FILE_CONTENT_KO_ARGUMENT, lineNumber);
 			throw new FileReaderException(Message.FILE_CONTENT_KO);
 		}
 
