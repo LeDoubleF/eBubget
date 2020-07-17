@@ -11,10 +11,12 @@ import org.hibernate.Transaction;
 import org.junit.Test;
 
 import data.DataTest;
+import data.Repository;
 import data.dto.PeriodDTo;
 import data.dto.TransactionDto;
 
 public class TransactionEntityTest {
+	double delta = 0.0;
 
 	@Test
 	public void TestTransactionEntitySave() {
@@ -23,7 +25,7 @@ public class TransactionEntityTest {
 
 			// given
 			DataTest.deleteTransaction();
-			DataTest.deleteCategory();
+			Repository.deleteAllCategory();
 			CategoryEntity.save("alimentation");
 			PeriodDTo periode = new PeriodDTo(2020, 2);
 			PeriodEntity.save(periode);
@@ -49,12 +51,12 @@ public class TransactionEntityTest {
 			assertEquals("alimentation", transaction.getCategory().getName());
 			assertEquals("farine", transaction.getDescription());
 			assertEquals("Espèce", transaction.getPayment());
-			assertEquals(0.69, transaction.getAmount(), 0);
+			assertEquals(0.69, transaction.getAmount(), delta);
 			assertEquals(2020, transaction.getPeriode().getId().getAnnee());
 			assertEquals(1, transaction.getPeriode().getId().getTrimestre());
 			assertEquals(2, transaction.getPeriode().getId().getMois());
 			DataTest.deleteTransaction();
-			DataTest.deleteCategory();
+			Repository.deleteAllCategory();
 		} catch (Exception e) {
 			// Rollback in case of an error occurred.
 			tx.rollback();
@@ -65,7 +67,7 @@ public class TransactionEntityTest {
 	@Test
 	public void TestTransactionEntitySum() {
 		DataTest.deleteTransaction();
-		DataTest.deleteCategory();
+		Repository.deleteAllCategory();
 
 		try {
 			String categoryName = "test1";
@@ -93,10 +95,10 @@ public class TransactionEntityTest {
 			Double sum = TransactionEntity.sumAccount();
 
 			// then
-			assertEquals(sum, 32.0, 0);
+			assertEquals(32.0, sum, delta);
 
 			DataTest.deleteTransaction();
-			DataTest.deleteCategory();
+			Repository.deleteAllCategory();
 			DataTest.deletePeriode();
 
 		} catch (Exception e) {
@@ -108,7 +110,7 @@ public class TransactionEntityTest {
 	public void TestTransactionSumCash() {
 		// given
 		DataTest.deleteTransaction();
-		DataTest.deleteCategory();
+		Repository.deleteAllCategory();
 
 		String categoryName = "test1";
 		CategoryEntity.save(categoryName);
@@ -132,10 +134,10 @@ public class TransactionEntityTest {
 		Double sum = TransactionEntity.sumCash();
 
 		// then
-		assertEquals(sum, 13.0, 0);
+		assertEquals(13.0, sum, delta);
 
 		DataTest.deleteTransaction();
-		DataTest.deleteCategory();
+		Repository.deleteAllCategory();
 		DataTest.deletePeriode();
 	}
 

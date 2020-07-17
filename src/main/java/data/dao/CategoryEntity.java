@@ -1,10 +1,6 @@
 package data.dao;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,7 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -59,65 +54,6 @@ public class CategoryEntity implements Serializable {
 	@OneToMany(mappedBy = "category")
 	private Set<TransactionEntity> transactions;
 
-	// TODO vider catégory avec destruction en cascade des transactions ou
-	// remplacement par divers
-	public static void createCategories(String sqlFile) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-
-		Transaction tx = null;
-		try {
-			// String SqlFile = getAbsolutePath("category.sql");
-			// TODO acceder au fichier par parametrage à l'installation
-
-			File file = new File(sqlFile);
-
-			String sqlScript = null;
-			sqlScript = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8).trim().toLowerCase();
-
-			tx = session.beginTransaction();
-
-			Query query = session.createSQLQuery(sqlScript);
-			query.executeUpdate();
-
-			Query queryResult = session.createSQLQuery("SELECT name FROM category");
-			queryResult.executeUpdate();
-
-			Repository.addCategories(queryResult.list());
-
-			session.getTransaction().commit();
-			logger.log(Level.INFO, "création des catégories");
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, "File Not Found", e);
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getMessage());
-			// Rollback in case of an error occurred.
-			if (tx != null)
-				tx.rollback();
-		}
-
-	}
-
-	public static void deleteAllCategory() {
-		Transaction tx = null;
-		try {
-
-			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
-			tx = sessionTwo.beginTransaction();
-
-			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM category");
-			queryDelete.executeUpdate();
-
-			sessionTwo.getTransaction().commit();
-			logger.log(Level.INFO, "suppression des catégories");
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, e.getMessage());
-			// Rollback in case of an error occurred.
-			if (tx != null)
-				tx.rollback();
-		}
-
-	}
-
 	public static boolean save(String name) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = null;
@@ -129,6 +65,7 @@ public class CategoryEntity implements Serializable {
 			stId = (String) session.save(category);
 			tx.commit();
 			Repository.addCategory(new CategoryDTo(name));
+			logger.log(Level.INFO, "Création de la catégorie :" + name);
 		} catch (HibernateException ex) {
 			logger.log(Level.SEVERE, ex.getMessage());
 			if (tx != null)

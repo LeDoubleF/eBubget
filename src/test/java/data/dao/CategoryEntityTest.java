@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 import org.junit.Test;
 
 import data.DataTest;
+import data.Repository;
 import junit.framework.TestCase;
 
 public class CategoryEntityTest extends TestCase {
@@ -15,7 +16,7 @@ public class CategoryEntityTest extends TestCase {
 	@Test
 	public void testSaveCategoryinLowerCase() {
 		DataTest.deleteTransaction();
-		DataTest.deleteCategory();
+		Repository.deleteAllCategory();
 
 		Session sessionOne = HibernateUtil.getSessionFactory().openSession();
 		Transaction tx = sessionOne.beginTransaction();
@@ -32,26 +33,7 @@ public class CategoryEntityTest extends TestCase {
 		CategoryEntity cat1 = (CategoryEntity) sessionTwo.load(CategoryEntity.class, catName);
 
 		assertEquals(catName.toLowerCase(), cat1.getName());
-		CategoryEntity.deleteAllCategory();
-	}
-
-	@Test
-	public void testCreateCategories() {
-		CategoryEntity.createCategories("C:\\Donnees\\Perso\\projet\\budget\\eBudget\\category.sql");
-
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		CategoryEntity cat1 = (CategoryEntity) session.load(CategoryEntity.class, "alimentation");
-		assertEquals(cat1.getName(), "alimentation");
-
-		CategoryEntity cat2 = (CategoryEntity) session.load(CategoryEntity.class, "credit");
-		assertEquals(cat2.getName(), "credit");
-
-		CategoryEntity cat3 = (CategoryEntity) session.load(CategoryEntity.class, "vacances");
-		assertEquals(cat3.getName(), "vacances");
-		CategoryEntity.deleteAllCategory();
-
+		Repository.deleteAllCategory();
 	}
 
 	// TODO nettoyer la table apres chaque test

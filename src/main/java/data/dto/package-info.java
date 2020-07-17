@@ -1,5 +1,5 @@
 /**
- * Domain classes used to produce dto
+ * Domain classes used to produce data transfer object
  * <p>
  * These classes contain hibernate entity
  * </p>

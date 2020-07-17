@@ -120,7 +120,6 @@ public class TransactionEntity implements Serializable {
 		this.category = category;
 	}
 
-	// TODO tester quand la category n'existe pas
 	public static boolean save(TransactionDto transaction) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -134,7 +133,7 @@ public class TransactionEntity implements Serializable {
 			// TODO gestion correcte de la date
 			if (Repository.isCategory(transaction.getCategory())) {
 				transactionEntity.setCategory(transaction.getCategory());
-				System.out.println("\t oui");
+				logger.log(Level.WARNING, transaction.getCategory().getName() + " existe ");
 			} else {
 				logger.log(Level.WARNING, transaction.getCategory().getName() + " n'existe pas en tant que catégorie ");
 				transactionEntity.setCategory(categoryDivers);
@@ -175,7 +174,7 @@ public class TransactionEntity implements Serializable {
 			session.getTransaction().commit();
 
 			double total = BigDecimal.valueOf(sum.get(0)).setScale(2, RoundingMode.HALF_UP).doubleValue();
-			System.out.println("Somme total: " + total);
+			System.out.println("Somme totaldu compte principal : " + total);
 			return total;
 		} catch (Exception e) {
 			// logger.log(Level.SEVERE, e.getMessage());
@@ -190,9 +189,8 @@ public class TransactionEntity implements Serializable {
 	public static void sumByCategory() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
-		Transaction tx = null;
 		try {
-			tx = session.beginTransaction();
+			session.beginTransaction();
 
 			String hql = "SELECT E.category,E.periode, SUM(E.amount) FROM " + TransactionEntity.class.getName() + " E "
 					+ "GROUP BY E.category,E.periode order by E.category";
@@ -210,16 +208,14 @@ public class TransactionEntity implements Serializable {
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, e.getMessage());
 			e.printStackTrace();
-			tx.rollback();
 		}
 	}
 
 	public static Double sumCash() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
-		Transaction tx = null;
 		try {
-			tx = session.beginTransaction();
+			session.beginTransaction();
 
 			String sqlMore = "SELECT SUM(E.amount) FROM " + TransactionEntity.class.getName() + " E "
 					+ " WHERE E.payment ='espèce' ";

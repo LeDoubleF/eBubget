@@ -31,8 +31,8 @@ public class Ebudget {
 		budget.run();
 		////////////
 
-		TransactionEntity.sumByCategory();
-		TransactionEntity.sumCash();
+		System.out.println(TransactionEntity.sumAccount());
+		System.out.println(TransactionEntity.sumCash());
 
 	}// end main
 

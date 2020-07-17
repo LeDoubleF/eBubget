@@ -69,7 +69,8 @@ public class CSVReader {
 				String category = tabValue[categoryPlace].trim();
 				String description = tabValue[descriptionPlace].trim();
 				String payement = tabValue[paymentPlace].trim();
-				Double amount = Double.parseDouble(tabValue[amountPlace].replaceAll(",", "."));
+				String amountString = tabValue[amountPlace].trim();
+				Double amount = Double.parseDouble(amountString.replaceAll(",", "."));
 				TransactionDto transaction = new TransactionDto(date, category.toLowerCase(), description, payement,
 						amount, periode);
 				fileContentList.add(transaction);

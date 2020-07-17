@@ -54,7 +54,7 @@ public class CSVReaderTest {
 		try {
 			PeriodDTo periode = new PeriodDTo(2020, 1);
 			String absolutePath = Common.getAbsolutePath("testAmountFormatError.csv", classLoader);
-			List<TransactionDto> transaction = csvReader.readFile(absolutePath, periode);
+			csvReader.readFile(absolutePath, periode);
 			fail("Exception not thrown");
 		} catch (Exception aExp) {
 			System.out.println(aExp.getMessage());

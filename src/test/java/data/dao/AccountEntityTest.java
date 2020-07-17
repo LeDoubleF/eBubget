@@ -3,7 +3,6 @@ package data.dao;
 import static org.junit.Assert.assertEquals;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -20,7 +19,8 @@ public class AccountEntityTest {
 		Transaction tx = null;
 		try {
 			String description = "compte courant";
-			AccountDto cpp = new AccountDto("pactole", AccountType.CPP, description, 0.0, 100.0);
+			double delta = 0.0;
+			AccountDto cpp = new AccountDto("pactole", AccountType.CPP, description, delta, 100.0);
 			AccountEntity.save(cpp);
 
 			String name = new String("pactole");
@@ -29,16 +29,13 @@ public class AccountEntityTest {
 
 			Query query = session.createSQLQuery("SELECT * FROM account WHERE NAME='" + name + "' ");
 			query.executeUpdate();
-			List idLlist = query.list();
-			System.out.println(" id ");
-			System.out.println(query.list() + " id " + idLlist.get(0));
 
 			AccountEntity account = (AccountEntity) session.load(AccountEntity.class, (Serializable) "pactole");
 			assertEquals(name, account.getName());
 			assertEquals(AccountType.CPP, account.getAccountType());
 			assertEquals(description, account.getDescription());
-			assertEquals(0.0, account.getInitialAmount(), 0);
-			assertEquals(100.0, account.getFinalAmount(), 0);
+			assertEquals(delta, account.getInitialAmount(), delta);
+			assertEquals(100.0, account.getFinalAmount(), delta);
 
 		} catch (Exception e) {
 			// Rollback in case of an error occurred.

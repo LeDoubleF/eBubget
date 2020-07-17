@@ -19,7 +19,7 @@ public class ViewTest {
 	public final void testReadInitialBalance() {
 
 		ByteArrayInputStream in = new ByteArrayInputStream("10".getBytes());
-		assertEquals(10, view.readInitialBalance(in), 0);
+		assertEquals(10.0, view.readInitialBalance(in), 0.0);
 	}
 
 	@Test

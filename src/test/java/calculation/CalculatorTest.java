@@ -10,7 +10,7 @@ public class CalculatorTest {
 
 	@Test
 	public final void testCalculateFinalBalance() {
-		assertEquals(32.7, calculator.calculateFinalBalance(10.2, 22.5), 0);
+		assertEquals(32.7, calculator.calculateFinalBalance(10.2, 22.5), 0.0);
 	}
 
 }

@@ -12,25 +12,6 @@ public class DataTest {
 
 	static Logger logger = Logger.getLogger("DataTest");
 
-	public static void deleteCategory() {
-		Transaction tx = null;
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
-			tx = session.beginTransaction();
-			Query queryDelete = session.createSQLQuery("DELETE FROM category");
-			queryDelete.executeUpdate();
-
-			session.getTransaction().commit();
-		} catch (RuntimeException e) {
-			if (tx != null)
-				tx.rollback();
-			throw e; // or display error message
-		} finally {
-			session.close();
-		}
-
-	}
-
 	public static void deleteTransaction() {
 		Transaction tx = null;
 		try {

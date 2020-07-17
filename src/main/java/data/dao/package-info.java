@@ -1,5 +1,5 @@
 /**
- * Domain classes used to produce dao
+ * Domain classes used to produce data acess object
  * <p>
  * These classes contain hibernate entity
  * </p>
