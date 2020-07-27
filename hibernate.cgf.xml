@@ -3,18 +3,21 @@
 "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mariadb://127.0.0.1:5212/ebudget</property>
-        <property name="hibernate.connection.password">root</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-        <property name="show_sql">true</property>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mariadb://127.0.0.1:5212/ebudget</property>
+		<property name="hibernate.connection.password">root</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="show_sql">true</property>
 		<property name="hbm2ddl.auto">update</property>
-        <mapping class="data.dao.CategoryEntity"></mapping>
-        <mapping class="data.dao.TransactionEntity"></mapping>
-        <mapping class="data.dao.PeriodEntity"></mapping>
-        <mapping class="data.dao.PeriodePK"></mapping>
-        <mapping class="data.dao.AccountEntity"></mapping>
-    </session-factory>
+		<mapping class="ebudget.data.dao.CategoryEntity"></mapping>
+		<mapping class="ebudget.data.dao.TransactionEntity"></mapping>
+		<mapping class="ebudget.data.dao.PeriodEntity"></mapping>
+		<mapping class="ebudget.data.dao.PeriodePK"></mapping>
+		<mapping class="ebudget.data.dao.AccountEntity"></mapping>
+	 	<mapping class="ebudget.data.dao.BudgetEntity"></mapping>
+ 		<mapping class="ebudget.data.dao.DistributionEntity"></mapping> 
+		<mapping class="ebudget.data.dao.DistributionPK"></mapping> 
+	</session-factory>
 </hibernate-configuration>
