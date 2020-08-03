@@ -139,6 +139,37 @@ public class Repository {
 
 	}
 
+	public static void loadForecats(String sqlFile) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		Transaction tx = null;
+		try {
+			// String SqlFile = getAbsolutePath("category.sql");
+			// TODO acceder au fichier par parametrage à l'installation
+
+			File file = new File(sqlFile);
+
+			String sqlScript = null;
+			sqlScript = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8).trim().toLowerCase();
+
+			tx = session.beginTransaction();
+
+			Query query = session.createSQLQuery(sqlScript);
+			query.executeUpdate();
+
+			session.getTransaction().commit();
+			LOGGER.log(Level.INFO, "création des prévisions");
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "File Not Found", e);
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, e.getMessage());
+			// Rollback in case of an error occurred.
+			if (tx != null)
+				tx.rollback();
+		}
+
+	}
+
 	/**
 	 * supprime toutes les catégories et rajoute divers
 	 */

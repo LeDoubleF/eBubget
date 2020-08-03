@@ -20,6 +20,38 @@ public class BudgetEntity implements Serializable {
 	private static final long serialVersionUID = -9075199373073264717L;
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID", unique = true, nullable = false)
+	private Integer budgetId;
+
+	@ManyToOne
+	@JoinColumns({ @JoinColumn(name = "annee", nullable = false), @JoinColumn(name = "trimestre", nullable = false),
+			@JoinColumn(name = "mois", nullable = false) })
+	private PeriodEntity periode;
+
+	// TODO comparaison Le temps d’accès champs calculés+ triggers VS requetes
+	@Column(name = "expectedIncome", unique = false, nullable = false)
+	private Double expectedIncome;
+
+	@Column(name = "income", unique = false, nullable = false)
+	private Double income;
+
+	@Column(name = "expectedExpense", unique = false, nullable = false)
+	private Double expectedExpense;
+
+	@Column(name = "expense", unique = false, nullable = false)
+	private Double expense;
+
+	@Column(name = "expectedFinalBalance", unique = false, nullable = false)
+	private Double expectedFinalBalance;
+
+	@Column(name = "finalBalance", unique = false, nullable = false)
+	private Double finalBalance;
+
+	@Column(name = "closed", unique = false, nullable = false)
+	private boolean closed = false;
+
 	public PeriodEntity getPeriode() {
 		return periode;
 	}
@@ -87,37 +119,4 @@ public class BudgetEntity implements Serializable {
 	public Integer getBudgetId() {
 		return budgetId;
 	}
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID", unique = true, nullable = false)
-	private Integer budgetId;
-
-	@ManyToOne
-	@JoinColumns({ @JoinColumn(name = "annee", nullable = false), @JoinColumn(name = "trimestre", nullable = false),
-			@JoinColumn(name = "mois", nullable = false) })
-	private PeriodEntity periode;
-
-	// TODO comparaison Le temps d’accès champs calculés+ triggers VS requetes
-	@Column(name = "expectedIncome", unique = false, nullable = false)
-	private Double expectedIncome;
-
-	@Column(name = "income", unique = false, nullable = false)
-	private Double income;
-
-	@Column(name = "expectedExpense", unique = false, nullable = false)
-	private Double expectedExpense;
-
-	@Column(name = "expense", unique = false, nullable = false)
-	private Double expense;
-
-	@Column(name = "expectedFinalBalance", unique = false, nullable = false)
-	private Double expectedFinalBalance;
-
-	@Column(name = "finalBalance", unique = false, nullable = false)
-	private Double finalBalance;
-
-	@Column(name = "closed", unique = false, nullable = false)
-	private boolean closed;
-
 }

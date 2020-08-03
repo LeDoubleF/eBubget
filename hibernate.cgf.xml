@@ -16,8 +16,9 @@
 		<mapping class="ebudget.data.dao.PeriodEntity"></mapping>
 		<mapping class="ebudget.data.dao.PeriodePK"></mapping>
 		<mapping class="ebudget.data.dao.AccountEntity"></mapping>
-	 	<mapping class="ebudget.data.dao.BudgetEntity"></mapping>
- 		<mapping class="ebudget.data.dao.DistributionEntity"></mapping> 
-		<mapping class="ebudget.data.dao.DistributionPK"></mapping> 
+		<mapping class="ebudget.data.dao.BudgetEntity"></mapping>
+		<mapping class="ebudget.data.dao.DistributionEntity"></mapping>
+		<mapping class="ebudget.data.dao.DistributionPK"></mapping>
+		<mapping class="ebudget.data.dao.ForecastEntity"></mapping>
 	</session-factory>
 </hibernate-configuration>

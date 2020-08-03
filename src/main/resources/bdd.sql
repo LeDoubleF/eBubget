@@ -7,7 +7,6 @@
 CREATE DATABASE IF NOT EXISTS `ebudget` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `ebudget`;
 
-DROP TABLE IF EXISTS `account`;
 CREATE TABLE IF NOT EXISTS `account` (
   `NAME` varchar(100) NOT NULL,
   `accountType` varchar(255) DEFAULT NULL,
@@ -19,7 +18,6 @@ CREATE TABLE IF NOT EXISTS `account` (
   UNIQUE KEY `NAME_2` (`NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `budget`;
 CREATE TABLE IF NOT EXISTS `budget` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `closed` bit(1) NOT NULL,
@@ -39,7 +37,6 @@ CREATE TABLE IF NOT EXISTS `budget` (
   CONSTRAINT `FK773F9B65754160A4` FOREIGN KEY (`annee`, `trimestre`, `mois`) REFERENCES `periode` (`annee`, `mois`, `trimestre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `category`;
 CREATE TABLE IF NOT EXISTS `category` (
   `NAME` varchar(100) NOT NULL,
   PRIMARY KEY (`NAME`),
@@ -47,7 +44,6 @@ CREATE TABLE IF NOT EXISTS `category` (
   UNIQUE KEY `NAME_2` (`NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `distribution`;
 CREATE TABLE IF NOT EXISTS `distribution` (
   `availableAmount` double NOT NULL,
   `expectedExpense` double NOT NULL,
@@ -61,7 +57,32 @@ CREATE TABLE IF NOT EXISTS `distribution` (
   CONSTRAINT `FKAB93A2A4D48A4A82` FOREIGN KEY (`budget`) REFERENCES `category` (`NAME`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `periode`;
+CREATE TABLE IF NOT EXISTS `forecast` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `amount` double NOT NULL,
+  `april` bit(1) NOT NULL,
+  `august` bit(1) NOT NULL,
+  `december` bit(1) NOT NULL,
+  `Description` varchar(100) NOT NULL,
+  `february` bit(1) NOT NULL,
+  `january` bit(1) NOT NULL,
+  `july` bit(1) NOT NULL,
+  `june` bit(1) NOT NULL,
+  `mandatory` bit(1) NOT NULL,
+  `march` bit(1) NOT NULL,
+  `may` bit(1) NOT NULL,
+  `november` bit(1) NOT NULL,
+  `october` bit(1) NOT NULL,
+  `september` bit(1) NOT NULL,
+  `variable` bit(1) NOT NULL,
+  `Category` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID` (`ID`),
+  UNIQUE KEY `ID_2` (`ID`),
+  KEY `FK1FAC2E1B29B2583B` (`Category`),
+  CONSTRAINT `FK1FAC2E1B29B2583B` FOREIGN KEY (`Category`) REFERENCES `category` (`NAME`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE IF NOT EXISTS `periode` (
   `annee` int(11) NOT NULL,
   `mois` int(11) NOT NULL,
@@ -69,7 +90,6 @@ CREATE TABLE IF NOT EXISTS `periode` (
   PRIMARY KEY (`annee`,`mois`,`trimestre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-DROP TABLE IF EXISTS `transaction`;
 CREATE TABLE IF NOT EXISTS `transaction` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `amount` double NOT NULL,
@@ -93,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   CONSTRAINT `FKE30A7ABE754160A4` FOREIGN KEY (`annee`, `trimestre`, `mois`) REFERENCES `periode` (`annee`, `mois`, `trimestre`),
   CONSTRAINT `FKE30A7ABEA738F3A8` FOREIGN KEY (`annee`, `trimestre`, `mois`) REFERENCES `periode` (`annee`, `mois`, `trimestre`),
   CONSTRAINT `FKE30A7ABEBC113A3F` FOREIGN KEY (`Category`) REFERENCES `category` (`NAME`)
-) ENGINE=InnoDB AUTO_INCREMENT=1665 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1689 DEFAULT CHARSET=latin1;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

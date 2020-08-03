@@ -39,7 +39,7 @@ public class Ebudget {
 
 		System.out.println("Somme total du compte principal : " + TransactionEntity.sumAccount());
 		System.out.println(TransactionEntity.sumCash());
-
+		Repository.loadForecats(".\\src\\main\\resources\\forecast.sql");
 	}// end main
 
 	public Ebudget() {

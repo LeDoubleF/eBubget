@@ -1,17 +1,5 @@
 package ebudget.data;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.junit.Test;
-
-import ebudget.data.dao.CategoryEntity;
-import ebudget.data.dao.HibernateUtil;
-
 public class RepositoryTest {/* @Test public final void testNoInstanciateRepository() { try { new
 								 * Repository(); fail("Exception not thrown"); } catch (Exception aExp) { assert
 								 * (aExp.getMessage().contains(Message.UITLITY_CLASS)); } }
@@ -80,58 +68,57 @@ public class RepositoryTest {/* @Test public final void testNoInstanciateReposit
 								 * 
 								 * assertEquals(new BigInteger("3"), Repository.countCategoryEntity()); } */
 
-	@Test
-	public void TestinitCategoriesWhenNothingToInit() {
-		// given
-		Repository.allCategory.clear();
-		Repository.addCategories(Arrays.asList("bingo", "too", "titi"));
-		// when
-		Repository.initCategories();
-		// then
-		assertEquals(3, Repository.countCategory());
-	}
-
-	@Test
-	public void TestinitCategoriesWhenTableNotEmpty() {
-		// given
-		Repository.allCategory.clear();
-		Repository.deleteAllCategory();
-		Transaction tx = null;
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		try {
-			tx = session.beginTransaction();
-			CategoryEntity category = new CategoryEntity("alimentation");
-			// CategoryEntity category2 = new CategoryEntity("divers");
-			session.save(category);
-			// session.save(category2);
-			tx.commit();
-		} catch (RuntimeException e) {
-			if (tx != null)
-				tx.rollback();
-			throw e; // or display error message
-		} finally {
-			session.close();
-		}
-		// when
-		Repository.initCategories();
-		// then
-		assertEquals(2, Repository.countCategory());
-	}
-
-	@Test
-	public void TestinitCategoriesWhenTableEmpty() {
-		// given
-		Repository.allCategory.clear();
-		// suppression de toutes les catégories y compris divers
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		Query queryDelete = session.createSQLQuery("DELETE FROM category");
-		queryDelete.executeUpdate();
-		session.getTransaction().commit();
-
-		// when
-		Repository.initCategories();
-		// then
-		assertEquals(40, Repository.countCategory());
-	}
+	// @Test
+	// public void TestinitCategoriesWhenNothingToInit() {
+	// // given
+	// Repository.allCategory.clear();
+	// Repository.addCategories(Arrays.asList("bingo", "too", "titi"));
+	// // when
+	// Repository.initCategories();
+	// // then
+	// assertEquals(3, Repository.countCategory());
+	// }
+	//
+	// @Test
+	// public void TestinitCategoriesWhenTableNotEmpty() {
+	// // given
+	// Repository.deleteAllCategory();
+	// Transaction tx = null;
+	// Session session = HibernateUtil.getSessionFactory().openSession();
+	// try {
+	// tx = session.beginTransaction();
+	// CategoryEntity category = new CategoryEntity("alimentation");
+	// // CategoryEntity category2 = new CategoryEntity("divers");
+	// session.save(category);
+	// // session.save(category2);
+	// tx.commit();
+	// } catch (RuntimeException e) {
+	// if (tx != null)
+	// tx.rollback();
+	// throw e; // or display error message
+	// } finally {
+	// session.close();
+	// }
+	// // when
+	// Repository.initCategories();
+	// // then
+	// assertEquals(2, Repository.countCategory());
+	// }
+	//
+	// @Test
+	// public void TestinitCategoriesWhenTableEmpty() {
+	// // given
+	// Repository.allCategory.clear();
+	// // suppression de toutes les catégories y compris divers
+	// Session session = HibernateUtil.getSessionFactory().openSession();
+	// session.beginTransaction();
+	// Query queryDelete = session.createSQLQuery("DELETE FROM category");
+	// queryDelete.executeUpdate();
+	// session.getTransaction().commit();
+	//
+	// // when
+	// Repository.initCategories();
+	// // then
+	// assertEquals(40, Repository.countCategory());
+	// }
 }
