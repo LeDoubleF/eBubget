@@ -234,4 +234,21 @@ public class TransactionEntity implements Serializable {
 		}
 		return null;
 	}
+
+	public static void deleteAll() {
+		Transaction tx = null;
+		try {
+
+			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
+			tx = sessionTwo.beginTransaction();
+
+			Query queryDelete = sessionTwo.createSQLQuery("delete from  transaction");
+			queryDelete.executeUpdate();
+
+			sessionTwo.getTransaction().commit();
+		} catch (Exception e) {
+			// Rollback in case of an error occurred.
+			tx.rollback();
+		}
+	}
 }

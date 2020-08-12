@@ -16,7 +16,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import ebudget.data.dao.CategoryEntity;
+import ebudget.data.dao.ForecastEntity;
 import ebudget.data.dao.HibernateUtil;
+import ebudget.data.dao.PeriodEntity;
+import ebudget.data.dao.TransactionEntity;
 import ebudget.data.dto.CategoryDTo;
 
 public class Repository {
@@ -176,6 +179,9 @@ public class Repository {
 	public static void deleteAllCategory() {
 		Transaction tx = null;
 		try {
+			// TODO suppression cascade
+			TransactionEntity.deleteAll();
+			ForecastEntity.deleteAll();
 
 			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
 			tx = sessionTwo.beginTransaction();
@@ -189,30 +195,15 @@ public class Repository {
 			LOGGER.log(Level.INFO, "suppression de toutes les catégories de la liste");
 			CategoryEntity.save("divers");
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "erreur de la suppression des catégories et rajout de divers", e);
+			LOGGER.log(Level.SEVERE, "erreur lors de la suppression des catégories et rajout de divers", e);
 			// Rollback in case of an error occurred.
 			if (tx != null)
 				tx.rollback();
 		}
 	}
 
-	/**
-	 * supprime toutes les périodes
-	 */
-	public static void deleteAllPeriode() {
-		Transaction tx = null;
-		try {
-
-			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
-			tx = sessionTwo.beginTransaction();
-
-			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM periode");
-			queryDelete.executeUpdate();
-
-			sessionTwo.getTransaction().commit();
-		} catch (Exception e) {
-			// Rollback in case of an error occurred.
-			tx.rollback();
-		}
+	public static void clearDataBase() {
+		PeriodEntity.deleteAll();
+		Repository.deleteAllCategory();
 	}
 }

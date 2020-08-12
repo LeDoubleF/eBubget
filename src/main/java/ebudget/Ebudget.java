@@ -1,5 +1,6 @@
 package ebudget;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,20 +27,23 @@ public class Ebudget {
 	public static void main(String[] args) {
 		String curDir = System.getProperty("user.dir");
 		System.out.println(Ebudget.class.getName() + "Le répertoire courant est: " + curDir);
+
 		try {
 			EBudgetLogger.setup();
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "erreur lors du main :", e);
 			throw new RuntimeException("Problems with creating the log files");
 		}
+
 		Ebudget budget = new Ebudget();
 
 		budget.run();
 		////////////
+		Repository.loadForecats(".\\src\\main\\resources\\forecast.sql");
 
 		System.out.println("Somme total du compte principal : " + TransactionEntity.sumAccount());
 		System.out.println(TransactionEntity.sumCash());
-		Repository.loadForecats(".\\src\\main\\resources\\forecast.sql");
+
 	}// end main
 
 	public Ebudget() {
@@ -49,9 +53,13 @@ public class Ebudget {
 
 	public void run() {
 		Repository.initCategories();
-		String fileName = view.readFilePath(System.in);
-		System.out.print("fileName :" + fileName);
-		PeriodDTo periode = view.readPeriod(System.in);
+		// String fileName = view.readFilePath(System.in);
+		// PeriodDTo periode = view.readPeriod(System.in);
+		ByteArrayInputStream in = new ByteArrayInputStream(
+				"C:\\Users\\ffazer\\Documents\\ebudget exe\\janvier.csv".getBytes());
+		String fileName = view.readFilePath(in);
+		in = new ByteArrayInputStream("2020\n1".getBytes());
+		PeriodDTo periode = view.readPeriod(in);
 
 		List<TransactionDto> fileContentList = view.readTransaction(fileName, periode);
 		PeriodEntity.save(periode);
@@ -59,7 +67,9 @@ public class Ebudget {
 		fileContentList.forEach(item -> TransactionEntity.save(item));
 		double transactionSum = TransactionEntity.sumAccount();
 
-		double initialBalance = view.readInitialBalance(System.in);
+		in = new ByteArrayInputStream("100".getBytes());
+		// double initialBalance = view.readInitialBalance(System.in);
+		double initialBalance = view.readInitialBalance(in);
 		double finalBalance = calculator.calculateFinalBalance(initialBalance, transactionSum);
 		view.printValue("Solde final : ", Double.toString(finalBalance));
 

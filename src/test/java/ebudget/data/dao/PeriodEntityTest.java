@@ -13,7 +13,6 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.Test;
 
-import ebudget.data.Repository;
 import ebudget.data.dto.PeriodDTo;
 
 public class PeriodEntityTest {
@@ -21,7 +20,7 @@ public class PeriodEntityTest {
 
 	@Test
 	public void testEqualsPeriode() {
-		Repository.deleteAllPeriode();
+		PeriodEntity.deleteAll();
 
 		PeriodEntity periode1 = new PeriodEntity(2020, 1, 3);
 		PeriodEntity periode2 = new PeriodEntity(2020, 1, 3);
@@ -38,7 +37,7 @@ public class PeriodEntityTest {
 
 	@Test
 	public void TestPeriodeEntitySave() {
-		Repository.deleteAllPeriode();
+		PeriodEntity.deleteAll();
 
 		Transaction tx = null;
 		try {

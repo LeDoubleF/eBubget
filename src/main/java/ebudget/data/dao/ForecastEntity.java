@@ -1,5 +1,8 @@
 package ebudget.data.dao;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +13,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
 @Entity
 @Table(name = "Forecast", uniqueConstraints = { @UniqueConstraint(columnNames = "ID") })
 public class ForecastEntity {
+	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,4 +81,27 @@ public class ForecastEntity {
 
 	@Column(name = "december", unique = false, nullable = false)
 	private boolean december = false;
+
+	/**
+	 * supprime toutes les catégories et rajoute divers
+	 */
+	public static void deleteAll() {
+		Transaction tx = null;
+		try {
+
+			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
+			tx = sessionTwo.beginTransaction();
+
+			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM forecast");
+			queryDelete.executeUpdate();
+
+			sessionTwo.getTransaction().commit();
+			LOGGER.log(Level.INFO, "suppression de toutes les prévisions");
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "erreur lors de la suppression des prévisions", e);
+			// Rollback in case of an error occurred.
+			if (tx != null)
+				tx.rollback();
+		}
+	}
 }

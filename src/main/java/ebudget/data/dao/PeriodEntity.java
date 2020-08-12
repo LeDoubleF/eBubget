@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -91,5 +92,29 @@ public class PeriodEntity implements Serializable {
 		}
 
 		return stId != null;
+	}
+
+	/**
+	 * supprime toutes les périodes
+	 */
+	public static void deleteAll() {
+		Transaction tx = null;
+		try {
+
+			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
+			tx = sessionTwo.beginTransaction();
+
+			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM periode");
+			queryDelete.executeUpdate();
+
+			sessionTwo.getTransaction().commit();
+			LOGGER.log(Level.INFO, "suppression de toutes les périodes");
+			CategoryEntity.save("divers");
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, "erreur lors de la suppression des périodes", e);
+			// Rollback in case of an error occurred.
+			if (tx != null)
+				tx.rollback();
+		}
 	}
 }
