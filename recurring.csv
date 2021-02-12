@@ -1,0 +1,46 @@
+category;description;mandatory;variable;amount;1;2;3;4;5;6;7;8;9;10;11;12
+Assurance habitation;accident;true;true;88,17;false;false;false;false;true;false;false;false;false;false;false;false
+Assurance habitation;GMF;true;true;186,58;false;false;false;false;false;false;false;false;false;false;false;true
+Autre Revenu;parking;false;true;-40;true;true;true;true;true;true;true;true;true;true;true;true
+Cadeaux;ismaël;false;true;25;true;true;true;true;true;true;true;true;true;true;true;true
+Cadeaux;Issa;false;true;15;true;true;true;true;true;true;true;true;true;true;true;true
+Cadeaux;Issa;false;true;-50;false;true;false;false;false;false;false;false;false;false;false;false
+Cadeaux;ismaël;false;true;50;true;false;false;false;false;false;false;false;false;false;false;false
+Cadeaux;Jamee;false;true;49,98;false;false;false;false;false;true;false;false;false;false;false;false
+Cadeaux;Janellya;false;true;49,9;false;false;false;false;false;false;false;true;false;false;false;false
+Cadeaux;lee;false;true;100;false;false;false;false;false;false;false;false;false;false;false;true
+Cadeaux;jallana;false;true;50;false;false;true;false;false;false;false;false;false;false;false;false
+Cadeaux;clochar;false;true;2;true;true;true;true;true;true;true;true;true;true;true;true
+Cadeaux;st valentin;false;true;69,95;false;true;false;false;false;false;false;false;false;false;false;false
+CAF;AF;true;false;-217,16;true;true;true;true;true;true;true;true;true;true;true;true
+Credit;sofinco;true;false;633;true;true;true;true;true;true;true;true;true;true;true;true
+Credit;sofinco;true;false;-300;true;true;true;true;true;true;true;true;true;true;true;true
+EDF;edf;true;false;111,63;true;true;true;true;true;true;true;true;true;true;true;true
+Epargne;grain de riz;true;false;10;true;true;true;true;true;true;true;true;true;true;true;true
+Epargne;avance1750;true;false;50;true;true;true;true;true;true;true;true;true;true;true;true
+Formule Compte;la poste;true;false;42,6;true;false;false;true;false;false;true;false;false;true;false;false
+Frais de Garde;crèche;true;true;44,28;true;true;true;true;true;true;true;true;true;false;true;true
+Frais de Garde;département;true;false;-70;true;true;true;true;true;true;true;false;true;true;true;true
+Frais de Garde;ismaël;true;true;825;true;true;true;true;true;true;true;true;true;true;true;true
+Frais de Garde;paje;true;true;-296,51;true;true;true;true;true;true;true;true;true;true;true;true
+Frais de Garde;topassmat;true;false;6,99;true;true;true;true;true;true;true;true;true;true;true;true
+Jeux;cash;false;true;5;true;true;true;true;true;true;true;true;true;true;true;true
+Loisirs;netflix;false;false;7,99;true;true;true;true;true;true;true;true;true;true;true;true
+Loisirs;papoum;false;false;5,7;true;true;true;true;true;true;true;true;true;true;true;true
+Loyer;loyer;true;false;856;true;true;true;true;true;true;true;true;true;true;true;true
+Mobile;free;true;true;20,04;true;true;true;true;true;true;true;true;true;true;true;true
+Mobile;free;true;true;2;true;true;true;true;true;true;true;true;true;true;true;true
+Navigo;navigo;true;false;72;true;true;true;true;true;true;true;true;false;true;true;true
+Salaire Fanny;docapost;true;true;-3133;true;true;true;true;true;true;true;true;true;true;true;true
+Salaire Fanny;interessement;true;true;-289,41;false;false;false;false;false;false;true;false;false;false;false;false
+Taxe habitation;impot;true;true;740;false;false;false;false;false;false;false;false;false;false;true;false
+Psy;Deplanque;true;true;160;true;true;true;true;true;true;true;false;true;true;true;true
+Net;ORANGE;true;true;67,18;true;true;true;true;true;true;true;true;true;true;true;true
+Loisirs;yoga;false;true;85;false;false;false;false;false;false;false;false;true;true;true;false
+Loisirs;Piano;false;true;120;false;false;false;false;false;false;false;false;false;false;false;false
+Loisirs;pulaar;false;true;600;false;false;false;false;false;false;false;false;false;false;false;false
+Loisirs;abdo;false;true;60;false;true;false;false;false;false;false;false;true;false;false;false
+Salaire Oumar;Ippudo;true;true;-506;true;true;true;true;true;true;true;true;true;true;true;true
+Cadeaux;Oumar;false;true;40;false;false;false;true;false;false;false;false;false;false;false;false
+impôt sur revenu;frais de garde;true;true;-343;false;false;false;false;false;false;true;false;false;false;false;false
+Cadeaux;noel;false;true;300;false;false;false;false;false;false;false;false;false;false;false;true

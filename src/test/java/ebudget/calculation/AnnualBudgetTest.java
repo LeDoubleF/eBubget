@@ -34,6 +34,7 @@ public class AnnualBudgetTest {
 	}
 
 	@Test
+
 	public void bugetWtihoutReccuringItemShouldEqualsBaseBudget() {
 
 		// GIVEN

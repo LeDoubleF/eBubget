@@ -47,8 +47,8 @@ public class CSVReaderTest {
 
 	@Test
 	public final void testReadRecurringItemFile() {
-		String fileNameRecurringItem = "C:\\Users\\ffazer\\projets\\eBubget\\src\\test\\resources\\recurringLittle.csv";
-		List<RecurringItem> reccuringItemList = csvReader.readRecurringItemFile(fileNameRecurringItem);
+		File fileNameRecurringItem = new File(classLoader.getResource("recurringLittle.csv").getFile());
+		List<RecurringItem> reccuringItemList = csvReader.readRecurringItemFile(fileNameRecurringItem.getAbsolutePath());
 
 		RecurringItem loyer = reccuringItemList.get(0);
 		assertEquals(LOYER, loyer.getCategory());
@@ -62,8 +62,8 @@ public class CSVReaderTest {
 	@Test
 	public final void testReadRecurringItemFileWithError() {
 		try {
-			String fileNameRecurringItem = "C:\\Users\\ffazer\\projets\\eBubget\\src\\test\\resources\\recurringError.csv";
-			csvReader.readRecurringItemFile(fileNameRecurringItem);
+			File fileNameRecurringItem = new File(classLoader.getResource("recurringError.csv").getFile());
+			csvReader.readRecurringItemFile(fileNameRecurringItem.getAbsolutePath());
 			fail("Exception not thrown");
 		} catch (
 

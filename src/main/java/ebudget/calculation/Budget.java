@@ -12,6 +12,11 @@ public class Budget {
 	Map<CategoryDto, Double> budgetItemList = new HashMap<>();
 	protected double balance = 0.0;
 
+	/**
+	 * retourne le solde de chaque mois, pour un budget créditeur ,balance>0
+	 * 
+	 * @return balance
+	 */
 	public double getBalance() {
 		return balance;
 	}
@@ -30,7 +35,7 @@ public class Budget {
 		for (Map.Entry<CategoryDto, Double> mapentry : budgetItemList.entrySet()) {
 			CategoryDto category = mapentry.getKey();
 			Double amount = mapentry.getValue();
-			if (Boolean.TRUE.equals(category.getIncome())) {
+			if (category.isIncome()) {
 				balance = balance + amount;
 			} else {
 				balance = balance - amount;

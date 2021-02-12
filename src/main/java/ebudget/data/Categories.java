@@ -58,6 +58,13 @@ public class Categories {
 		return allCategory.contains(category);
 	}
 
+	public static boolean isIncome(CategoryDto category) {
+		if (allCategory.contains(category))
+			return category.isIncome();
+		else
+			return false;
+	}
+
 	public static void addCategory(CategoryDto category) {
 		allCategory.add(category);
 	}

@@ -12,7 +12,7 @@ public class CategoryDto implements Comparable<CategoryDto> {
 		this(name, false);
 	}
 
-	public Boolean getIncome() {
+	public Boolean isIncome() {
 		return income;
 	}
 
@@ -44,7 +44,7 @@ public class CategoryDto implements Comparable<CategoryDto> {
 		if (this.equals(other))
 			return 0;
 		else if (name.equals(other.getName()))
-			return income.compareTo(other.getIncome());
+			return income.compareTo(other.isIncome());
 		else
 			return name.compareToIgnoreCase(other.getName());
 	}

@@ -14,17 +14,24 @@ public class AnnualBudget {
 
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	/**
-	 * Solde d'un budget (les budgets sont mensuels)
+	 * Solde d'un budget (les budgets sont mensuels), pour un budget créditeur
+	 * ,balanceByMonthList>0
 	 */
 	private List<Double> balanceByMonthList = new ArrayList<>();
 	private List<DraftBudget> draftBudgetList = new ArrayList<>();
+	private Double balance;
+
+	public Double getBalance() {
+		return balance;
+	}
+
 	/**
 	 * Montant des ajustement à faire par mois
 	 */
 	private List<Double> amountToFitPerMonthList = new ArrayList<>();
 
 	public AnnualBudget(int year, double initialBalance, BaseBudget baseBudget, List<RecurringItem> recurringbudgetItemList) {
-
+		balance = 0.0;
 		for (int month = 1; month < 13; month++) {
 			PeriodDTo period = new PeriodDTo(year, month);
 			List<BudgetItem> recurringBudgetItemList = new ArrayList<>();
@@ -51,6 +58,7 @@ public class AnnualBudget {
 			DraftBudget draftBudget = new DraftBudget(period, baseBudget, recurringBudgetItemList);
 			draftBudgetList.add(draftBudget);
 			balanceByMonthList.add(draftBudget.getBalance());
+			balance = balance + draftBudget.getBalance();
 		}
 		Forecast forecast = new Forecast();
 		forecast.setBalanceByMonth(balanceByMonthList);

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ebudget.common.CommonTest;
 import ebudget.data.dao.CategoryEntity;
 import ebudget.data.dto.CategoryDto;
 
@@ -23,15 +24,17 @@ class CategorieTest {
 
 	@Test
 	void initCategoryWithCategory() {
-		Categories.addCategory(new CategoryDto("stuf"));
+		CategoryDto category = new CategoryDto("stuf");
+		Categories.addCategory(category);
 		Categories.initCategories();
 		assertEquals(2, Categories.countCategory());
+		assertTrue(Categories.isCategory(category));
 	}
 
 	@Test
 	void initCategoryWithSQLFile() {
 		Categories.initCategories();
-		assertEquals(41, Categories.countCategory());
+		assertEquals(CommonTest.NBCategories, Categories.countCategory());
 	}
 
 	@Test
