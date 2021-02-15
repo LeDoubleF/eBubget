@@ -35,53 +35,42 @@ public class Forecast {
 		super();
 		for (int i = 0; i < 12; i++) {
 			amountToFitPerMonthList.add(0.0);
+			globalBalanceList.add(0.0);
+			balanceByMonthList.add(0.0);
 		}
+	}
+
+	public Forecast(List<Double> balanceByMonthList) {
+		this();
+		setBalanceByMonth(balanceByMonthList);
+
 	}
 
 	public void analyseForecats(double initialBalance) {
-		if (isForecastNeedfit()) {
 
-			int from = 1;
-			int to = 0;
-			double balance;
-			double sumBalance = initialBalance;
+		int from = 1;
+		int to = 0;
+		double balance;
+		double sumBalance = initialBalance;
 
-			for (int i = 0; i < 12; i++) {
-				to++;
-				balance = getBalanceByMonth().get(to - 1);
-				double globalBalance = sumBalance + balance;
-				sumBalance = globalBalance;
-				globalBalanceList.add(globalBalance);
-				if ((balance < 0) && (globalBalance < 0)) {
-					double amountToFit = globalBalance / (to - from);
-					LOGGER.log(Level.INFO, "Ajustement à partir du mois: {0} jusqu''au mois : {1} de {2}", new Object[]{from, to, globalBalance});
-					for (int month = from; month < to; month++) {
-						amountToFitPerMonthList.set(month - 1, amountToFit);
-						fitForecast(month, amountToFit);
-					}
-
-					from = to + 1;
+		for (int i = 0; i < 12; i++) {
+			to++;
+			balance = getBalanceByMonth().get(to - 1);
+			double globalBalance = sumBalance + balance;
+			sumBalance = globalBalance;
+			globalBalanceList.set(i, globalBalance);
+			if ((balance < 0) && (globalBalance < 0)) {
+				double amountToFit = globalBalance / (to - from);
+				LOGGER.log(Level.INFO, "Ajustement à partir du mois: {0} jusqu''au mois : {1} de {2}", new Object[]{from, to, globalBalance});
+				for (int month = from; month < to; month++) {
+					amountToFitPerMonthList.set(month - 1, amountToFit);
+					fitForecast(month, amountToFit);
 				}
 
+				from = to + 1;
 			}
-		}
-	}
 
-	public boolean isForecastNeedfit() {
-		forcastPerMonthList = new ArrayList<>();
-		for (int i = 0; i < 12; i++) {
-			if (getBalanceByMonth().get(i) < 0) {
-				return true;
-			}
 		}
-		return false;
-	}
-
-	/**
-	 * évolution du solde général chaque mois
-	 */
-	public List<Double> getGlobalBalanceList() {
-		return globalBalanceList;
 	}
 
 	/**
@@ -100,7 +89,8 @@ public class Forecast {
 	 * janvier=1, décembre=12
 	 * 
 	 * @param month
-	 * @param d
+	 *            (1 to 12)
+	 * @param amount
 	 */
 	public void fitForecast(int month, double amount) {
 		// TODO fitForecast
@@ -117,6 +107,24 @@ public class Forecast {
 
 	public List<Double> getAmountToFitPerMonthList() {
 		return amountToFitPerMonthList;
+	}
+
+	public double getAmountToFitPerMonthList(int month) {
+		return amountToFitPerMonthList.get(month - 1);
+	}
+
+	/**
+	 * évolution du solde général chaque mois
+	 * 
+	 * @param month
+	 *            (1 to 12)
+	 */
+	public double getGlobalBalanceList(int month) {
+		return globalBalanceList.get(month - 1);
+	}
+
+	public List<Double> getGlobalBalanceList() {
+		return globalBalanceList;
 	}
 
 }

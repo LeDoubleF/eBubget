@@ -5,19 +5,16 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ebudget.calculation.Forecast;
 import ebudget.data.dao.CategoryEntity;
 import ebudget.data.dao.HibernateUtil;
 import ebudget.data.dao.PeriodEntity;
 import ebudget.data.dao.RecurringExpensesEntity;
 import ebudget.data.dao.TransactionEntity;
-import ebudget.data.dto.ForecastDto;
 
 public class Common {
 
@@ -91,14 +88,6 @@ public class Common {
 	public static void clearDataBase() {
 		PeriodEntity.deleteAll();
 		deleteAllCategory();
-	}
-
-	public static void addForecats(List<ForecastDto> forecastList) {
-		Forecast forecast = new Forecast();
-		forecastList.forEach(RecurringExpensesEntity::save);
-		ArrayList<Double> balanceByMonth = calulateBalanceByMonth();
-		forecast.setBalanceByMonth(balanceByMonth);
-		LOGGER.log(Level.INFO, "ajout multiple dans la la base de forecast");
 	}
 
 	private static ArrayList<Double> calulateBalanceByMonth() {

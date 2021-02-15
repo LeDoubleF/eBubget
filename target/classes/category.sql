@@ -38,5 +38,5 @@ INSERT INTO `category` (`NAME`) VALUES
 	('taxi'),
 	('ticket'),
 	('vacances'),
-	('vêtement');
+	('vêtements');
 

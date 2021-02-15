@@ -56,7 +56,8 @@ class CreateBudgetTest {
 		AnnualBudget annualBudget = new AnnualBudget(YEAR, 0.0, baseBudget, reccuringItemList);
 		annualBudget.print();
 		System.out.println("\n\t" + annualBudget.getBalance());
-		// verification des montants un test
+
+		// verification des montants
 		for (int i = 1; i < 13; i++) {
 			assertEquals(0.0, annualBudget.getAmountToFitPerMonthList(i), 0.0);
 		}

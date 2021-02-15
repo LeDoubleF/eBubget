@@ -12,13 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ebudget.data.Categories;
-import ebudget.data.dto.CategoryDto;
-import ebudget.data.dto.ForecastDto;
 
 @Entity
 @Table(name = "RecurringExpenses", uniqueConstraints = {@UniqueConstraint(columnNames = "ID")})
@@ -113,35 +109,6 @@ public class RecurringExpensesEntity implements Serializable {
 		}
 	}
 
-	public static boolean save(ForecastDto forecast) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-
-		Transaction tx = null;
-		Integer stId = null;
-		try {
-			CategoryDto categoryDivers = new CategoryDto("divers");
-			tx = session.beginTransaction();
-
-			// TODO mutualiser la recherche des category
-			if (!Categories.isCategory(forecast.getCategory())) {
-				LOGGER.log(Level.WARNING, "{0} n''existe pas en tant que catégorie ", forecast.getCategory().getName());
-				forecast.setCategory(categoryDivers);
-			}
-
-			RecurringExpensesEntity forecastEntity = new RecurringExpensesEntity(forecast);
-			stId = (Integer) session.save(forecastEntity);
-			tx.commit();
-		} catch (HibernateException ex) {
-			LOGGER.log(Level.SEVERE, ex.getMessage());
-			if (tx != null)
-				tx.rollback();
-		} finally {
-			session.close();
-		}
-
-		return stId != null;
-	}
-
 	/**
 	 * Hibernate requires no-args constructor
 	 */
@@ -149,24 +116,4 @@ public class RecurringExpensesEntity implements Serializable {
 
 	}
 
-	public RecurringExpensesEntity(ForecastDto forecast) {
-		this.category = new CategoryEntity(forecast.getCategory());
-		this.description = forecast.getDescription();
-		this.amount = forecast.getAmount();
-		this.mandatory = forecast.getMandatory();
-		this.income = forecast.getIncome();
-		this.variable = forecast.getVariable();
-		this.january = forecast.getJanuary();
-		this.february = forecast.getFebruary();
-		this.march = forecast.getMarch();
-		this.april = forecast.getApril();
-		this.may = forecast.getMay();
-		this.june = forecast.getJune();
-		this.july = forecast.getJuly();
-		this.august = forecast.getAugust();
-		this.september = forecast.getSeptember();
-		this.october = forecast.getOctober();
-		this.november = forecast.getNovember();
-		this.december = forecast.getDecember();
-	}
 }

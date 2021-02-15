@@ -60,8 +60,7 @@ public class AnnualBudget {
 			balanceByMonthList.add(draftBudget.getBalance());
 			balance = balance + draftBudget.getBalance();
 		}
-		Forecast forecast = new Forecast();
-		forecast.setBalanceByMonth(balanceByMonthList);
+		Forecast forecast = new Forecast(balanceByMonthList);
 		forecast.analyseForecats(initialBalance);
 		amountToFitPerMonthList = forecast.getAmountToFitPerMonthList();
 	}
