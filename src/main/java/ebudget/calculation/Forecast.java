@@ -48,29 +48,75 @@ public class Forecast {
 
 	public void analyseForecats(double initialBalance) {
 
-		int from = 1;
-		int to = 0;
-		double balance;
+		double amountToFit = 0.0;
 		double sumBalance = initialBalance;
-
+		ArrayList<Double> getBalanceByMonthClone = (ArrayList<Double>) balanceByMonthList.clone();
 		for (int i = 0; i < 12; i++) {
-			to++;
-			balance = getBalanceByMonth().get(to - 1);
-			double globalBalance = sumBalance + balance;
+
+			double globalBalance = sumBalance + balanceByMonthList.get(i);
 			sumBalance = globalBalance;
 			globalBalanceList.set(i, globalBalance);
-			if ((balance < 0) && (globalBalance < 0)) {
-				double amountToFit = globalBalance / (to - from);
-				LOGGER.log(Level.INFO, "Ajustement à partir du mois: {0} jusqu''au mois : {1} de {2}", new Object[]{from, to, globalBalance});
-				for (int month = from; month < to; month++) {
-					amountToFitPerMonthList.set(month - 1, amountToFit);
-					fitForecast(month, amountToFit);
-				}
-
-				from = to + 1;
-			}
 
 		}
+		ArrayList<Double> balanceByMonthClone = (ArrayList<Double>) balanceByMonthList.clone();
+		ArrayList<Double> globalBalanceListClone = (ArrayList<Double>) globalBalanceList.clone();
+		System.out.println("amountToFitPerMonthList");
+		System.out.println(amountToFitPerMonthList);
+		System.out.println("balanceByMonthClone");
+		System.out.println(balanceByMonthClone);
+		System.out.println("globalBalanceListClone");
+		System.out.println(globalBalanceListClone);
+
+		int from = 0;
+		int to = 13;
+		for (int i = 11; i > 0; i--) {
+			System.out.println("boucle " + i);
+			to--;
+			double balance = balanceByMonthClone.get(i);
+			double globalBalance = globalBalanceListClone.get(i);
+			if ((balance < 0) && globalBalance < 0) {
+				double intermediare = 0.0;
+				int searchPrevious = i;
+				do {
+					intermediare = intermediare + balanceByMonthClone.get(searchPrevious);
+					searchPrevious--;
+				} while (balanceByMonthClone.get(searchPrevious) > 0 && searchPrevious > 0);
+				System.out.println("\n\t" + intermediare + "\n");
+				if (intermediare < 0) {
+					amountToFit = globalBalance / to;
+					System.out.println("\t amountToFit " + amountToFit + " globalBalance " + globalBalance + " to " + to);
+					for (int j = from; j < to; j++) {
+						double value = amountToFitPerMonthList.get(j) + amountToFit;
+						System.out.println("ToFit " + value + " j " + j + " from " + from);
+						amountToFitPerMonthList.set(j, value);
+						value = balanceByMonthClone.get(j) - amountToFit;
+						balanceByMonthClone.set(j, value);
+					}
+					sumBalance = 0.0;
+					for (int k = 0; k < 12; k++) {
+
+						sumBalance = sumBalance + balanceByMonthClone.get(k);
+						globalBalanceListClone.set(k, sumBalance);
+
+					}
+				}
+
+				System.out.println("amountToFitPerMonthList");
+				System.out.println(amountToFitPerMonthList);
+				System.out.println("balanceByMonthClone");
+				System.out.println(balanceByMonthClone);
+				System.out.println("globalBalanceListClone");
+				System.out.println(globalBalanceListClone);
+
+			}
+		}
+		if (globalBalanceListClone.get(0) < 0) {
+			double value = amountToFitPerMonthList.get(0) + globalBalanceListClone.get(0);
+			System.out.println("Tfisrt  " + value);
+			amountToFitPerMonthList.set(0, value);
+		}
+		System.out.println(globalBalanceList);
+		System.out.println(balanceByMonthList);
 	}
 
 	/**
@@ -85,7 +131,7 @@ public class Forecast {
 	}
 
 	/**
-	 * mois dont le budget prévisionnel dopit être ajusté <br/>
+	 * mois dont le budget prévisionnel doit être ajusté <br/>
 	 * janvier=1, décembre=12
 	 * 
 	 * @param month

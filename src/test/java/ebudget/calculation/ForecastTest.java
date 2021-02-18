@@ -117,39 +117,36 @@ public class ForecastTest {
 	}
 
 	@Test
-	public final void testAnalyseForecastWithTwoForecast() {
+	public final void testAnalyseForecastWithTwoNegativeBalanceButOneForecast() {
 		ArrayList<Double> balanceByMonth = new ArrayList<>();
 		balanceByMonth.add(10.0);// 1
 		balanceByMonth.add(10.0);
 		balanceByMonth.add(10.0);
 		balanceByMonth.add(10.0);
-		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);// 5
 		balanceByMonth.add(-80.0);
 		balanceByMonth.add(10.0);// 7
 		balanceByMonth.add(10.0);
 		balanceByMonth.add(10.0);
-		balanceByMonth.add(-50.0);// 10
-		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);// 10
+		balanceByMonth.add(-40.0);// 11
 		balanceByMonth.add(10.0);
 
 		Forecast forecast = new Forecast(balanceByMonth);
 		forecast.analyseForecats(0.0);;
 
-		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(1), 0.0);
-		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(2), 0.0);
-		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(3), 0.0);
-		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(4), 0.0);
-		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(5), 0.0);
-		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(6), 0.0);
-		assertEquals(-2.0, forecast.getAmountToFitPerMonthList(7), 0.0);
-		assertEquals(-2.0, forecast.getAmountToFitPerMonthList(8), 0.0);
-		assertEquals(-2.0, forecast.getAmountToFitPerMonthList(9), 0.0);
-		assertEquals(-2.0, forecast.getAmountToFitPerMonthList(10), 0.0);
-		assertEquals(0.0, forecast.getAmountToFitPerMonthList(11), 0.0);
-		assertEquals(0.0, forecast.getAmountToFitPerMonthList(12), 0.0);
+		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(1), 0.00001);
+		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(2), 0.00001);
+		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(3), 0.00001);
+		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(4), 0.00001);
+		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(5), 0.00001);;
+		assertEquals(-5.0, forecast.getAmountToFitPerMonthList(6), 0.00001);
 
+		for (int i = 7; i < 13; i++) {
+			assertEquals(0.0, forecast.getAmountToFitPerMonthList(i), 0.0);
+		}
 		List<Double> expectedGlobalBalanceList = Arrays
-				.asList(new Double[]{10.0, 20.0, 30.0, 40.0, 50.0, -30.0, -20.0, -10.0, 0.0, -40.0, -30.0, -20.0});
+				.asList(new Double[]{10.0, 20.0, 30.0, 40.0, 50.0, -30.0, -20.0, -10.0, 0.0, 10.0, -30.0, -20.0});
 		Assertions.assertEquals(expectedGlobalBalanceList, forecast.getGlobalBalanceList());
 	}
 
@@ -208,7 +205,7 @@ public class ForecastTest {
 		}
 
 		List<Double> expectedGlobalBalanceList = Arrays
-				.asList(new Double[]{10.0, 20.0, 30.0, 40.0, 50.0, 60.0, -30.0, -20.0, -10.0, 0.0, 10.0, -20.0});
+				.asList(new Double[]{10.0, 20.0, 30.0, 40.0, 50.0, -60.0, -50.0, -40.0, -30.0, -20.0, -10.0, -240.0});
 		Assertions.assertEquals(expectedGlobalBalanceList, forecast.getGlobalBalanceList());
 
 	}
