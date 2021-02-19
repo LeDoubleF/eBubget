@@ -17,19 +17,19 @@ public class Forecast {
 	/**
 	 * Solde d'un budget (les budgets sont mensuels)
 	 */
-	private ArrayList<Double> balanceByMonthList = new ArrayList<>();
+	private List<Double> balanceByMonthList = new ArrayList<>();
 	/**
 	 * évolution du solde général chaque mois
 	 */
-	private ArrayList<Double> globalBalanceList = new ArrayList<>();
+	private List<Double> globalBalanceList = new ArrayList<>();
 	/**
 	 * Montant des ajustement à faire par mois
 	 */
-	private ArrayList<Double> amountToFitPerMonthList = new ArrayList<>();
+	private List<Double> amountToFitPerMonthList = new ArrayList<>();
 	/**
 	 * poste de dépense pour ajustement des bugets par mois
 	 */
-	private ArrayList<BudgetItem> forcastPerMonthList = new ArrayList<>();
+	private List<BudgetItem> forcastPerMonthList = new ArrayList<>();
 
 	public Forecast() {
 		super();
@@ -48,29 +48,13 @@ public class Forecast {
 
 	public void analyseForecats(double initialBalance) {
 
-		double amountToFit = 0.0;
-		double sumBalance = initialBalance;
-		ArrayList<Double> getBalanceByMonthClone = (ArrayList<Double>) balanceByMonthList.clone();
-		for (int i = 0; i < 12; i++) {
-
-			double globalBalance = sumBalance + balanceByMonthList.get(i);
-			sumBalance = globalBalance;
-			globalBalanceList.set(i, globalBalance);
-
-		}
-		ArrayList<Double> balanceByMonthClone = (ArrayList<Double>) balanceByMonthList.clone();
-		ArrayList<Double> globalBalanceListClone = (ArrayList<Double>) globalBalanceList.clone();
-		System.out.println("amountToFitPerMonthList");
-		System.out.println(amountToFitPerMonthList);
-		System.out.println("balanceByMonthClone");
-		System.out.println(balanceByMonthClone);
-		System.out.println("globalBalanceListClone");
-		System.out.println(globalBalanceListClone);
+		globalBalanceList = arithmeticSum(initialBalance, balanceByMonthList);
+		List<Double> balanceByMonthClone = new ArrayList<>(balanceByMonthList);
+		List<Double> globalBalanceListClone = new ArrayList<>(globalBalanceList);
 
 		int from = 0;
 		int to = 13;
 		for (int i = 11; i > 0; i--) {
-			System.out.println("boucle " + i);
 			to--;
 			double balance = balanceByMonthClone.get(i);
 			double globalBalance = globalBalanceListClone.get(i);
@@ -81,42 +65,38 @@ public class Forecast {
 					intermediare = intermediare + balanceByMonthClone.get(searchPrevious);
 					searchPrevious--;
 				} while (balanceByMonthClone.get(searchPrevious) > 0 && searchPrevious > 0);
-				System.out.println("\n\t" + intermediare + "\n");
 				if (intermediare < 0) {
-					amountToFit = globalBalance / to;
-					System.out.println("\t amountToFit " + amountToFit + " globalBalance " + globalBalance + " to " + to);
-					for (int j = from; j < to; j++) {
-						double value = amountToFitPerMonthList.get(j) + amountToFit;
-						System.out.println("ToFit " + value + " j " + j + " from " + from);
-						amountToFitPerMonthList.set(j, value);
-						value = balanceByMonthClone.get(j) - amountToFit;
-						balanceByMonthClone.set(j, value);
-					}
-					sumBalance = 0.0;
-					for (int k = 0; k < 12; k++) {
+					double amountToFit = globalBalance / to;
+					updateDoubleList(amountToFitPerMonthList, amountToFit, from, to);
+					updateDoubleList(balanceByMonthClone, -amountToFit, from, to);
 
-						sumBalance = sumBalance + balanceByMonthClone.get(k);
-						globalBalanceListClone.set(k, sumBalance);
-
-					}
+					globalBalanceListClone = arithmeticSum(initialBalance, balanceByMonthClone);
 				}
-
-				System.out.println("amountToFitPerMonthList");
-				System.out.println(amountToFitPerMonthList);
-				System.out.println("balanceByMonthClone");
-				System.out.println(balanceByMonthClone);
-				System.out.println("globalBalanceListClone");
-				System.out.println(globalBalanceListClone);
-
 			}
 		}
 		if (globalBalanceListClone.get(0) < 0) {
 			double value = amountToFitPerMonthList.get(0) + globalBalanceListClone.get(0);
-			System.out.println("Tfisrt  " + value);
 			amountToFitPerMonthList.set(0, value);
 		}
-		System.out.println(globalBalanceList);
-		System.out.println(balanceByMonthList);
+	}
+
+	private List<Double> arithmeticSum(double initialisationValue, List<Double> listToSum) {
+		double sumBalance = initialisationValue;
+		ArrayList<Double> arithmeticSum = new ArrayList<>();
+		for (int i = 0; i < listToSum.size(); i++) {
+
+			sumBalance = sumBalance + listToSum.get(i);
+			arithmeticSum.add(sumBalance);
+
+		}
+		return arithmeticSum;
+	}
+
+	private void updateDoubleList(List<Double> doubleList, double amountToAdd, int from, int to) {
+		for (int i = from; i < to; i++) {
+			double value = doubleList.get(i) + amountToAdd;
+			doubleList.set(i, value);
+		}
 	}
 
 	/**
@@ -127,7 +107,7 @@ public class Forecast {
 	}
 
 	public void setBalanceByMonth(List<Double> balanceByMonth) {
-		balanceByMonthList = (ArrayList<Double>) balanceByMonth;
+		balanceByMonthList = balanceByMonth;
 	}
 
 	/**

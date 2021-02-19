@@ -77,7 +77,7 @@ public class AnnualBudgetTest {
 
 		annualBudget.print();
 		// THEN
-		assertEquals(11.0, annualBudget.getAmount(TAXI, 1), 0.0);
+		assertEquals(11.0, annualBudget.getAmount(TAXI, 1), 0);
 		assertEquals(10.0, annualBudget.getAmount(TAXI, 2), 0.0);
 		assertEquals(11.0, annualBudget.getAmount(TAXI, 12), 0.0);
 

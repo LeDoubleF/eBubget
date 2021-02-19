@@ -1,17 +1,15 @@
 Manifest-Version: 1.0
-Built-By: Docapost-GED
-Class-Path: lib/dbunit-2.5.3.jar lib/poi-ooxml-3.14.jar lib/poi-3.14.j
- ar lib/commons-codec-1.10.jar lib/poi-ooxml-schemas-3.14.jar lib/xmlb
- eans-2.6.0.jar lib/stax-api-1.0.1.jar lib/curvesapi-1.03.jar lib/mari
- adb-java-client-1.1.7.jar lib/jna-3.3.0.jar lib/jna-3.3.0-platform.ja
- r lib/hibernate-commons-annotations-3.0.0.ga.jar lib/commons-logging-
- 1.0.4.jar lib/hibernate-annotations-3.3.0.ga.jar lib/hibernate-3.2.4.
- sp1.jar lib/ehcache-1.2.3.jar lib/asm-attrs-1.5.3.jar lib/cglib-2.1_3
- .jar lib/asm-1.5.3.jar lib/persistence-api-1.0.jar lib/antlr-2.7.6.ja
- r lib/commons-collections-3.1.jar lib/dom4j-1.6.1.jar lib/xml-apis-1.
- 0.b2.jar lib/javassist-3.4.GA.jar lib/jta-1.1.jar lib/slf4j-api-1.7.1
- 6.jar lib/slf4j-log4j12-1.7.16.jar lib/log4j-1.2.17.jar
-Build-Jdk: 1.8.0_11
-Created-By: Maven Integration for Eclipse
+Built-By: ffazer
+Build-Jdk: 15.0.1
+Class-Path: lib/mockito-core-1.10.19.jar lib/hamcrest-core-1.1.jar lib/o
+ bjenesis-2.1.jar lib/mariadb-java-client-1.1.7.jar lib/jna-3.3.0.jar li
+ b/jna-3.3.0-platform.jar lib/hibernate-commons-annotations-3.0.0.ga.jar
+  lib/commons-logging-1.0.4.jar lib/hibernate-annotations-3.3.0.ga.jar l
+ ib/hibernate-3.2.4.sp1.jar lib/ehcache-1.2.3.jar lib/asm-attrs-1.5.3.ja
+ r lib/dom4j-1.6.1.jar lib/cglib-2.1_3.jar lib/asm-1.5.3.jar lib/persist
+ ence-api-1.0.jar lib/antlr-2.7.6.jar lib/commons-collections-3.2.2.jar 
+ lib/dom4j-2.1.3.jar lib/javassist-3.4.GA.jar lib/jta-1.1.jar lib/slf4j-
+ api-1.7.16.jar lib/slf4j-log4j12-1.7.16.jar lib/log4j-1.2.17.jar
 Main-Class: ebudget.Ebudget
+Created-By: Maven Integration for Eclipse
 
