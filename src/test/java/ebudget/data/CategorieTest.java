@@ -14,12 +14,12 @@ class CategorieTest {
 
 	@BeforeEach
 	public void clean() {
-		Repository.clearDataBase();
+		Common.clearDataBase();
 	}
 
 	@AfterAll
 	public static void cleanUp() {
-		Repository.clearDataBase();
+		Common.clearDataBase();
 	}
 
 	@Test

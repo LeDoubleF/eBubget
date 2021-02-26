@@ -96,7 +96,7 @@ public class RecurringExpensesEntity implements Serializable {
 			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
 			tx = sessionTwo.beginTransaction();
 
-			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM forecast");
+			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM recurringexpenses");
 			queryDelete.executeUpdate();
 
 			sessionTwo.getTransaction().commit();

@@ -1,15 +1,13 @@
 package ebudget.data.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.logging.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import ebudget.data.Repository;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import ebudget.data.Common;
 import ebudget.data.dto.CategoryDto;
 
 class CategoryEntityTest {
@@ -18,12 +16,12 @@ class CategoryEntityTest {
 
 	@BeforeEach
 	public void clean() {
-		Repository.clearDataBase();
+		Common.clearDataBase();
 	}
 
 	@AfterAll
 	public static void cleanUp() {
-		Repository.clearDataBase();
+		Common.clearDataBase();
 	}
 
 	@Test

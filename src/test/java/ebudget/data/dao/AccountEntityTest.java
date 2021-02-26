@@ -8,7 +8,7 @@ import org.hibernate.Transaction;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ebudget.data.Repository;
+import ebudget.data.Common;
 import ebudget.data.dto.AccountDto;
 import ebudget.data.dto.AccountType;
 
@@ -16,12 +16,12 @@ class AccountEntityTest {
 
 	@BeforeEach
 	public void clean() {
-		Repository.clearDataBase();
+		Common.clearDataBase();
 	}
 
 	@AfterAll
 	public static void cleanUp() {
-		Repository.clearDataBase();
+		Common.clearDataBase();
 	}
 
 	@Test

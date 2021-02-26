@@ -31,8 +31,8 @@ Loyer;loyer;true;false;856;true;true;true;true;true;true;true;true;true;true;tru
 Mobile;free;true;true;20,04;true;true;true;true;true;true;true;true;true;true;true;true
 Mobile;free;true;true;2;true;true;true;true;true;true;true;true;true;true;true;true
 Navigo;navigo;true;false;72;true;true;true;true;true;true;true;true;false;true;true;true
-Salaire Fanny;docapost;true;true;-3133;true;true;true;true;true;true;true;true;true;true;true;true
-Salaire Fanny;interessement;true;true;-289,41;false;false;false;false;false;false;true;false;false;false;false;false
+Salaire;docapost;true;true;-3133;true;true;true;true;true;true;true;true;true;true;true;true
+Salaire;interessement;true;true;-289,41;false;false;false;false;false;false;true;false;false;false;false;false
 Taxe habitation;impot;true;true;740;false;false;false;false;false;false;false;false;false;false;true;false
 Psy;Deplanque;true;true;160;true;true;true;true;true;true;true;false;true;true;true;true
 Net;ORANGE;true;true;67,18;true;true;true;true;true;true;true;true;true;true;true;true
@@ -40,7 +40,7 @@ Loisirs;yoga;false;true;85;false;false;false;false;false;false;false;false;true;
 Loisirs;Piano;false;true;120;false;false;false;false;false;false;false;false;false;false;false;false
 Loisirs;pulaar;false;true;600;false;false;false;false;false;false;false;false;false;false;false;false
 Loisirs;abdo;false;true;60;false;true;false;false;false;false;false;false;true;false;false;false
-Salaire Oumar;Ippudo;true;true;-506;true;true;true;true;true;true;true;true;true;true;true;true
+Salaire;Ippudo;true;true;-506;true;true;true;true;true;true;true;true;true;true;true;true
 Cadeaux;Oumar;false;true;40;false;false;false;true;false;false;false;false;false;false;false;false
 impôt sur revenu;frais de garde;true;true;-343;false;false;false;false;false;false;true;false;false;false;false;false
 Cadeaux;noel;false;true;300;false;false;false;false;false;false;false;false;false;false;false;true

@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import ebudget.data.dao.AccountEntity;
 import ebudget.data.dao.CategoryEntity;
 import ebudget.data.dao.HibernateUtil;
 import ebudget.data.dao.PeriodEntity;
@@ -76,7 +77,6 @@ public class Common {
 			LOGGER.log(Level.INFO, "suppression de toutes les catégories de la base de donnée");
 			Categories.clearAllCategory();
 			LOGGER.log(Level.INFO, "suppression de toutes les catégories de la liste");
-			CategoryEntity.save("divers");
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "erreur lors de la suppression des catégories et rajout de divers", e);
 			// Rollback in case of an error occurred.
@@ -87,6 +87,7 @@ public class Common {
 
 	public static void clearDataBase() {
 		PeriodEntity.deleteAll();
+		AccountEntity.deleteAll();
 		deleteAllCategory();
 	}
 

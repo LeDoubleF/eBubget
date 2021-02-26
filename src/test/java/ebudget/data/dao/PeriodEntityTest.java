@@ -1,7 +1,6 @@
 package ebudget.data.dao;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import java.io.Serializable;
@@ -14,7 +13,7 @@ import org.hibernate.Transaction;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ebudget.data.Repository;
+import ebudget.data.Common;
 import ebudget.data.dto.PeriodDTo;
 
 class PeriodEntityTest {
@@ -28,7 +27,7 @@ class PeriodEntityTest {
 
 	@AfterAll
 	public static void cleanUp() {
-		Repository.clearDataBase();
+		Common.clearDataBase();
 	}
 
 	@Test

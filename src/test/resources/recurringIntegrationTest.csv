@@ -1,5 +1,5 @@
 category;description;mandatory;variable;amount;1;2;3;4;5;6;7;8;9;10;11;12
-Autre Revenu;parking;false;true;-40;true;true;true;true;true;true;true;true;true;true;true;true
+Autre Revenu;parking;false;true;40;true;true;true;true;true;true;true;true;true;true;true;true
 Cadeaux;Issa;false;true;15;true;true;true;true;true;true;true;true;true;true;true;true
 Cadeaux;Issa;false;true;-50;false;true;false;false;false;false;false;false;false;false;false;false
 Cadeaux;ismaël;false;true;50;true;false;false;false;false;false;false;false;false;false;false;false
@@ -14,9 +14,10 @@ Loisirs;netflix;false;false;7,99;true;true;true;true;true;true;true;true;true;tr
 Loisirs;papoum;false;false;5,7;true;true;true;true;true;true;true;true;true;true;true;true
 Loyer;loyer;true;false;400;true;true;true;true;true;true;true;true;true;true;true;true
 Navigo;navigo;true;false;72;true;true;true;true;true;true;true;true;false;true;true;true
-Salaire;docapost;true;true;-3133;true;true;true;true;true;true;true;true;true;true;true;true
+Salaire;docapost;true;true;3133;true;true;true;true;true;true;true;true;true;true;true;true
 Taxe habitation;impot;true;true;740;false;false;false;false;false;false;false;false;false;false;true;false
 Loisirs;yoga;false;true;85;false;false;false;false;false;false;false;false;true;true;true;false
 Loisirs;Piano;false;true;120;false;false;false;false;false;false;false;false;false;false;false;false
 Loisirs;abdo;false;true;60;false;true;false;false;false;false;false;false;true;false;false;false
 Cadeaux;noel;false;true;300;false;false;false;false;false;false;false;false;false;false;false;true
+Vacances;sky;false;true;2000;false;false;false;false;false;false;false;false;false;false;false;true

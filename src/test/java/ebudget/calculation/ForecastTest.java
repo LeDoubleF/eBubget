@@ -53,6 +53,61 @@ public class ForecastTest {
 	}
 
 	@Test
+	public void testAnalyseForecastWhenNothingToFitAndInitialBalance() {
+		ArrayList<Double> balanceByMonth = new ArrayList<>();
+		balanceByMonth.add(10.0);// 1
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);// 5
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);// 10
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+
+		Forecast forecast = new Forecast(balanceByMonth);
+		forecast.analyseForecats(-10.0);
+
+		for (int i = 1; i < 13; i++) {
+			assertEquals(0.0, forecast.getAmountToFitPerMonthList(i), 0.0);
+		}
+
+		List<Double> expectedGlobalBalanceList = Arrays.asList(new Double[]{0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 110.0});
+		Assertions.assertEquals(expectedGlobalBalanceList, forecast.getGlobalBalanceList());
+	}
+
+	@Test
+	public void testAnalyseForecastWithNegativeBalanceButNothingToFitAndInitialBalance() {
+
+		ArrayList<Double> balanceByMonth = new ArrayList<>();
+		balanceByMonth.add(10.0);// 1
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(-30.0);// 7
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);// 10
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+
+		Forecast forecast = new Forecast(balanceByMonth);
+		forecast.analyseForecats(-10.0);
+
+		for (int i = 1; i < 13; i++) {
+			assertEquals(0.0, forecast.getAmountToFitPerMonthList(i), 0.0);
+		}
+
+		List<Double> expectedGlobalBalanceList = Arrays.asList(new Double[]{0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0});
+		Assertions.assertEquals(expectedGlobalBalanceList, forecast.getGlobalBalanceList());
+	}
+
+	@Test
 	public void testAnalyseForecastWithNegativeBalanceButNothingToFit() {
 
 		ArrayList<Double> balanceByMonth = new ArrayList<>();
@@ -113,7 +168,40 @@ public class ForecastTest {
 		for (int i = 7; i < 13; i++) {
 			assertEquals(0.0, forecast.getAmountToFitPerMonthList(i), 0.0);
 		}
+	}
 
+	@Test
+	public final void testAnalyseForecastWithOneForecastAndInitialBalance() {
+		ArrayList<Double> balanceByMonth = new ArrayList<>();
+		balanceByMonth.add(10.0);// 1
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(-80.0);
+		balanceByMonth.add(10.0);// 7
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);// 10
+		balanceByMonth.add(10.0);
+		balanceByMonth.add(10.0);
+
+		Forecast forecast = new Forecast(balanceByMonth);
+		forecast.analyseForecats(6.0);
+
+		assertEquals(-4.0, forecast.getAmountToFitPerMonthList(1), 0.0);
+		assertEquals(-4.0, forecast.getAmountToFitPerMonthList(2), 0.0);
+		assertEquals(-4.0, forecast.getAmountToFitPerMonthList(3), 0.0);
+		assertEquals(-4.0, forecast.getAmountToFitPerMonthList(4), 0.0);
+		assertEquals(-4.0, forecast.getAmountToFitPerMonthList(5), 0.0);
+		assertEquals(-4.0, forecast.getAmountToFitPerMonthList(6), 0.0);
+
+		List<Double> expectedGlobalBalanceList = Arrays.asList(new Double[]{16.0, 26.0, 36.0, 46.0, 56.0, -24.0, -14.0, -4.0, 6.0, 16.0, 26.0, 36.0});
+		Assertions.assertEquals(expectedGlobalBalanceList, forecast.getGlobalBalanceList());
+
+		for (int i = 7; i < 13; i++) {
+			assertEquals(0.0, forecast.getAmountToFitPerMonthList(i), 0.0);
+		}
 	}
 
 	@Test
