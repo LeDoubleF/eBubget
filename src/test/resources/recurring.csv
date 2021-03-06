@@ -12,7 +12,7 @@ Cadeaux;lee;false;true;100;false;false;false;false;false;false;false;false;false
 Cadeaux;jallana;false;true;50;false;false;true;false;false;false;false;false;false;false;false;false
 Cadeaux;clochar;false;true;2;true;true;true;true;true;true;true;true;true;true;true;true
 Cadeaux;st valentin;false;true;69,95;false;true;false;false;false;false;false;false;false;false;false;false
-CAF;AF;true;false;-217,16;true;true;true;true;true;true;true;true;true;true;true;true
+CAF;AF;true;false;-131;true;true;true;true;true;true;true;true;true;true;true;true
 Credit;sofinco;true;false;633;true;true;true;true;true;true;true;true;true;true;true;true
 Credit;sofinco;true;false;-300;true;true;true;true;true;true;true;true;true;true;true;true
 EDF;edf;true;false;111,63;true;true;true;true;true;true;true;true;true;true;true;true
@@ -31,16 +31,16 @@ Loyer;loyer;true;false;856;true;true;true;true;true;true;true;true;true;true;tru
 Mobile;free;true;true;20,04;true;true;true;true;true;true;true;true;true;true;true;true
 Mobile;free;true;true;2;true;true;true;true;true;true;true;true;true;true;true;true
 Navigo;navigo;true;false;72;true;true;true;true;true;true;true;true;false;true;true;true
-Salaire;docapost;true;true;-3133;true;true;true;true;true;true;true;true;true;true;true;true
-Salaire;interessement;true;true;-289,41;false;false;false;false;false;false;true;false;false;false;false;false
+Salaire;docapost;true;true;3133;true;true;true;true;true;true;true;true;true;true;true;true
+Salaire;interessement;true;true;280;false;false;false;false;false;false;true;false;false;false;false;false
 Taxe habitation;impot;true;true;740;false;false;false;false;false;false;false;false;false;false;true;false
 Psy;Deplanque;true;true;160;true;true;true;true;true;true;true;false;true;true;true;true
-Net;ORANGE;true;true;67,18;true;true;true;true;true;true;true;true;true;true;true;true
+Net;ORANGE;true;true;90;true;true;true;true;true;true;true;true;true;true;true;true
 Loisirs;yoga;false;true;85;false;false;false;false;false;false;false;false;true;true;true;false
 Loisirs;Piano;false;true;120;false;false;false;false;false;false;false;false;false;false;false;false
 Loisirs;pulaar;false;true;600;false;false;false;false;false;false;false;false;false;false;false;false
 Loisirs;abdo;false;true;60;false;true;false;false;false;false;false;false;true;false;false;false
-Salaire;Ippudo;true;true;-506;true;true;true;true;true;true;true;true;true;true;true;true
+Salaire;Ippudo;true;true;506;true;true;true;true;true;true;true;true;true;true;true;true
 Cadeaux;Oumar;false;true;40;false;false;false;true;false;false;false;false;false;false;false;false
 impôt sur revenu;frais de garde;true;true;-343;false;false;false;false;false;false;true;false;false;false;false;false
 Cadeaux;noel;false;true;300;false;false;false;false;false;false;false;false;false;false;false;true
