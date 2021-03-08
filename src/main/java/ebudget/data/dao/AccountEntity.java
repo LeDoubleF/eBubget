@@ -14,6 +14,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import ebudget.data.Categories;
 import ebudget.data.dto.AccountDto;
 import ebudget.data.dto.AccountType;
 
@@ -122,7 +123,7 @@ public class AccountEntity implements Serializable {
 
 			sessionTwo.getTransaction().commit();
 			LOGGER.log(Level.INFO, "suppression de toutes les comptes");
-			CategoryEntity.save("divers");
+
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "erreur lors de la suppression des comptes", e);
 			// Rollback in case of an error occurred.

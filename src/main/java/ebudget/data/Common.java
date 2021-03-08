@@ -58,7 +58,7 @@ public class Common {
 	}
 
 	/**
-	 * supprime toutes les catégories et rajoute divers
+	 * supprime toutes les catégories
 	 */
 	public static void deleteAllCategory() {
 		Transaction tx = null;
@@ -86,9 +86,15 @@ public class Common {
 	}
 
 	public static void clearDataBase() {
+		TransactionEntity.deleteAll();
 		PeriodEntity.deleteAll();
 		AccountEntity.deleteAll();
 		deleteAllCategory();
+	}
+
+	public static void reinitializeDataBase() {
+		clearDataBase();
+		CategoryEntity.save(Categories.getDefaultCategory().getName());
 	}
 
 	private static ArrayList<Double> calulateBalanceByMonth() {

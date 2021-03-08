@@ -1,5 +1,6 @@
 package ebudget.calculation;
 
+import ebudget.data.Categories;
 import ebudget.data.dto.CategoryDto;
 
 /**
@@ -14,11 +15,11 @@ public class BudgetItem implements Comparable<BudgetItem> {
 	private double amount;
 
 	/**
-	 * par défaut ce sera la catégory divers et un montant à zéro
+	 * catégori par défaut et un montant à zéro
 	 */
 	public BudgetItem() {
 		super();
-		this.category = new CategoryDto("Divers");
+		this.category = Categories.getDefaultCategory();
 		this.amount = 0.0;
 	}
 

@@ -86,9 +86,6 @@ public class RecurringExpensesEntity implements Serializable {
 	@Column(name = "december", unique = false, nullable = false)
 	private boolean december = false;
 
-	/**
-	 * supprime toutes les catégories et rajoute divers
-	 */
 	public static void deleteAll() {
 		Transaction tx = null;
 		try {

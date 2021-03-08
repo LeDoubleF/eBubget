@@ -1,14 +1,17 @@
 package ebudget.data.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import java.io.Serializable;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ebudget.data.Categories;
 import ebudget.data.Common;
 import ebudget.data.dto.PeriodDTo;
 import ebudget.data.dto.TransactionDto;
@@ -19,7 +22,7 @@ class TransactionEntityTest {
 
 	@BeforeEach
 	public void clean() {
-		Common.clearDataBase();
+		Common.reinitializeDataBase();
 	}
 
 	@AfterAll
@@ -66,7 +69,42 @@ class TransactionEntityTest {
 			// Rollback in case of an error occurred.
 			tx.rollback();
 			e.printStackTrace();
+			fail("transaction should be save");
 		}
+	}
+
+	@Test
+	void TestTransactionEntitySaveWhenCategoryNotExist() {
+		Transaction tx = null;
+
+		// given
+
+		PeriodDTo periode = new PeriodDTo(2020, 2);
+		PeriodEntity.save(periode);
+
+		// when
+		TransactionDto transactionDto = new TransactionDto("10/01/2020", "alimentation", "farine", "Espèce", 0.69, periode);
+		TransactionEntity.save(transactionDto);
+
+		// then
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		tx = session.beginTransaction();
+		Query query = session.createSQLQuery("SELECT max(id) FROM TRANSACTION");
+		query.executeUpdate();
+		@SuppressWarnings({"unchecked"})
+		List<Integer> idLlist = query.list();
+		System.out.println(query.list() + " id " + idLlist.get(0));
+
+		TransactionEntity transaction = (TransactionEntity) session.load(TransactionEntity.class, (Serializable) idLlist.get(0));
+
+		assertEquals("10/01/2020", transaction.getDate());
+		assertEquals(Categories.getDefaultCategory().getName(), transaction.getCategory().getName());
+		assertEquals("farine", transaction.getDescription());
+		assertEquals("Espèce", transaction.getPayment());
+		assertEquals(0.69, transaction.getAmount(), delta);
+		assertEquals(2020, transaction.getPeriode().getId().getAnnee());
+		assertEquals(1, transaction.getPeriode().getId().getTrimestre());
+		assertEquals(2, transaction.getPeriode().getId().getMois());
 	}
 
 	@Test

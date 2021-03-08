@@ -82,7 +82,6 @@ public class CategoryEntity implements Serializable {
 		Transaction tx = null;
 		String stId = null;
 		try {
-
 			tx = session.beginTransaction();
 			CategoryEntity category = new CategoryEntity(name, income);
 			stId = (String) session.save(category);

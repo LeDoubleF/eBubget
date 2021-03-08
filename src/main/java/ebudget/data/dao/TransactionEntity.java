@@ -124,7 +124,6 @@ public class TransactionEntity implements Serializable {
 		Transaction tx = null;
 		Integer stId = null;
 		try {
-			CategoryDto categoryDivers = new CategoryDto("divers");
 			tx = session.beginTransaction();
 			TransactionEntity transactionEntity = new TransactionEntity();
 			transactionEntity.setDate(transaction.getDate());
@@ -134,7 +133,8 @@ public class TransactionEntity implements Serializable {
 				LOGGER.log(Level.INFO, "{0} existe ", transaction.getCategory().getName());
 			} else {
 				LOGGER.log(Level.WARNING, "{0} n existe pas en tant que catégorie ", transaction.getCategory().getName());
-				transactionEntity.setCategory(categoryDivers);
+
+				transactionEntity.setCategory(Categories.getDefaultCategory());
 			}
 			transactionEntity.setDescription(transaction.getDescription());
 			transactionEntity.setPayment(transaction.getPayment());
