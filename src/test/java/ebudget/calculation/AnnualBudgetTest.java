@@ -93,9 +93,7 @@ public class AnnualBudgetTest {
 		// WHEN
 		AnnualBudget annualBudget = new AnnualBudget(YEAR, 0.0, baseBudget, reccuringItemList);
 
-		annualBudget.print();
 		annualBudget.setInitialeBalance(-180.0);
-		annualBudget.print();
 
 		// THEN
 		assertEquals(1760, annualBudget.getBalance(), PRECISION);
@@ -103,5 +101,37 @@ public class AnnualBudgetTest {
 		for (int i = 2; i < 13; i++) {
 			assertEquals(0.0, annualBudget.getAmountToFitPerMonthList(i), PRECISION);
 		}
+	}
+
+	@Test
+	public void computeBudgetTest() {
+
+		// GIVEN
+		List<RecurringItem> reccuringItemList = new ArrayList<RecurringItem>();
+
+		RecurringItem taxi = new RecurringItem(TAXI, "perso", 5.0, true, true, CommonTest.monthly);
+		RecurringItem taxi2 = new RecurringItem(TAXI, "pro", 6.0, true, true, Arrays.asList(true, false, false, false, false, false, false, false,
+				false, false, false, true));
+		reccuringItemList.add(taxi);
+		reccuringItemList.add(taxi2);;
+
+		BaseBudget newBaseBudget = new BaseBudget();
+		newBaseBudget.add(SALAIRE, 1000.0);
+		newBaseBudget.add(TAXI, 11.0);
+		newBaseBudget.add(LOYER, 800.0);
+		newBaseBudget.add(DIVERS, 20.0);
+
+		// WHEN
+		AnnualBudget annualBudget = new AnnualBudget(YEAR, 0.0, baseBudget, reccuringItemList);
+		assertEquals(11.0, annualBudget.getAmount(TAXI, 1), 0);
+		assertEquals(10.0, annualBudget.getAmount(TAXI, 2), 0.0);
+		assertEquals(11.0, annualBudget.getAmount(TAXI, 12), 0.0);
+
+		annualBudget.computeBudget(0.0, newBaseBudget, reccuringItemList);
+
+		assertEquals(11.0, annualBudget.getAmount(TAXI, 1), 0);
+		assertEquals(11.0, annualBudget.getAmount(TAXI, 2), 0.0);
+		assertEquals(11.0, annualBudget.getAmount(TAXI, 12), 0.0);
+
 	}
 }

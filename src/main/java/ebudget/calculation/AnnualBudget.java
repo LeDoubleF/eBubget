@@ -26,6 +26,7 @@ public class AnnualBudget {
 	private Map<CategoryDto, Double> sumByCategory = new HashMap<>();
 	private Double balance;
 	private Forecast forecast;
+	private int year;
 	/**
 	 * Montant des ajustement à faire par mois
 	 */
@@ -33,6 +34,16 @@ public class AnnualBudget {
 
 	public AnnualBudget(int year, double initialBalance, BaseBudget baseBudget, List<RecurringItem> recurringbudgetItemList) {
 		df2.setRoundingMode(RoundingMode.UP);
+
+		this.year = year;
+		computeBudget(initialBalance, baseBudget, recurringbudgetItemList);
+	}
+
+	void computeBudget(double initialBalance, BaseBudget baseBudget, List<RecurringItem> recurringbudgetItemList) {
+		balanceByMonthList = new ArrayList<>();
+		draftBudgetList = new ArrayList<>();
+		sumByCategory = new HashMap<>();
+		amountToFitPerMonthList = new ArrayList<>();
 		balance = initialBalance;
 		for (int month = 1; month < 13; month++) {
 			PeriodDTo period = new PeriodDTo(year, month);
@@ -57,15 +68,19 @@ public class AnnualBudget {
 				recurringBudgetItemList.add(budgetItem);
 			}
 
-			DraftBudget draftBudget = new DraftBudget(period, baseBudget, recurringBudgetItemList);
-			draftBudgetList.add(draftBudget);
-			balanceByMonthList.add(draftBudget.getBalance());
-			balance = balance + draftBudget.getBalance();
+			createDraftBudget(baseBudget, period, recurringBudgetItemList);
 		}
 		analyseForecast(initialBalance);
 
 		sumPerCategory();
 		System.out.print("\n" + sumByCategory + "\n");
+	}
+
+	private void createDraftBudget(BaseBudget baseBudget, PeriodDTo period, List<BudgetItem> recurringBudgetItemList) {
+		DraftBudget draftBudget = new DraftBudget(period, baseBudget, recurringBudgetItemList);
+		draftBudgetList.add(draftBudget);
+		balanceByMonthList.add(draftBudget.getBalance());
+		balance = balance + draftBudget.getBalance();
 	}
 
 	private void sumPerCategory() {
@@ -90,7 +105,6 @@ public class AnnualBudget {
 		balance = initialBalance;
 		for (Double intermediateBalance : balanceByMonthList) {
 			balance = intermediateBalance + balance;
-
 		}
 	}
 
