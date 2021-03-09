@@ -26,11 +26,6 @@ public class AnnualBudget {
 	private Map<CategoryDto, Double> sumByCategory = new HashMap<>();
 	private Double balance;
 	private Forecast forecast;
-
-	public Double getBalance() {
-		return balance;
-	}
-
 	/**
 	 * Montant des ajustement à faire par mois
 	 */
@@ -38,7 +33,7 @@ public class AnnualBudget {
 
 	public AnnualBudget(int year, double initialBalance, BaseBudget baseBudget, List<RecurringItem> recurringbudgetItemList) {
 		df2.setRoundingMode(RoundingMode.UP);
-		balance = 0.0;
+		balance = initialBalance;
 		for (int month = 1; month < 13; month++) {
 			PeriodDTo period = new PeriodDTo(year, month);
 			List<BudgetItem> recurringBudgetItemList = new ArrayList<>();
@@ -67,10 +62,13 @@ public class AnnualBudget {
 			balanceByMonthList.add(draftBudget.getBalance());
 			balance = balance + draftBudget.getBalance();
 		}
-		forecast = new Forecast(balanceByMonthList);
-		forecast.analyseForecats(initialBalance);
-		amountToFitPerMonthList = forecast.getAmountToFitPerMonthList();
+		analyseForecast(initialBalance);
 
+		sumPerCategory();
+		System.out.print("\n" + sumByCategory + "\n");
+	}
+
+	private void sumPerCategory() {
 		for (CategoryDto category : Categories.getAllCategory()) {
 			double sumforThisCategory = 0.0;
 			for (DraftBudget draftBudget : draftBudgetList) {
@@ -79,15 +77,21 @@ public class AnnualBudget {
 			}
 			sumByCategory.put(category, sumforThisCategory);
 		}
-		System.out.print("\n" + sumByCategory + "\n");
 	}
 
-	public double getBalanceByMonth(int month) {
-		return balanceByMonthList.get(month - 1);
+	private void analyseForecast(double initialBalance) {
+		forecast = new Forecast(balanceByMonthList);
+		forecast.analyseForecats(initialBalance);
+		amountToFitPerMonthList = forecast.getAmountToFitPerMonthList();
 	}
 
-	public double getAmountToFitPerMonthList(int month) {
-		return amountToFitPerMonthList.get(month - 1);
+	public void setInitialeBalance(double initialBalance) {
+		analyseForecast(initialBalance);
+		balance = initialBalance;
+		for (Double intermediateBalance : balanceByMonthList) {
+			balance = intermediateBalance + balance;
+
+		}
 	}
 
 	public void print() {
@@ -120,6 +124,14 @@ public class AnnualBudget {
 
 	}
 
+	public double getBalanceByMonth(int month) {
+		return balanceByMonthList.get(month - 1);
+	}
+
+	public double getAmountToFitPerMonthList(int month) {
+		return amountToFitPerMonthList.get(month - 1);
+	}
+
 	public Double getAmount(CategoryDto category, int month) {
 		return draftBudgetList.get(month - 1).getAmount(category);
 	}
@@ -134,6 +146,10 @@ public class AnnualBudget {
 
 	public List<Double> getBalanceByMonth() {
 		return balanceByMonthList;
+	}
+
+	public Double getBalance() {
+		return balance;
 	}
 
 }
