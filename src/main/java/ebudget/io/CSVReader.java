@@ -58,6 +58,7 @@ public class CSVReader {
 			return (T) new Double(value.replace(",", "."));
 		else if (description.equals(BOOLEAN))
 			return (T) new Boolean(value);
+		// Date date1 = new Date();
 		else
 			return (T) value.trim();
 	}
@@ -66,25 +67,25 @@ public class CSVReader {
 		List<RecurringItem> recurringItemList = new ArrayList<>();
 		verifyFile(filePath);
 
-		Map<Integer, String> columnDescription = new HashMap<>();
-		columnDescription.put(0, STRING);// category
-		columnDescription.put(1, STRING);// description
-		columnDescription.put(2, BOOLEAN);// mandatory
-		columnDescription.put(3, BOOLEAN);// variable
-		columnDescription.put(4, DOUBLE);// amount
+		Map<Integer, Column> columnDescription = new HashMap<>();
+		columnDescription.put(0, new Column(CVSParameter.STRING, "category"));
+		columnDescription.put(1, new Column(CVSParameter.STRING, "description"));
+		columnDescription.put(2, new Column(CVSParameter.BOOLEAN, "mandatory"));
+		columnDescription.put(3, new Column(CVSParameter.BOOLEAN, "variable"));
+		columnDescription.put(4, new Column(CVSParameter.DOUBLE, "amount"));
 		// Month
-		columnDescription.put(5, BOOLEAN);// 1
-		columnDescription.put(6, BOOLEAN);// 2
-		columnDescription.put(7, BOOLEAN);// 3
-		columnDescription.put(8, BOOLEAN);// 4
-		columnDescription.put(9, BOOLEAN);// 5
-		columnDescription.put(10, BOOLEAN);// 6
-		columnDescription.put(11, BOOLEAN);// 7
-		columnDescription.put(12, BOOLEAN);// 8
-		columnDescription.put(13, BOOLEAN);// 9
-		columnDescription.put(14, BOOLEAN);// 10
-		columnDescription.put(15, BOOLEAN);// 11
-		columnDescription.put(16, BOOLEAN);// 12
+		columnDescription.put(5, new Column(CVSParameter.BOOLEAN, "1"));
+		columnDescription.put(6, new Column(CVSParameter.BOOLEAN, "2"));
+		columnDescription.put(7, new Column(CVSParameter.BOOLEAN, "3"));
+		columnDescription.put(8, new Column(CVSParameter.BOOLEAN, "4"));
+		columnDescription.put(9, new Column(CVSParameter.BOOLEAN, "5"));
+		columnDescription.put(10, new Column(CVSParameter.BOOLEAN, "6"));
+		columnDescription.put(11, new Column(CVSParameter.BOOLEAN, "7"));
+		columnDescription.put(12, new Column(CVSParameter.BOOLEAN, "8"));
+		columnDescription.put(13, new Column(CVSParameter.BOOLEAN, "9"));
+		columnDescription.put(14, new Column(CVSParameter.BOOLEAN, "10"));
+		columnDescription.put(15, new Column(CVSParameter.BOOLEAN, "11"));
+		columnDescription.put(16, new Column(CVSParameter.BOOLEAN, "12"));
 
 		List<Object> fileContentList = readFile(filePath, columnDescription);
 
@@ -116,7 +117,7 @@ public class CSVReader {
 		return recurringItemList;
 	}
 
-	private List<Object> readFile(String filePath, Map<Integer, String> fileDescription) {
+	private List<Object> readFile(String filePath, Map<Integer, Column> fileDescription) {
 		List<Object> fileContentList = new ArrayList<>();
 		verifyFile(filePath);
 		// TODO rendre la lecture de la description du fichier plus jolie
@@ -135,8 +136,8 @@ public class CSVReader {
 						throw new FileReaderException(Message.FILE_CONTENT_KO);
 					List<Object> valueList = new ArrayList<>();
 					for (int i = 0; i < tabValue.length; i++) {
-						String columnType = fileDescription.get(i);
-						valueList.add(checkType(columnType, tabValue[i]));
+						Column columnType = fileDescription.get(i);
+						valueList.add(columnType.convert(tabValue[i]));
 					}
 					fileContentList.add(valueList);
 				}
@@ -170,9 +171,9 @@ public class CSVReader {
 		Map<CategoryDto, Double> budgetItemList = new HashMap<>();
 		verifyFile(filePath);
 
-		Map<Integer, String> columnDescription = new HashMap<>();
-		columnDescription.put(1, DOUBLE);// amount
-		columnDescription.put(0, STRING);// category
+		Map<Integer, Column> columnDescription = new HashMap<>();
+		columnDescription.put(1, new Column(CVSParameter.DOUBLE, "amount"));
+		columnDescription.put(0, new Column(CVSParameter.STRING, "category"));
 
 		List<Object> fileContentList = readFile(filePath, columnDescription);
 
@@ -192,15 +193,15 @@ public class CSVReader {
 	}
 
 	public List<TransactionDto> readTransactionFile(String filePath, PeriodDTo periode) {
-		Map<Integer, String> columnDescription = new HashMap<>();
-		columnDescription.put(4, DOUBLE); // amount
-		columnDescription.put(1, STRING); // Date
-		columnDescription.put(2, STRING); // category
-		columnDescription.put(3, STRING); // description
-		columnDescription.put(0, STRING); // payment
+		Map<Integer, Column> transactionFileColumn = new HashMap<>();
+		transactionFileColumn.put(4, new Column(CVSParameter.DOUBLE, "amount"));
+		transactionFileColumn.put(1, new Column(CVSParameter.STRING, "date"));
+		transactionFileColumn.put(2, new Column(CVSParameter.STRING, "category"));
+		transactionFileColumn.put(3, new Column(CVSParameter.STRING, "description"));
+		transactionFileColumn.put(0, new Column(CVSParameter.STRING, "payment"));
 
 		List<TransactionDto> transactionList = new ArrayList<>();
-		List<Object> fileContentList = readFile(filePath, columnDescription);
+		List<Object> fileContentList = readFile(filePath, transactionFileColumn);
 		for (Object filContent : fileContentList) {
 			@SuppressWarnings("unchecked")
 			List<Object> valueList = (List<Object>) filContent;
