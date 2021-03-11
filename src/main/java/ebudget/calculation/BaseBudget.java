@@ -1,7 +1,6 @@
 package ebudget.calculation;
 
 import java.util.Map;
-import ebudget.data.Categories;
 import ebudget.data.dto.CategoryDto;
 
 /**

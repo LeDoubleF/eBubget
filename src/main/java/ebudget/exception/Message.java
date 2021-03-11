@@ -2,7 +2,7 @@ package ebudget.exception;
 
 public final class Message {
 
-	public Message() {
+	private Message() {
 		throw new IllegalStateException(UITLITY_CLASS);
 	}
 

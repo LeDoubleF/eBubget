@@ -9,7 +9,7 @@ class ColumnDescriptionTest {
 
 	@Test
 	void constructorTest() {
-		Column description = new Column(CVSParameter.DOUBLE, "amount");
+		ColumnDescription description = new ColumnDescription(CVSParameter.DOUBLE, "amount");
 
 		assertEquals("amount", description.getName());
 		assertEquals(CVSParameter.DOUBLE, description.getType());
@@ -18,7 +18,7 @@ class ColumnDescriptionTest {
 	@Test
 	void convertDoubleTest() {
 
-		Column column = new Column(CVSParameter.DOUBLE, "amount");
+		ColumnDescription column = new ColumnDescription(CVSParameter.DOUBLE, "amount");
 		Double Value = column.convert("55.6");
 
 		assertEquals(55.6, Value, PRECISION);
@@ -27,7 +27,7 @@ class ColumnDescriptionTest {
 	@Test
 	void convertDoubleWithComma() {
 
-		Column column = new Column(CVSParameter.DOUBLE, "amount");
+		ColumnDescription column = new ColumnDescription(CVSParameter.DOUBLE, "amount");
 		Double Value = column.convert("55,6");
 
 		assertEquals(55.6, Value, PRECISION);

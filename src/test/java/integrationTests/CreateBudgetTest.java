@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import ebudget.calculation.AnnualBudget;
 import ebudget.calculation.BaseBudget;
 import ebudget.calculation.RecurringItem;
-import ebudget.common.CommonTest;
 import ebudget.data.Categories;
 import ebudget.data.Common;
 import ebudget.data.dto.CategoryDto;
@@ -21,10 +20,11 @@ class CreateBudgetTest {
 
 	private static final double PRECISION = 0.01;
 	private static final int YEAR = 2020;
-	private ClassLoader classLoader = getClass().getClassLoader();
-
+	private static final Integer NBCategories = 39;
 	private static final CategoryDto SALAIRE = new CategoryDto("salaire", true);
 	private static final CategoryDto IMPOT = new CategoryDto("impôt sur revenu");
+
+	private ClassLoader classLoader = getClass().getClassLoader();
 
 	@BeforeEach
 	public void clean() {
@@ -35,13 +35,14 @@ class CreateBudgetTest {
 	void createBalancedBudget() {
 		// inititalisation des catégories
 		Categories.initCategories();
-		assertEquals(CommonTest.NBCategories, Categories.countCategory());
+		assertEquals(NBCategories, Categories.countCategory());
 		assertTrue(Categories.isCategory(SALAIRE), "this categry should existe");
 		assertTrue(Categories.isIncome(SALAIRE), "this category should be an income");
 
 		// creation du budget de reference
 		View view = new View();
-		File BaseBudgetItemFile = new File(classLoader.getResource("budgetReferenceIntegrationTest.csv").getFile());
+		File BaseBudgetItemFile = new File(classLoader.getResource("budgetReferenceIntegrationTest.csv")
+			.getFile());
 		Map<CategoryDto, Double> budgetItemList = view.readBudgetItem(BaseBudgetItemFile.getAbsolutePath());
 
 		BaseBudget baseBudget = new BaseBudget(budgetItemList);
@@ -51,7 +52,8 @@ class CreateBudgetTest {
 		assertEquals(250.0, baseBudget.getBalance(), PRECISION);
 
 		// ajout des dépenses reccurrente depuis un fichier
-		File recurringItemFile = new File(classLoader.getResource("recurringIntegrationTest.csv").getFile());
+		File recurringItemFile = new File(classLoader.getResource("recurringIntegrationTest.csv")
+			.getFile());
 		List<RecurringItem> reccuringItemList = view.readRecurringItem(recurringItemFile.getAbsolutePath());
 
 		// creation du budget annuel
@@ -80,13 +82,14 @@ class CreateBudgetTest {
 	void createBudgetToFit() {
 		// inititalisation des catégories
 		Categories.initCategories();
-		assertEquals(CommonTest.NBCategories, Categories.countCategory());
+		assertEquals(NBCategories, Categories.countCategory());
 		assertTrue(Categories.isCategory(SALAIRE), "this categry should existe");
 		assertTrue(Categories.isIncome(SALAIRE), "this category should be an income");
 
 		// creation du budget de reference
 		View view = new View();
-		File BaseBudgetItemFile = new File(classLoader.getResource("budgetReferenceIntegrationTest.csv").getFile());
+		File BaseBudgetItemFile = new File(classLoader.getResource("budgetReferenceIntegrationTest.csv")
+			.getFile());
 		Map<CategoryDto, Double> budgetItemList = view.readBudgetItem(BaseBudgetItemFile.getAbsolutePath());
 
 		BaseBudget baseBudget = new BaseBudget(budgetItemList);
@@ -96,7 +99,8 @@ class CreateBudgetTest {
 		assertEquals(250.0, baseBudget.getBalance(), PRECISION);
 
 		// ajout des dépenses reccurrente depuis un fichier
-		File recurringItemFile = new File(classLoader.getResource("recurringIntegrationTest.csv").getFile());
+		File recurringItemFile = new File(classLoader.getResource("recurringIntegrationTest.csv")
+			.getFile());
 		List<RecurringItem> reccuringItemList = view.readRecurringItem(recurringItemFile.getAbsolutePath());
 		RecurringItem impot = new RecurringItem(IMPOT, "retard", 10000.0, false, true, Arrays.asList(false, false, false, false, false, true, false,
 				false, false, false, false, false));

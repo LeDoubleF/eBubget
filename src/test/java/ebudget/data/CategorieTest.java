@@ -6,11 +6,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ebudget.common.CommonTest;
 import ebudget.data.dao.CategoryEntity;
 import ebudget.data.dto.CategoryDto;
 
 class CategorieTest {
+
+	private static final Integer NBCategories = 39;
 
 	@BeforeEach
 	public void clean() {
@@ -34,7 +35,7 @@ class CategorieTest {
 	@Test
 	void initCategoryWithSQLFile() {
 		Categories.initCategories();
-		assertEquals(CommonTest.NBCategories, Categories.countCategory());
+		assertEquals(NBCategories, Categories.countCategory());
 	}
 
 	@Test
@@ -57,7 +58,8 @@ class CategorieTest {
 			Categories cat = new Categories();
 			fail("should throw exception");
 		} catch (IllegalStateException aExp) {
-			assertTrue(aExp.getMessage().contains("Utility class"));
+			assertTrue(aExp.getMessage()
+				.contains("Utility class"));
 		}
 	}
 

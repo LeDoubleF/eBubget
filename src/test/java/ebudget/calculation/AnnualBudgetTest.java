@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import ebudget.common.CommonTest;
 import ebudget.data.Categories;
 import ebudget.data.dto.CategoryDto;
 
@@ -16,6 +15,7 @@ public class AnnualBudgetTest {
 	private final double BALANCE = 170.0;
 	private final int YEAR = 2020;
 	private static final double PRECISION = 0.01;
+	public static List<Boolean> monthly = Arrays.asList(true, true, true, true, true, true, true, true, true, true, true, true);
 
 	private final CategoryDto DIVERS = new CategoryDto("Divers");
 	private final CategoryDto LOYER = new CategoryDto("Loyer");
@@ -61,7 +61,7 @@ public class AnnualBudgetTest {
 	public void budgetWithReccuringItemIfItMoreThanBaseBudget() {
 
 		// GIVEN
-		RecurringItem taxi = new RecurringItem(TAXI, "perso", 5.0, true, true, CommonTest.monthly);
+		RecurringItem taxi = new RecurringItem(TAXI, "perso", 5.0, true, true, monthly);
 		RecurringItem taxi2 = new RecurringItem(TAXI, "pro", 6.0, true, true, Arrays.asList(true, false, false, false, false, false, false, false,
 				false, false, false, true));
 		List<RecurringItem> reccuringItemList = new ArrayList<RecurringItem>();
@@ -84,7 +84,7 @@ public class AnnualBudgetTest {
 		// GIVEN
 		List<RecurringItem> reccuringItemList = new ArrayList<RecurringItem>();
 
-		RecurringItem taxi = new RecurringItem(TAXI, "perso", 5.0, true, true, CommonTest.monthly);
+		RecurringItem taxi = new RecurringItem(TAXI, "perso", 5.0, true, true, monthly);
 		RecurringItem taxe = new RecurringItem(IMPOT, "impotrevenue", 50.0, true, true, Arrays.asList(false, true, false, false, false, false, false,
 				false, true, false, false, false));
 		reccuringItemList.add(taxi);
@@ -109,7 +109,7 @@ public class AnnualBudgetTest {
 		// GIVEN
 		List<RecurringItem> reccuringItemList = new ArrayList<RecurringItem>();
 
-		RecurringItem taxi = new RecurringItem(TAXI, "perso", 5.0, true, true, CommonTest.monthly);
+		RecurringItem taxi = new RecurringItem(TAXI, "perso", 5.0, true, true, monthly);
 		RecurringItem taxi2 = new RecurringItem(TAXI, "pro", 6.0, true, true, Arrays.asList(true, false, false, false, false, false, false, false,
 				false, false, false, true));
 		reccuringItemList.add(taxi);
