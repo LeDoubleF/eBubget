@@ -139,7 +139,6 @@ public class CSVReaderTest {
 			csvReader.readTransactionFile(absolutePath, periode);
 			fail("Exception not thrown");
 		} catch (Exception aExp) {
-			System.out.println(aExp.getMessage());
 			assert (aExp.getMessage()
 				.contains(Message.FILE_CONTENT_KO));
 		}
@@ -155,7 +154,6 @@ public class CSVReaderTest {
 			csvReader.readTransactionFile(absolutePath, periode);
 			fail("Exception not thrown");
 		} catch (Exception aExp) {
-
 			assert (aExp.getMessage()
 				.contains(Message.FILE_CONTENT_KO));
 		}
