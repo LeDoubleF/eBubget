@@ -3,7 +3,6 @@ package ebudget.calculation;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import ebudget.data.Categories;
 import ebudget.data.dto.CategoryDto;
 
 public class Budget {
@@ -35,7 +34,7 @@ public class Budget {
 		for (Map.Entry<CategoryDto, Double> mapentry : budgetItemList.entrySet()) {
 			CategoryDto category = mapentry.getKey();
 			Double amount = mapentry.getValue();
-			if (category.isIncome()) {
+			if (Boolean.TRUE.equals(category.isIncome())) {
 				balance = balance + amount;
 			} else {
 				balance = balance - amount;

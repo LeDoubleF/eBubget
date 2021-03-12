@@ -8,9 +8,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ebudget.calculation.RecurringItem;
@@ -23,68 +26,26 @@ import ebudget.exception.Message;
 
 public class CSVReader {
 
-	private static final String DOUBLE = "Double";
-	private static final String STRING = "String";
-	private static final String BOOLEAN = "Boolean";
+	private static final String AMOUNT = "amount";
+	private static final String CATEGORY = "category";
+
 	private static final String LE_FICHIER_N_EXISTE_PAS = "le fichier {0} nexiste pas";
 	private static final String COMMA_DELIMITER = ";"; // Delimiter used in CSV
 														// file
 
 	private static final Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private ResourceBundle bundle = ResourceBundle.getBundle("ebudget.properties.config");
 
 	public CSVReader() {
+
 		super();
-	}
-
-	/**
-	 * description de l'emplacement des données dans le fichier
-	 * 
-	 * 0: amount, 1: Date ,2: category ,3: description ,4: payment
-	 * 
-	 * @return int FileDescription[]
-	 */
-	private Map<Integer, String> describeFile() {
-		// TODO description du fichier par utilisateur ou fichier de
-		// configuration
-
-		return null;
-
-	}
-
-	@SuppressWarnings("unchecked")
-	private <T> T checkType(String description, String value) {
-		// TODO date
-		if (description.equals(DOUBLE))
-			return (T) new Double(value.replace(",", "."));
-		else if (description.equals(BOOLEAN))
-			return (T) new Boolean(value);
-		else
-			return (T) value.trim();
 	}
 
 	public List<RecurringItem> readRecurringItemFile(String filePath) {
 		List<RecurringItem> recurringItemList = new ArrayList<>();
 		verifyFile(filePath);
 
-		Map<Integer, String> columnDescription = new HashMap<>();
-		columnDescription.put(0, STRING);// category
-		columnDescription.put(1, STRING);// description
-		columnDescription.put(2, BOOLEAN);// mandatory
-		columnDescription.put(3, BOOLEAN);// variable
-		columnDescription.put(4, DOUBLE);// amount
-		// Month
-		columnDescription.put(5, BOOLEAN);// 1
-		columnDescription.put(6, BOOLEAN);// 2
-		columnDescription.put(7, BOOLEAN);// 3
-		columnDescription.put(8, BOOLEAN);// 4
-		columnDescription.put(9, BOOLEAN);// 5
-		columnDescription.put(10, BOOLEAN);// 6
-		columnDescription.put(11, BOOLEAN);// 7
-		columnDescription.put(12, BOOLEAN);// 8
-		columnDescription.put(13, BOOLEAN);// 9
-		columnDescription.put(14, BOOLEAN);// 10
-		columnDescription.put(15, BOOLEAN);// 11
-		columnDescription.put(16, BOOLEAN);// 12
+		Map<Integer, ColumnDescription> columnDescription = getRecurringItemFileDescription();
 
 		List<Object> fileContentList = readFile(filePath, columnDescription);
 
@@ -116,10 +77,9 @@ public class CSVReader {
 		return recurringItemList;
 	}
 
-	private List<Object> readFile(String filePath, Map<Integer, String> fileDescription) {
+	private List<Object> readFile(String filePath, Map<Integer, ColumnDescription> fileDescription) {
 		List<Object> fileContentList = new ArrayList<>();
 		verifyFile(filePath);
-		// TODO rendre la lecture de la description du fichier plus jolie
 
 		int lineNumber = 1;
 		try (BufferedReader fichierSource = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8))) {
@@ -135,8 +95,8 @@ public class CSVReader {
 						throw new FileReaderException(Message.FILE_CONTENT_KO);
 					List<Object> valueList = new ArrayList<>();
 					for (int i = 0; i < tabValue.length; i++) {
-						String columnType = fileDescription.get(i);
-						valueList.add(checkType(columnType, tabValue[i]));
+						ColumnDescription columnType = fileDescription.get(i);
+						valueList.add(columnType.convert(tabValue[i]));
 					}
 					fileContentList.add(valueList);
 				}
@@ -164,15 +124,27 @@ public class CSVReader {
 		}
 	}
 
-	public Map<CategoryDto, Double> readBudgetFile(String filePath) {
-		// TODO mutualiser avec code lecture fichier transaction
+	/**
+	 * description de l'emplacement des données dans le fichier selon fichier de
+	 * configuration ebudget.properties.config
+	 * 
+	 * @return Map<Integer, ColumnDescription>
+	 */
+	public Map<Integer, ColumnDescription> getBudgetFileDescription() {
 
+		Integer amountColumn = getColumnNumber("app.budgetFile.amount");
+		Integer categoryColumn = getColumnNumber("app.budgetFile.category");
+		Map<Integer, ColumnDescription> columnDescription = new HashMap<>();
+		columnDescription.put(amountColumn, new ColumnDescription(CVSParameter.DOUBLE, AMOUNT));
+		columnDescription.put(categoryColumn, new ColumnDescription(CVSParameter.STRING, CATEGORY));
+		return columnDescription;
+	}
+
+	public Map<CategoryDto, Double> readBudgetFile(String filePath) {
 		Map<CategoryDto, Double> budgetItemList = new HashMap<>();
 		verifyFile(filePath);
 
-		Map<Integer, String> columnDescription = new HashMap<>();
-		columnDescription.put(1, DOUBLE);// amount
-		columnDescription.put(0, STRING);// category
+		Map<Integer, ColumnDescription> columnDescription = getBudgetFileDescription();
 
 		List<Object> fileContentList = readFile(filePath, columnDescription);
 
@@ -191,23 +163,62 @@ public class CSVReader {
 		return budgetItemList;
 	}
 
+	/**
+	 * description de l'emplacement des données dans le fichier selon fichier de
+	 * configuration ebudget.properties.config
+	 * 
+	 * @return Map<Integer, ColumnDescription>
+	 */
+	public Map<Integer, ColumnDescription> getTransactionFileDescription() {
+		Map<Integer, ColumnDescription> transactionFileColumn = new HashMap<>();
+
+		transactionFileColumn.put(getColumnNumber("app.transactionFile.amount"), new ColumnDescription(CVSParameter.DOUBLE, AMOUNT));
+		transactionFileColumn.put(getColumnNumber("app.transactionFile.date"), new ColumnDescription(CVSParameter.STRING, "date"));
+		transactionFileColumn.put(getColumnNumber("app.transactionFile.category"), new ColumnDescription(CVSParameter.STRING, CATEGORY));
+		transactionFileColumn.put(getColumnNumber("app.transactionFile.description"), new ColumnDescription(CVSParameter.STRING, "description"));
+		transactionFileColumn.put(getColumnNumber("app.transactionFile.payment"), new ColumnDescription(CVSParameter.STRING, "payment"));
+		return transactionFileColumn;
+	}
+
+	protected Integer getColumnNumber(String parameter) {
+		try {
+			return Integer.valueOf(bundle.getString(parameter));
+		} catch (MissingResourceException e) {
+			// TODO test LOGGER
+			LOGGER.log(Level.SEVERE, "La parametre {0} n existe pas", parameter);
+			throw (MissingResourceException) e;
+		}
+
+	}
+
 	public List<TransactionDto> readTransactionFile(String filePath, PeriodDTo periode) {
-		Map<Integer, String> columnDescription = new HashMap<>();
-		columnDescription.put(4, DOUBLE); // amount
-		columnDescription.put(1, STRING); // Date
-		columnDescription.put(2, STRING); // category
-		columnDescription.put(3, STRING); // description
-		columnDescription.put(0, STRING); // payment
+		Map<Integer, ColumnDescription> transactionFileColumn = getTransactionFileDescription();
 
 		List<TransactionDto> transactionList = new ArrayList<>();
-		List<Object> fileContentList = readFile(filePath, columnDescription);
+		List<Object> fileContentList = readFile(filePath, transactionFileColumn);
 		for (Object filContent : fileContentList) {
 			@SuppressWarnings("unchecked")
 			List<Object> valueList = (List<Object>) filContent;
 			TransactionDto transaction = new TransactionDto((String) valueList.get(0), (String) valueList.get(1), (String) valueList
-					.get(2), (String) valueList.get(3), (Double) valueList.get(4), periode);
+				.get(2), (String) valueList.get(3), (Double) valueList.get(4), periode);
 			transactionList.add(transaction);
 		}
 		return transactionList;
 	}
+
+	public Map<Integer, ColumnDescription> getRecurringItemFileDescription() {
+
+		Map<Integer, ColumnDescription> columnDescription = new HashMap<>();
+		columnDescription.put(getColumnNumber("app.recurringItemFile.category"), new ColumnDescription(CVSParameter.STRING, CATEGORY));
+		columnDescription.put(getColumnNumber("app.recurringItemFile.description"), new ColumnDescription(CVSParameter.STRING, "description"));
+		columnDescription.put(getColumnNumber("app.recurringItemFile.amount"), new ColumnDescription(CVSParameter.DOUBLE, AMOUNT));
+
+		List<String> parameterList = Arrays.asList("mandatory", "variable", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
+		for (String parameter : parameterList) {
+			columnDescription.put(getColumnNumber("app.recurringItemFile." + parameter), new ColumnDescription(CVSParameter.BOOLEAN, parameter));
+		}
+
+		return columnDescription;
+	}
+
 }

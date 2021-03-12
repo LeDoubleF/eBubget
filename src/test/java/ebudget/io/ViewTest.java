@@ -27,18 +27,6 @@ class ViewTest {
 	}
 
 	@Test
-	final void testReadPeriodError() {
-
-		try {
-			ByteArrayInputStream in = new ByteArrayInputStream("c:\\test".getBytes());
-			view.readPeriod(in);
-			fail("Exception not thrown");
-		} catch (Exception aExp) {
-			assert (aExp.getMessage().contains("c:\\test"));
-		}
-	}
-
-	@Test
 	final void testReadPeriod() {
 		ByteArrayInputStream in = new ByteArrayInputStream("2020\r8".getBytes());
 		assertEquals(new PeriodDTo(2020, 8), view.readPeriod(in));
@@ -60,7 +48,8 @@ class ViewTest {
 	}
 
 	private String getResourceAbsolutePath(String resourceName, ClassLoader classLoader) {
-		File file = new File(classLoader.getResource(resourceName).getFile());
+		File file = new File(classLoader.getResource(resourceName)
+			.getFile());
 		String absolutePath = file.getAbsolutePath();
 		return absolutePath;
 	}

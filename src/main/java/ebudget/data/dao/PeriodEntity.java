@@ -49,7 +49,8 @@ public class PeriodEntity implements Serializable {
 	}
 
 	public static boolean save(int annee, int trimestre, int mois) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
 
 		Transaction tx = null;
 		PeriodePK stId = null;
@@ -59,7 +60,7 @@ public class PeriodEntity implements Serializable {
 			stId = (PeriodePK) session.save(periode);
 			tx.commit();
 		} catch (HibernateException ex) {
-			LOGGER.log(Level.SEVERE, "Period={0}-{1}-{2} :" + ex.getMessage(), new Object[]{annee, trimestre, mois});
+			LOGGER.log(Level.SEVERE, "Period={0}-{1}-{2} :{3}", new Object[]{annee, trimestre, mois, ex.getMessage()});
 			if (tx != null)
 				tx.rollback();
 		} finally {
@@ -76,13 +77,15 @@ public class PeriodEntity implements Serializable {
 		Transaction tx = null;
 		try {
 
-			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
+			Session sessionTwo = HibernateUtil.getSessionFactory()
+				.openSession();
 			tx = sessionTwo.beginTransaction();
 
 			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM periode");
 			queryDelete.executeUpdate();
 
-			sessionTwo.getTransaction().commit();
+			sessionTwo.getTransaction()
+				.commit();
 			LOGGER.log(Level.INFO, "suppression de toutes les périodes");
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "erreur lors de la suppression des périodes", e);

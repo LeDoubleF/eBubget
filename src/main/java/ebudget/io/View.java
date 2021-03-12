@@ -14,7 +14,6 @@ import ebudget.calculation.RecurringItem;
 import ebudget.data.dto.CategoryDto;
 import ebudget.data.dto.PeriodDTo;
 import ebudget.data.dto.TransactionDto;
-import ebudget.exception.ComplianceException;
 
 public class View implements Observer {
 
@@ -30,13 +29,13 @@ public class View implements Observer {
 
 	public List<TransactionDto> readTransaction(String fileName, PeriodDTo periode) {
 		try {
-			LOGGER.log(Level.INFO, "Lecture du fichier: {0}", fileName);
+			LOGGER.log(Level.INFO, "Lecture du fichier de transaction : {0}", fileName);
 
 			CSVReader csvReader = new CSVReader();
 
 			return csvReader.readTransactionFile(fileName, periode);
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "exit when read transaction", e);
+			LOGGER.log(Level.SEVERE, "Erreur lors de la lecture du fichier des  transactions", e);
 			System.exit(1);
 		}
 		return new ArrayList<>();
@@ -44,13 +43,13 @@ public class View implements Observer {
 
 	public List<RecurringItem> readRecurringItem(String fileName) {
 		try {
-			LOGGER.log(Level.INFO, "Lecture du fichier: {0}", fileName);
+			LOGGER.log(Level.INFO, "Lecture du fichier des dépenses récurrentes: {0}", fileName);
 
 			CSVReader csvReader = new CSVReader();
 
 			return csvReader.readRecurringItemFile(fileName);
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "exit when read transaction", e);
+			LOGGER.log(Level.SEVERE, "Erreur lors de la lecture du fichier des dépenses recurrentes", e);
 			System.exit(1);
 		}
 		return new ArrayList<>();
@@ -92,8 +91,9 @@ public class View implements Observer {
 			return new PeriodDTo(year, month);
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "lecture de la période", e);
-			throw new ComplianceException(e.getMessage());
+			System.exit(-1);
 		}
+		return null;
 	}
 
 	public void printValue(String prompt, String value) {

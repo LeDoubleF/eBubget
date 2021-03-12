@@ -90,13 +90,15 @@ public class RecurringExpensesEntity implements Serializable {
 		Transaction tx = null;
 		try {
 
-			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
+			Session sessionTwo = HibernateUtil.getSessionFactory()
+				.openSession();
 			tx = sessionTwo.beginTransaction();
 
 			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM recurringexpenses");
 			queryDelete.executeUpdate();
 
-			sessionTwo.getTransaction().commit();
+			sessionTwo.getTransaction()
+				.commit();
 			LOGGER.log(Level.INFO, "suppression de toutes les prévisions");
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "erreur lors de la suppression des prévisions", e);
@@ -110,7 +112,7 @@ public class RecurringExpensesEntity implements Serializable {
 	 * Hibernate requires no-args constructor
 	 */
 	public RecurringExpensesEntity() {
-
+		super();
 	}
 
 }

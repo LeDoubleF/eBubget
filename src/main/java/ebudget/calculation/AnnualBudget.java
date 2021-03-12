@@ -54,11 +54,8 @@ public class AnnualBudget {
 						new Object[]{recurringItem.isForThisMonth(month), recurringItem.getCategory(), recurringItem.getAmount()});
 				if (recurringItem.isForThisMonth(month)) {
 					CategoryDto category = recurringItem.getCategory();
-					double amount = 0.0;
-					if (budgetItemMap.containsKey(category)) {
-						amount = budgetItemMap.get(category);
-					}
-					budgetItemMap.put(category, amount + recurringItem.getAmount());
+					double amount = recurringItem.getAmount();
+					budgetItemMap.compute(category, (k, v) -> (v == null) ? amount : budgetItemMap.get(k) + amount);
 				}
 			}
 			for (Map.Entry<CategoryDto, Double> map : budgetItemMap.entrySet()) {
@@ -147,7 +144,8 @@ public class AnnualBudget {
 	}
 
 	public Double getAmount(CategoryDto category, int month) {
-		return draftBudgetList.get(month - 1).getAmount(category);
+		return draftBudgetList.get(month - 1)
+			.getAmount(category);
 	}
 
 	public List<Double> getGlobalBalanceList() {

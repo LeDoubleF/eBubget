@@ -64,7 +64,6 @@ public class Ebudget {
 	public void run() {
 		// Repository.initCategories();
 		// String fileName = view.readFilePath(System.in);
-		// PeriodDTo periode = view.readPeriod(System.in);
 		PeriodDTo periode = new PeriodDTo(2020, 1);
 
 		// ByteArrayInputStream in = new
@@ -96,16 +95,17 @@ public class Ebudget {
 		Categories.initCategories();
 
 		// creation du budget de reference
-		View view = new View();
-		File BaseBudgetItemFile = new File(classLoader.getResource("budgetReference.csv").getFile());
-		Map<CategoryDto, Double> budgetItemList = view.readBudgetItem(BaseBudgetItemFile.getAbsolutePath());
+		File baseBudgetItemFile = new File(classLoader.getResource("budgetReference.csv")
+			.getFile());
+		Map<CategoryDto, Double> budgetItemList = view.readBudgetItem(baseBudgetItemFile.getAbsolutePath());
 
 		BaseBudget baseBudget = new BaseBudget(budgetItemList);
 		baseBudget.print();
 		System.out.println("\n\t" + baseBudget.getBalance());
 
 		// ajout des dépenses reccurrente depuis un fichier
-		File recurringItemFile = new File(classLoader.getResource("recurring.csv").getFile());
+		File recurringItemFile = new File(classLoader.getResource("recurring.csv")
+			.getFile());
 		List<RecurringItem> reccuringItemList = view.readRecurringItem(recurringItemFile.getAbsolutePath());
 
 		// creation du budget annuel

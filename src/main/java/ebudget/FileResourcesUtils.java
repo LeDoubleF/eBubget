@@ -17,7 +17,7 @@ public class FileResourcesUtils {
 
 		final FileResourcesUtils app = new FileResourcesUtils();
 
-		// String fileName = "database.properties";
+		// TODO String fileName = "database.properties";
 		final String fileName = "2.sql";
 
 		System.out.println("getResourceAsStream : " + fileName);
@@ -42,7 +42,8 @@ public class FileResourcesUtils {
 	private InputStream getFileFromResourceAsStream(final String fileName) {
 
 		// The class loader that loaded the class
-		final ClassLoader classLoader = this.getClass().getClassLoader();
+		final ClassLoader classLoader = this.getClass()
+			.getClassLoader();
 		final InputStream inputStream = classLoader.getResourceAsStream(fileName);
 
 		// the stream holding the file content
@@ -63,7 +64,8 @@ public class FileResourcesUtils {
 	 */
 	private File getFileFromResource(final String fileName) throws URISyntaxException {
 
-		final ClassLoader classLoader = this.getClass().getClassLoader();
+		final ClassLoader classLoader = this.getClass()
+			.getClassLoader();
 		final URL resource = classLoader.getResource(fileName);
 		if (resource == null) {
 			throw new IllegalArgumentException("file not found! " + fileName);

@@ -14,7 +14,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import ebudget.data.Categories;
 import ebudget.data.dto.AccountDto;
 import ebudget.data.dto.AccountType;
 
