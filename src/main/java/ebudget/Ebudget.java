@@ -1,10 +1,9 @@
 package ebudget;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +39,7 @@ public class Ebudget {
 		try {
 			EBudgetLogger.setup();
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "erreur lors du main :", e);
-			throw new RuntimeException("Problems with creating the log files");
+			LOGGER.log(Level.SEVERE, "erreur lors de  la création du fichier de log {0} :", e);
 		}
 
 		Ebudget budget = new Ebudget();
@@ -62,39 +60,22 @@ public class Ebudget {
 	}
 
 	public void run() {
-		// Repository.initCategories();
-		// String fileName = view.readFilePath(System.in);
-		PeriodDTo periode = new PeriodDTo(2020, 1);
-
-		// ByteArrayInputStream in = new
-		// ByteArrayInputStream("C:\\Users\\ffazer\\Documents\\ebudget
-		// exe\\janvier.csv".getBytes());
-		// String fileName = view.readFilePath(in);
-		// in = new ByteArrayInputStream("2020\n1".getBytes());
-		// PeriodDTo periode = view.readPeriod(in);
-		//
-		// List<TransactionDto> fileContentList = view.readTransaction(fileName,
-		// periode);
-		// PeriodEntity.save(periode);
-		//
-		// fileContentList.forEach(TransactionEntity::save);
-		// double transactionSum = TransactionEntity.sumAccount();
-		//
-		// in = new ByteArrayInputStream("100".getBytes());
-		// // double initialBalance = view.readInitialBalance(System.in);
-		// double initialBalance = view.readInitialBalance(in);
-		// double finalBalance =
-		// calculator.calculateFinalBalance(initialBalance, transactionSum);
-		// view.printValue("Solde final : ", Double.toString(finalBalance));
-		//
-		// AccountDto cpp = new AccountDto("cpp", AccountType.CPP, "compte
-		// courant", initialBalance, finalBalance);
-		// AccountEntity.save(cpp);
 
 		// inititalisation des catégories
 		Categories.initCategories();
 
-		// creation du budget de reference
+		// //InputStream inForFileName = System.in;
+		// ByteArrayInputStream inForFileName = new
+		// ByteArrayInputStream("C:\\Users\\ffazer\\Documents\\ebudget
+		// exe\\janvier.csv".getBytes());
+		// String fileName = view.readFilePath(inForFileName);
+
+		// InputStream inForPeriod = System.in;
+		// PeriodDTo periode = view.readPeriod(inForPeriod);
+		PeriodDTo periode = new PeriodDTo(2021, 1);
+		PeriodEntity.save(periode);
+
+		// charger un budget de référence
 		File baseBudgetItemFile = new File(classLoader.getResource("budgetReference.csv")
 			.getFile());
 		Map<CategoryDto, Double> budgetItemList = view.readBudgetItem(baseBudgetItemFile.getAbsolutePath());
@@ -103,15 +84,35 @@ public class Ebudget {
 		baseBudget.print();
 		System.out.println("\n\t" + baseBudget.getBalance());
 
-		// ajout des dépenses reccurrente depuis un fichier
+		// charger le fichier des dépenses récurrentes
 		File recurringItemFile = new File(classLoader.getResource("recurring.csv")
 			.getFile());
 		List<RecurringItem> reccuringItemList = view.readRecurringItem(recurringItemFile.getAbsolutePath());
+
+		// récupérer solde initiale
+		// double initialBalance =view.readInitialBalance(System.in);
+		double initialBalance = 100.0;
 
 		// creation du budget annuel
 		AnnualBudget annualBudget = new AnnualBudget(periode.getYear(), 0.0, baseBudget, reccuringItemList);
 		annualBudget.print();
 		System.out.println("\n\t" + annualBudget.getBalance());
+
+		// charger les transactions
+		File transactionFileName = new File(classLoader.getResource("releveJanvier.csv")
+			.getFile());
+		List<TransactionDto> fileContentList = view.readTransaction(transactionFileName.getAbsolutePath(), periode);
+
+		fileContentList.forEach(TransactionEntity::save);
+		double transactionSum = TransactionEntity.sumAccount();
+
+		ByteArrayInputStream in = new ByteArrayInputStream("100".getBytes());
+
+		double finalBalance = calculator.calculateFinalBalance(initialBalance, transactionSum);
+		view.printValue("Solde final : ", Double.toString(finalBalance));
+
+		AccountDto cpp = new AccountDto("cpp", AccountType.CPP, "compte courant", initialBalance, finalBalance);
+		AccountEntity.save(cpp);
 
 		LOGGER.log(Level.INFO, "fin du programme");
 

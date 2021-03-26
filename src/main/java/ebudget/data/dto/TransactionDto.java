@@ -11,7 +11,7 @@ public class TransactionDto {
 
 	private Double amount;
 
-	private PeriodDTo periode;
+	private PeriodDTo period;
 
 	/**
 	 * 
@@ -20,16 +20,16 @@ public class TransactionDto {
 	 * @param description
 	 * @param payment
 	 * @param amount
-	 * @param periode
+	 * @param period
 	 */
-	public TransactionDto(String date, CategoryDto category, String description, String payment, Double amount, PeriodDTo periode) {
+	public TransactionDto(String date, CategoryDto category, String description, String payment, Double amount, PeriodDTo period) {
 		super();
 		this.date = date;
 		this.category = category;
 		this.description = description;
 		this.payment = payment;
 		this.amount = amount;
-		this.periode = periode;
+		this.period = period;
 	}
 
 	/**
@@ -39,19 +39,19 @@ public class TransactionDto {
 	 * @param description
 	 * @param payment
 	 * @param amount
-	 * @param periode
+	 * @param period
 	 */
-	public TransactionDto(String date, String category, String description, String payment, Double amount, PeriodDTo periode) {
-		this(date, new CategoryDto(category.toLowerCase()), description, payment, amount, periode);
+	public TransactionDto(String date, String category, String description, String payment, Double amount, PeriodDTo period) {
+		this(date, new CategoryDto(category.toLowerCase()), description, payment, amount, period);
 
 	}
 
-	public PeriodDTo getPeriode() {
-		return periode;
+	public PeriodDTo getPeriod() {
+		return period;
 	}
 
-	public void setPeriode(PeriodDTo periode) {
-		this.periode = periode;
+	public void setPeriod(PeriodDTo period) {
+		this.period = period;
 	}
 
 	public String getDate() {

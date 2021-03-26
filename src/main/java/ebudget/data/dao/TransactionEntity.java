@@ -139,7 +139,7 @@ public class TransactionEntity implements Serializable {
 			transactionEntity.setDescription(transaction.getDescription());
 			transactionEntity.setPayment(transaction.getPayment());
 			transactionEntity.setAmount(transaction.getAmount());
-			transactionEntity.setPeriode(transaction.getPeriode());
+			transactionEntity.setPeriode(transaction.getPeriod());
 			stId = (Integer) session.save(transactionEntity);
 			tx.commit();
 		} catch (HibernateException ex) {
