@@ -2,6 +2,8 @@
 package ebudget.calculation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -175,6 +177,8 @@ public class AnnualBudgetTest {
 	public void whenCloseBugetRecomputeBudgetTest() {
 
 		// GIVEN
+
+		LocalDate date = LocalDate.of(2020, Month.JUNE, 25);
 		List<RecurringItem> reccuringItemList = new ArrayList<RecurringItem>();
 
 		RecurringItem taxi = new RecurringItem(TAXI, "perso", 5.0, true, true, monthly);
@@ -188,10 +192,10 @@ public class AnnualBudgetTest {
 
 		annualBudget.print();
 
-		annualBudget.setTransaction(MONTH, TAXI, "25/06/2005", "facture perdue", "CB", 180.0);
-		annualBudget.setTransaction(MONTH, LOYER, "25/06/2005", "facture perdue", "CB", 800.0);
-		annualBudget.setTransaction(MONTH, DIVERS, "25/06/2005", "facture perdue", "CB", 40.0);
-		annualBudget.setTransaction(MONTH, SALAIRE, "25/06/2005", "facture perdue", "CB", 1000.0);
+		annualBudget.setTransaction(MONTH, TAXI, date, "facture perdue", "CB", 180.0);
+		annualBudget.setTransaction(MONTH, LOYER, date, "facture perdue", "CB", 800.0);
+		annualBudget.setTransaction(MONTH, DIVERS, date, "facture perdue", "CB", 40.0);
+		annualBudget.setTransaction(MONTH, SALAIRE, date, "facture perdue", "CB", 1000.0);
 
 		annualBudget.closeBudget(1);
 

@@ -3,6 +3,7 @@ package ebudget.data.dao;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,7 +48,7 @@ public class TransactionEntity implements Serializable {
 	private PeriodEntity periode;
 
 	@Column(name = "Date", unique = false, nullable = false)
-	private String date;
+	private LocalDate date;
 
 	@Column(name = "Description", unique = false, nullable = false, length = 100)
 	private String description;
@@ -74,11 +75,11 @@ public class TransactionEntity implements Serializable {
 		return transactionId;
 	}
 
-	public String getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 
@@ -119,7 +120,8 @@ public class TransactionEntity implements Serializable {
 	}
 
 	public static boolean save(TransactionDto transaction) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
 
 		Transaction tx = null;
 		Integer stId = null;
@@ -127,12 +129,13 @@ public class TransactionEntity implements Serializable {
 			tx = session.beginTransaction();
 			TransactionEntity transactionEntity = new TransactionEntity();
 			transactionEntity.setDate(transaction.getDate());
-			// TODO gestion correcte de la date
 			if (Categories.isCategory(transaction.getCategory())) {
 				transactionEntity.setCategory(transaction.getCategory());
-				LOGGER.log(Level.INFO, "{0} existe ", transaction.getCategory().getName());
+				LOGGER.log(Level.INFO, "{0} existe ", transaction.getCategory()
+					.getName());
 			} else {
-				LOGGER.log(Level.WARNING, "{0} n existe pas en tant que catégorie ", transaction.getCategory().getName());
+				LOGGER.log(Level.WARNING, "{0} n existe pas en tant que catégorie ", transaction.getCategory()
+					.getName());
 
 				transactionEntity.setCategory(Categories.getDefaultCategory());
 			}
@@ -154,7 +157,8 @@ public class TransactionEntity implements Serializable {
 	}
 
 	public static Double sumAccount() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
 
 		Transaction tx = null;
 		try {
@@ -168,9 +172,12 @@ public class TransactionEntity implements Serializable {
 			List<Double> sum = query.list();
 
 			// Commit data.
-			session.getTransaction().commit();
+			session.getTransaction()
+				.commit();
 
-			return BigDecimal.valueOf(sum.get(0)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+			return BigDecimal.valueOf(sum.get(0))
+				.setScale(2, RoundingMode.HALF_UP)
+				.doubleValue();
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, "erreur calcul somme total ", e);
 
@@ -183,7 +190,8 @@ public class TransactionEntity implements Serializable {
 	}
 
 	public static Double sumCash() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
 
 		try {
 			session.beginTransaction();
@@ -211,13 +219,15 @@ public class TransactionEntity implements Serializable {
 		Transaction tx = null;
 		try {
 
-			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
+			Session sessionTwo = HibernateUtil.getSessionFactory()
+				.openSession();
 			tx = sessionTwo.beginTransaction();
 
 			Query queryDelete = sessionTwo.createSQLQuery("delete from  transaction");
 			queryDelete.executeUpdate();
 
-			sessionTwo.getTransaction().commit();
+			sessionTwo.getTransaction()
+				.commit();
 		} catch (Exception e) {
 			// Rollback in case of an error occurred.
 			if (tx != null)

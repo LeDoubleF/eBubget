@@ -11,3 +11,6 @@ Le logiciel permet de faire des prévisions,ie:
 calculer automatiquement le solde du budget en fonction des dépenses récurrentes
 permet d'anticiper les grosse dépenses récurrentes (exemple impôt, vacance)
 permet d'anticiper les découverts
+
+Dans les fichiers d'entre csv 
+le format de la date est le suivant :dd/MM/yyyy

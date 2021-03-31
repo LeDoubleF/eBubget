@@ -1,6 +1,8 @@
 package ebudget.io;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class ColumnDescription {
 
@@ -22,7 +24,9 @@ public class ColumnDescription {
 			case BOOLEAN :
 				return (T) new Boolean(value);
 			case DATE :
-				return (T) new Date(value);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.FRANCE);
+				LocalDate date = LocalDate.parse(value, formatter);
+				return (T) date;
 
 			default :
 				return (T) value.trim();

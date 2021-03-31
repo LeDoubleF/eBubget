@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -173,7 +174,7 @@ public class CSVReader {
 		Map<Integer, ColumnDescription> transactionFileColumn = new HashMap<>();
 
 		transactionFileColumn.put(getColumnNumber("app.transactionFile.amount"), new ColumnDescription(CVSParameter.DOUBLE, AMOUNT));
-		transactionFileColumn.put(getColumnNumber("app.transactionFile.date"), new ColumnDescription(CVSParameter.STRING, "date"));
+		transactionFileColumn.put(getColumnNumber("app.transactionFile.date"), new ColumnDescription(CVSParameter.DATE, "date"));
 		transactionFileColumn.put(getColumnNumber("app.transactionFile.category"), new ColumnDescription(CVSParameter.STRING, CATEGORY));
 		transactionFileColumn.put(getColumnNumber("app.transactionFile.description"), new ColumnDescription(CVSParameter.STRING, "description"));
 		transactionFileColumn.put(getColumnNumber("app.transactionFile.payment"), new ColumnDescription(CVSParameter.STRING, "payment"));
@@ -199,7 +200,7 @@ public class CSVReader {
 		for (Object filContent : fileContentList) {
 			@SuppressWarnings("unchecked")
 			List<Object> valueList = (List<Object>) filContent;
-			TransactionDto transaction = new TransactionDto((String) valueList.get(0), (String) valueList.get(1), (String) valueList
+			TransactionDto transaction = new TransactionDto((LocalDate) valueList.get(0), (String) valueList.get(1), (String) valueList
 				.get(2), (String) valueList.get(3), (Double) valueList.get(4), periode);
 			transactionList.add(transaction);
 		}

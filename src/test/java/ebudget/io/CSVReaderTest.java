@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -121,9 +123,9 @@ class CSVReaderTest {
 
 		List<TransactionDto> transaction = csvReader.readTransactionFile(absolutePath, periode);
 
-		TransactionDto t1 = new TransactionDto("31/12/2019", "salaire", "entreprise", "virement", -3000.50, periode);
-		TransactionDto t2 = new TransactionDto("02/01/2020", "alimentation", "Oumar", "Espèce", 2.10, periode);
-		TransactionDto t3 = new TransactionDto("03/01/2020", "alimentation", "lait", "Espèce", 4.0, periode);
+		TransactionDto t1 = new TransactionDto(LocalDate.of(2019, Month.DECEMBER, 31), "salaire", "entreprise", "virement", -3000.50, periode);
+		TransactionDto t2 = new TransactionDto(LocalDate.of(2020, Month.JANUARY, 2), "alimentation", "Oumar", "Espèce", 2.10, periode);
+		TransactionDto t3 = new TransactionDto(LocalDate.of(2020, Month.JANUARY, 3), "alimentation", "lait", "Espèce", 4.0, periode);
 
 		assertEquals(t1, transaction.get(0));
 		assertEquals(t2, transaction.get(1));
@@ -231,11 +233,12 @@ class CSVReaderTest {
 
 		Map<Integer, ColumnDescription> columnDescription = csvReader.getTransactionFileDescription();
 		Map<Integer, ColumnDescription> transactionFileColumn = new HashMap<>();
+
+		transactionFileColumn.put(0, new ColumnDescription(CVSParameter.DATE, "date"));
+		transactionFileColumn.put(1, new ColumnDescription(CVSParameter.STRING, CATEGORY));
+		transactionFileColumn.put(2, new ColumnDescription(CVSParameter.STRING, "description"));
+		transactionFileColumn.put(3, new ColumnDescription(CVSParameter.STRING, "payment"));
 		transactionFileColumn.put(4, new ColumnDescription(CVSParameter.DOUBLE, AMOUNT));
-		transactionFileColumn.put(1, new ColumnDescription(CVSParameter.STRING, "date"));
-		transactionFileColumn.put(2, new ColumnDescription(CVSParameter.STRING, CATEGORY));
-		transactionFileColumn.put(3, new ColumnDescription(CVSParameter.STRING, "description"));
-		transactionFileColumn.put(0, new ColumnDescription(CVSParameter.STRING, "payment"));
 		assertEquals(transactionFileColumn, columnDescription);
 	}
 

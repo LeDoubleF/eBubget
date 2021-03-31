@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -35,11 +37,13 @@ public class Ebudget {
 	public static void main(String[] args) {
 		String curDir = System.getProperty("user.dir");
 		System.out.println(Ebudget.class.getName() + "Le répertoire courant est: " + curDir);
-
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate nowDate = LocalDate.now();
+		LOGGER.log(Level.INFO, "Il est maintenant : {0}", nowDate.format(formatter));
 		try {
 			EBudgetLogger.setup();
 		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "erreur lors de  la création du fichier de log {0} :", e);
+			LOGGER.log(Level.SEVERE, "erreur lors de  la création du fichier de log {0} :", e.toString());
 		}
 
 		Ebudget budget = new Ebudget();

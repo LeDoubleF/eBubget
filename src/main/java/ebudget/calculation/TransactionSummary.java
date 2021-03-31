@@ -1,5 +1,6 @@
 package ebudget.calculation;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +25,7 @@ public class TransactionSummary {
 	private List<TransactionDto> transactionList = new ArrayList<>();
 	protected double balance = 0.0;
 
-	public void addTransaction(CategoryDto category, String date, String description, String payment, double amount) {
+	public void addTransaction(CategoryDto category, LocalDate date, String description, String payment, double amount) {
 		transactionList.add(new TransactionDto(date, category, description, payment, amount, period));
 		if (Boolean.TRUE.equals(category.isIncome())) {
 			balance = balance + amount;

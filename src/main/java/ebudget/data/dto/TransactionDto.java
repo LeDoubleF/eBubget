@@ -1,8 +1,10 @@
 package ebudget.data.dto;
 
+import java.time.LocalDate;
+
 public class TransactionDto {
 
-	private String date;
+	private LocalDate date;
 	private CategoryDto category;
 
 	private String description;
@@ -22,7 +24,7 @@ public class TransactionDto {
 	 * @param amount
 	 * @param period
 	 */
-	public TransactionDto(String date, CategoryDto category, String description, String payment, Double amount, PeriodDTo period) {
+	public TransactionDto(LocalDate date, CategoryDto category, String description, String payment, Double amount, PeriodDTo period) {
 		super();
 		this.date = date;
 		this.category = category;
@@ -41,7 +43,7 @@ public class TransactionDto {
 	 * @param amount
 	 * @param period
 	 */
-	public TransactionDto(String date, String category, String description, String payment, Double amount, PeriodDTo period) {
+	public TransactionDto(LocalDate date, String category, String description, String payment, Double amount, PeriodDTo period) {
 		this(date, new CategoryDto(category.toLowerCase()), description, payment, amount, period);
 
 	}
@@ -54,11 +56,11 @@ public class TransactionDto {
 		this.period = period;
 	}
 
-	public String getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

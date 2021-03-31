@@ -2,6 +2,7 @@ package ebudget.calculation;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -206,7 +207,7 @@ public class AnnualBudget {
 		return budgetStateList[month - 1];
 	}
 
-	public void setTransaction(int month, CategoryDto category, String date, String description, String payment, double amount) {
+	public void setTransaction(int month, CategoryDto category, LocalDate date, String description, String payment, double amount) {
 		expenses[month - 1].addTransaction(category, date, description, payment, amount);
 
 	}
