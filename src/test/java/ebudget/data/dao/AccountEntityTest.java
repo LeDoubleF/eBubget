@@ -30,11 +30,12 @@ class AccountEntityTest {
 		try {
 			String description = "compte courant";
 			double delta = 0.0;
-			AccountDto cpp = new AccountDto("pactole", AccountType.CPP, description, delta, 100.0);
+			AccountDto cpp = new AccountDto("pactole", AccountType.CPP, description, delta);
 			AccountEntity.save(cpp);
 
 			String name = new String("pactole");
-			Session session = HibernateUtil.getSessionFactory().openSession();
+			Session session = HibernateUtil.getSessionFactory()
+				.openSession();
 			tx = session.beginTransaction();
 
 			Query query = session.createSQLQuery("SELECT * FROM account WHERE NAME='" + name + "' ");
@@ -45,7 +46,7 @@ class AccountEntityTest {
 			assertEquals(AccountType.CPP, account.getAccountType());
 			assertEquals(description, account.getDescription());
 			assertEquals(delta, account.getInitialAmount(), delta);
-			assertEquals(100.0, account.getFinalAmount(), delta);
+			assertEquals(0.0, account.getFinalAmount(), delta);
 
 		} catch (Exception e) {
 			// Rollback in case of an error occurred.

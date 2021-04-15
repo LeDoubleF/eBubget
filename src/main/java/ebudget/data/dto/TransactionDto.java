@@ -4,16 +4,15 @@ import java.time.LocalDate;
 
 public class TransactionDto {
 
+	public static final AccountDto DEFAULT_ACCOUNT = new AccountDto("cpp", AccountType.CPP, "principal", 0.0);
+
 	private LocalDate date;
 	private CategoryDto category;
-
 	private String description;
-
 	private String payment;
-
 	private Double amount;
-
 	private PeriodDTo period;
+	private AccountDto account;
 
 	/**
 	 * 
@@ -32,6 +31,7 @@ public class TransactionDto {
 		this.payment = payment;
 		this.amount = amount;
 		this.period = period;
+		this.account = TransactionDto.DEFAULT_ACCOUNT;
 	}
 
 	/**
@@ -46,6 +46,18 @@ public class TransactionDto {
 	public TransactionDto(LocalDate date, String category, String description, String payment, Double amount, PeriodDTo period) {
 		this(date, new CategoryDto(category.toLowerCase()), description, payment, amount, period);
 
+	}
+
+	public TransactionDto(LocalDate date, CategoryDto category, String description, String payment, Double amount, PeriodDTo period,
+			AccountDto account) {
+		super();
+		this.date = date;
+		this.category = category;
+		this.description = description;
+		this.payment = payment;
+		this.amount = amount;
+		this.period = period;
+		this.account = account;
 	}
 
 	public PeriodDTo getPeriod() {
@@ -94,6 +106,14 @@ public class TransactionDto {
 
 	public void setCategory(CategoryDto category) {
 		this.category = category;
+	}
+
+	public AccountDto getAccount() {
+		return account;
+	}
+
+	public void setAccount(AccountDto account) {
+		this.account = account;
 	}
 
 	public boolean equals(Object o) {

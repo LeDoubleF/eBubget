@@ -3,10 +3,8 @@ package ebudget;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -16,7 +14,6 @@ import ebudget.calculation.BaseBudget;
 import ebudget.calculation.Calculator;
 import ebudget.calculation.RecurringItem;
 import ebudget.data.Categories;
-import ebudget.data.Common;
 import ebudget.data.dao.AccountEntity;
 import ebudget.data.dao.PeriodEntity;
 import ebudget.data.dao.TransactionEntity;
@@ -115,7 +112,7 @@ public class Ebudget {
 		double finalBalance = calculator.calculateFinalBalance(initialBalance, transactionSum);
 		view.printValue("Solde final : ", Double.toString(finalBalance));
 
-		AccountDto cpp = new AccountDto("cpp", AccountType.CPP, "compte courant", initialBalance, finalBalance);
+		AccountDto cpp = new AccountDto("cpp", AccountType.CPP, "compte courant", initialBalance);
 		AccountEntity.save(cpp);
 
 		LOGGER.log(Level.INFO, "fin du programme");

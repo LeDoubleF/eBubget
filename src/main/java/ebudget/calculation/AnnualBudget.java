@@ -142,26 +142,31 @@ public class AnnualBudget {
 
 		for (CategoryDto category : Categories.getAllCategory()) {
 			if (sumByCategory.get(category) != 0.0) {
-				System.out.print(category + "\t\t\t");
+				System.out.print(category + "\t\t\t\t");
+				int i = 0;
 				for (DraftBudget draftBudget : draftBudgetList) {
-					System.out.print("\t" + df2.format(draftBudget.getAmount(category)));
-
+					Double categorySummary = expenses[i].getSummary(category);
+					String summaryToPrint = categorySummary == null ? "X" : categorySummary.toString();
+					System.out.print("\t" + df2.format(draftBudget.getAmount(category)) + "\t " + summaryToPrint + " - ");
+					i++;
 				}
 				System.out.print("\n");
 			}
 		}
-		System.out.print("AmountToFitPerMonthList \t\t\t");
-		for (int month = 1; month < 13; month++) {
+		System.out.print("AmountToFitPerMonthList \t\t");
+		for (
+
+				int month = 1; month < 13; month++) {
 			System.out.print(df2.format(getAmountToFitPerMonthList(month)) + "\t");
 
 		}
 
-		System.out.print("\nGloblaBalance \t\t\t");
+		System.out.print("\nGloblaBalance \t\t\t\t");
 		for (int month = 1; month < 13; month++) {
 			System.out.print(df2.format(forecast.getGlobalBalanceList(month)) + "\t");
 
 		}
-		System.out.print("\nBalanceByMonth \t\t\t");
+		System.out.print("\nBalanceByMonth \t\t\t\t");
 		for (int month = 1; month < 13; month++) {
 			System.out.print(df2.format(getBalanceByMonth(month)) + "\t");
 		}

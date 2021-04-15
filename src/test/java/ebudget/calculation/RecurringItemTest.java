@@ -39,7 +39,7 @@ class RecurringItemTest {
 	void testWithNotExistingCategory() {
 		RecurringItem loyer = new RecurringItem(LOYER, "LOYER", 20.0, false, true, monthly);
 
-		assertEquals(TAXI, loyer.getCategory());
+		assertEquals(LOYER, loyer.getCategory());
 	}
 
 	@Test

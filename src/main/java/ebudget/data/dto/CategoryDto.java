@@ -45,8 +45,10 @@ public class CategoryDto implements Comparable<CategoryDto> {
 			return 0;
 		else if (name.equals(other.getName()))
 			return income.compareTo(other.isIncome());
-		else
+		else if (income.equals(other.income))
 			return name.compareToIgnoreCase(other.getName());
+		else
+			return income.compareTo(other.income);
 	}
 
 	@Override

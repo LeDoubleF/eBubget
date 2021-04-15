@@ -9,6 +9,7 @@ class CategoryDtoTest {
 	private static final CategoryDto SALAIRE2 = new CategoryDto("salaire", true);
 	private static final CategoryDto SALAIRE_FALSE = new CategoryDto("salaire");
 	private static final CategoryDto LOYER = new CategoryDto("Loyer");
+	private static final CategoryDto RENT = new CategoryDto("rente", true);
 
 	@Test
 	void testCompareToEquals() {
@@ -33,6 +34,12 @@ class CategoryDtoTest {
 	void testCompareToGeaterDifferent() {
 		assertTrue(SALAIRE.compareTo(LOYER) > 0);
 
+	}
+
+	@Test
+	void testCompareTwoIncome() {
+		assertTrue(SALAIRE.compareTo(RENT) > 0);
+		assertTrue(RENT.compareTo(SALAIRE) < 0);
 	}
 
 }

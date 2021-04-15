@@ -16,14 +16,13 @@ public class AccountDto {
 	 * @param initialBalance
 	 * @param finalBalance
 	 */
-	public AccountDto(String name, AccountType accountType, String description, Double initialAmount,
-			double finalBalance) {
+	public AccountDto(String name, AccountType accountType, String description, Double initialAmount) {
 		super();
 		this.name = name;
 		this.accountType = accountType;
 		this.description = description;
 		this.initialAmount = initialAmount;
-		this.finalAmount = finalBalance;
+		this.finalAmount = initialAmount;
 	}
 
 	public String getName() {
