@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ebudget.data.Categories;
 import ebudget.data.dto.CategoryDto;
+import ebudget.data.dto.PaymentType;
 import ebudget.data.dto.PeriodDTo;
 
 public class AnnualBudget {
@@ -212,7 +213,7 @@ public class AnnualBudget {
 		return budgetStateList[month - 1];
 	}
 
-	public void setTransaction(int month, CategoryDto category, LocalDate date, String description, String payment, double amount) {
+	public void setTransaction(int month, CategoryDto category, LocalDate date, String description, PaymentType payment, double amount) {
 		expenses[month - 1].addTransaction(category, date, description, payment, amount);
 
 	}

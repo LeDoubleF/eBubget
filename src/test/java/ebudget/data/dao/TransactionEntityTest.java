@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ebudget.data.Categories;
 import ebudget.data.Common;
+import ebudget.data.dto.PaymentType;
 import ebudget.data.dto.PeriodDTo;
 import ebudget.data.dto.TransactionDto;
 
@@ -45,7 +46,7 @@ class TransactionEntityTest {
 			PeriodEntity.save(periode);
 
 			// when
-			TransactionDto transactionDto = new TransactionDto(date, "alimentation", "farine", "Espèce", 0.69, periode);
+			TransactionDto transactionDto = new TransactionDto(date, "alimentation", "farine", PaymentType.ESPECE, 0.69, periode);
 			TransactionEntity.save(transactionDto);
 
 			// then
@@ -64,7 +65,7 @@ class TransactionEntityTest {
 			assertEquals("alimentation", transaction.getCategory()
 				.getName());
 			assertEquals("farine", transaction.getDescription());
-			assertEquals("Espèce", transaction.getPayment());
+			assertEquals(PaymentType.ESPECE.toString(), transaction.getPayment());
 			assertEquals(0.69, transaction.getAmount(), delta);
 			assertEquals(2020, transaction.getPeriode()
 				.getId()
@@ -94,7 +95,7 @@ class TransactionEntityTest {
 		PeriodEntity.save(periode);
 
 		// when
-		TransactionDto transactionDto = new TransactionDto(date, "alimentation", "farine", "Espèce", 0.69, periode);
+		TransactionDto transactionDto = new TransactionDto(date, "alimentation", "farine", PaymentType.ESPECE, 0.69, periode);
 		TransactionEntity.save(transactionDto);
 
 		// then
@@ -115,7 +116,7 @@ class TransactionEntityTest {
 				transaction.getCategory()
 					.getName());
 		assertEquals("farine", transaction.getDescription());
-		assertEquals("Espèce", transaction.getPayment());
+		assertEquals(PaymentType.ESPECE.toString(), transaction.getPayment());
 		assertEquals(0.69, transaction.getAmount(), delta);
 		assertEquals(2020, transaction.getPeriode()
 			.getId()
@@ -138,16 +139,16 @@ class TransactionEntityTest {
 			PeriodDTo periode = new PeriodDTo(2020, 1);
 			PeriodEntity.save(periode);
 
-			TransactionDto transaction = new TransactionDto(date, categoryName, "description", "retrait", 20.0, periode);
+			TransactionDto transaction = new TransactionDto(date, categoryName, "description", PaymentType.RETRAIT, 20.0, periode);
 			TransactionEntity.save(transaction);
 
-			TransactionDto transaction2 = new TransactionDto(date, categoryName, "description", "virement", 5.0, periode);
+			TransactionDto transaction2 = new TransactionDto(date, categoryName, "description", PaymentType.VIREMENT, 5.0, periode);
 			TransactionEntity.save(transaction2);
 
-			TransactionDto transaction3 = new TransactionDto(date, categoryName, "description", "carte", 7.0, periode);
+			TransactionDto transaction3 = new TransactionDto(date, categoryName, "description", PaymentType.CB, 7.0, periode);
 			TransactionEntity.save(transaction3);
 
-			TransactionDto transaction4 = new TransactionDto(date, categoryName, "description", "Espèce", 17.0, periode);
+			TransactionDto transaction4 = new TransactionDto(date, categoryName, "description", PaymentType.ESPECE, 17.0, periode);
 			TransactionEntity.save(transaction4);
 			// when
 			Double sum = TransactionEntity.sumAccount();
@@ -170,13 +171,13 @@ class TransactionEntityTest {
 		PeriodDTo periode = new PeriodDTo(2020, 1);
 		PeriodEntity.save(periode);
 
-		TransactionDto transaction = new TransactionDto(date, categoryName, "description", "retrait", 2.0, periode);
+		TransactionDto transaction = new TransactionDto(date, categoryName, "description", PaymentType.RETRAIT, 2.0, periode);
 		TransactionEntity.save(transaction);
 
-		TransactionDto transaction2 = new TransactionDto(date, categoryName, "description", "Espèce", 15.0, periode);
+		TransactionDto transaction2 = new TransactionDto(date, categoryName, "description", PaymentType.ESPECE, 15.0, periode);
 		TransactionEntity.save(transaction2);
 
-		TransactionDto transaction3 = new TransactionDto(date, categoryName, "description", "virement", 5.0, periode);
+		TransactionDto transaction3 = new TransactionDto(date, categoryName, "description", PaymentType.VIREMENT, 5.0, periode);
 		TransactionEntity.save(transaction3);
 
 		// when

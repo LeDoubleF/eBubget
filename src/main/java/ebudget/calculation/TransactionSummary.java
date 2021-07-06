@@ -6,8 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import ebudget.data.Accounts;
 import ebudget.data.dto.AccountDto;
 import ebudget.data.dto.CategoryDto;
+import ebudget.data.dto.PaymentType;
 import ebudget.data.dto.PeriodDTo;
 import ebudget.data.dto.TransactionDto;
 
@@ -25,14 +27,14 @@ public class TransactionSummary {
 	public TransactionSummary(PeriodDTo period) {
 		super();
 		this.period = period;
-		this.mainAccount = TransactionDto.DEFAULT_ACCOUNT;
+		this.mainAccount = Accounts.getDefaultAccount();
 	}
 
-	public void addTransaction(CategoryDto category, LocalDate date, String description, String payment, double amount) {
+	public void addTransaction(CategoryDto category, LocalDate date, String description, PaymentType payment, double amount) {
 		this.addTransaction(category, date, description, payment, amount, mainAccount);
 	}
 
-	public void addTransaction(CategoryDto category, LocalDate date, String description, String payment, double amount, AccountDto account) {
+	public void addTransaction(CategoryDto category, LocalDate date, String description, PaymentType payment, double amount, AccountDto account) {
 		transactionList.add(new TransactionDto(date, category, description, payment, amount, period, account));
 		double credit;
 		if (Boolean.TRUE.equals(category.isIncome())) {

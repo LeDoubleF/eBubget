@@ -24,8 +24,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import ebudget.calculation.RecurringItem;
+import ebudget.data.Accounts;
 import ebudget.data.Categories;
+import ebudget.data.dto.AccountDto;
+import ebudget.data.dto.AccountType;
 import ebudget.data.dto.CategoryDto;
+import ebudget.data.dto.PaymentType;
 import ebudget.data.dto.PeriodDTo;
 import ebudget.data.dto.TransactionDto;
 import ebudget.exception.Message;
@@ -44,6 +48,8 @@ class CSVReaderTest {
 	private static final CategoryDto SALAIRE = new CategoryDto("Salaire", true);
 	private static final CategoryDto TAXI = new CategoryDto("Taxi");
 
+	private static final AccountDto PORTEFEUILLE = new AccountDto("portefeuille", AccountType.ESPECE, false, 0.0);
+
 	@BeforeAll
 
 	public void setUp() {
@@ -54,6 +60,8 @@ class CSVReaderTest {
 		Categories.addCategory(TAXI);
 		Categories.addCategory(DIVERS);
 		Categories.setDefaultCategory(DIVERS);
+
+		Accounts.addAccount(PORTEFEUILLE);
 	}
 
 	@Test
@@ -113,6 +121,9 @@ class CSVReaderTest {
 
 	@Test
 	final void testReadFileCsv() {
+		for (PaymentType day : PaymentType.values()) {
+			System.out.println(day);
+		}
 		String absolutePath = getResourceAbsolutePath("test.csv", classLoader);
 		PeriodDTo periode = null;
 		try {
@@ -123,9 +134,10 @@ class CSVReaderTest {
 
 		List<TransactionDto> transaction = csvReader.readTransactionFile(absolutePath, periode);
 
-		TransactionDto t1 = new TransactionDto(LocalDate.of(2019, Month.DECEMBER, 31), "salaire", "entreprise", "virement", -3000.50, periode);
-		TransactionDto t2 = new TransactionDto(LocalDate.of(2020, Month.JANUARY, 2), "alimentation", "Oumar", "Espèce", 2.10, periode);
-		TransactionDto t3 = new TransactionDto(LocalDate.of(2020, Month.JANUARY, 3), "alimentation", "lait", "Espèce", 4.0, periode);
+		TransactionDto t1 = new TransactionDto(LocalDate.of(2019, Month.DECEMBER,
+				31), "salaire", "entreprise", PaymentType.VIREMENT, -3000.50, periode);
+		TransactionDto t2 = new TransactionDto(LocalDate.of(2020, Month.JANUARY, 2), "alimentation", "Oumar", PaymentType.ESPECE, 2.10, periode);
+		TransactionDto t3 = new TransactionDto(LocalDate.of(2020, Month.JANUARY, 3), "alimentation", "lait", PaymentType.ESPECE, 4.0, periode);
 
 		assertEquals(t1, transaction.get(0));
 		assertEquals(t2, transaction.get(1));
@@ -239,6 +251,7 @@ class CSVReaderTest {
 		transactionFileColumn.put(2, new ColumnDescription(CVSParameter.STRING, "description"));
 		transactionFileColumn.put(3, new ColumnDescription(CVSParameter.STRING, "payment"));
 		transactionFileColumn.put(4, new ColumnDescription(CVSParameter.DOUBLE, AMOUNT));
+		transactionFileColumn.put(5, new ColumnDescription(CVSParameter.STRING, "account"));
 		assertEquals(transactionFileColumn, columnDescription);
 	}
 
@@ -291,5 +304,41 @@ class CSVReaderTest {
 		Assertions.assertThrows(MissingResourceException.class, () -> {
 			csvReader.getColumnNumber(parameter);
 		});
+	}
+
+	@Test
+	final void testTransactionFile() {
+		PeriodDTo periode = new PeriodDTo(2021, 1);
+		File fileNameTansaction = new File(classLoader.getResource("transaction.csv")
+			.getFile());
+		List<TransactionDto> transactionList = csvReader.readTransactionFile(fileNameTansaction.getAbsolutePath(), periode);
+
+		TransactionDto firstTransaction = transactionList.get(0);
+		// 16/01/2020;Alimentation;Marché;Espèce;-17,5;portefeuille
+
+		assertEquals(LocalDate.of(2020, Month.JANUARY, 16), firstTransaction.getDate());
+		assertEquals(new CategoryDto("Alimentation"), firstTransaction.getCategory());
+		assertEquals("Marché", firstTransaction.getDescription());
+		assertEquals(PaymentType.ESPECE, firstTransaction.getPayment());
+		assertEquals(-17.5, firstTransaction.getAmount());
+		assertEquals(PORTEFEUILLE, firstTransaction.getAccount());
+		assertEquals(periode, firstTransaction.getPeriod());
+
+	}
+
+	@Test
+	final void ConvertStringToPayment() {
+
+		assertEquals(PaymentType.CB, csvReader.convertStringToPayment("cb"));
+
+		assertEquals(PaymentType.ESPECE, csvReader.convertStringToPayment("espèce"));
+		assertEquals(PaymentType.ESPECE, csvReader.convertStringToPayment("espéce"));
+		assertEquals(PaymentType.ESPECE, csvReader.convertStringToPayment("Espèce"));
+
+		assertEquals(PaymentType.VIREMENT, csvReader.convertStringToPayment("virement"));
+		assertEquals(PaymentType.RETRAIT, csvReader.convertStringToPayment("retrait"));
+		assertEquals(PaymentType.CHEQUE, csvReader.convertStringToPayment("chèque"));
+		assertEquals(PaymentType.INCONNU, csvReader.convertStringToPayment("rrrr"));
+
 	}
 }

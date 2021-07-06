@@ -1,15 +1,16 @@
 package ebudget.data.dto;
 
 import java.time.LocalDate;
+import ebudget.data.Accounts;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 public class TransactionDto {
-
-	public static final AccountDto DEFAULT_ACCOUNT = new AccountDto("cpp", AccountType.CPP, "principal", 0.0);
 
 	private LocalDate date;
 	private CategoryDto category;
 	private String description;
-	private String payment;
+	private PaymentType payment;
 	private Double amount;
 	private PeriodDTo period;
 	private AccountDto account;
@@ -23,7 +24,7 @@ public class TransactionDto {
 	 * @param amount
 	 * @param period
 	 */
-	public TransactionDto(LocalDate date, CategoryDto category, String description, String payment, Double amount, PeriodDTo period) {
+	public TransactionDto(LocalDate date, CategoryDto category, String description, PaymentType payment, Double amount, PeriodDTo period) {
 		super();
 		this.date = date;
 		this.category = category;
@@ -31,7 +32,7 @@ public class TransactionDto {
 		this.payment = payment;
 		this.amount = amount;
 		this.period = period;
-		this.account = TransactionDto.DEFAULT_ACCOUNT;
+		this.account = Accounts.getDefaultAccount();
 	}
 
 	/**
@@ -43,12 +44,17 @@ public class TransactionDto {
 	 * @param amount
 	 * @param period
 	 */
-	public TransactionDto(LocalDate date, String category, String description, String payment, Double amount, PeriodDTo period) {
+	public TransactionDto(LocalDate date, String category, String description, PaymentType payment, Double amount, PeriodDTo period) {
 		this(date, new CategoryDto(category.toLowerCase()), description, payment, amount, period);
 
 	}
 
-	public TransactionDto(LocalDate date, CategoryDto category, String description, String payment, Double amount, PeriodDTo period,
+	public TransactionDto(LocalDate date, String category, String description, PaymentType payment, Double amount, PeriodDTo period,
+			String accountName) {
+		this(date, new CategoryDto(category.toLowerCase()), description, payment, amount, period, Accounts.getAccounts(accountName));
+	}
+
+	public TransactionDto(LocalDate date, CategoryDto category, String description, PaymentType payment, Double amount, PeriodDTo period,
 			AccountDto account) {
 		super();
 		this.date = date;
@@ -84,11 +90,15 @@ public class TransactionDto {
 		this.description = description;
 	}
 
-	public String getPayment() {
+	public PaymentType getPayment() {
 		return payment;
 	}
 
-	public void setPayment(String payment) {
+	public String getPaymentString() {
+		return payment.toString();
+	}
+
+	public void setPayment(PaymentType payment) {
 		this.payment = payment;
 	}
 

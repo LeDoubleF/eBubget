@@ -1,5 +1,7 @@
 package ebudget.io;
 
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +22,7 @@ import java.util.logging.Logger;
 import ebudget.calculation.RecurringItem;
 import ebudget.data.Categories;
 import ebudget.data.dto.CategoryDto;
+import ebudget.data.dto.PaymentType;
 import ebudget.data.dto.PeriodDTo;
 import ebudget.data.dto.TransactionDto;
 import ebudget.exception.FileReaderException;
@@ -83,7 +86,7 @@ public class CSVReader {
 		verifyFile(filePath);
 
 		int lineNumber = 1;
-		try (BufferedReader fichierSource = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8))) {
+		try (BufferedReader fichierSource = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.ISO_8859_1))) {
 
 			String line = fichierSource.readLine();// lecture de l'entête
 			while ((line = fichierSource.readLine()) != null) {
@@ -178,6 +181,8 @@ public class CSVReader {
 		transactionFileColumn.put(getColumnNumber("app.transactionFile.category"), new ColumnDescription(CVSParameter.STRING, CATEGORY));
 		transactionFileColumn.put(getColumnNumber("app.transactionFile.description"), new ColumnDescription(CVSParameter.STRING, "description"));
 		transactionFileColumn.put(getColumnNumber("app.transactionFile.payment"), new ColumnDescription(CVSParameter.STRING, "payment"));
+		transactionFileColumn.put(getColumnNumber("app.transactionFile.account"), new ColumnDescription(CVSParameter.STRING, "account"));
+
 		return transactionFileColumn;
 	}
 
@@ -200,11 +205,32 @@ public class CSVReader {
 		for (Object filContent : fileContentList) {
 			@SuppressWarnings("unchecked")
 			List<Object> valueList = (List<Object>) filContent;
-			TransactionDto transaction = new TransactionDto((LocalDate) valueList.get(0), (String) valueList.get(1), (String) valueList
-				.get(2), (String) valueList.get(3), (Double) valueList.get(4), periode);
+			TransactionDto transaction;
+			PaymentType payment = convertStringToPayment((String) valueList.get(3));
+			if (valueList.size() >= 6) {
+				transaction = new TransactionDto((LocalDate) valueList.get(0), (String) valueList.get(1), (String) valueList
+					.get(2), payment, (Double) valueList.get(4), periode, (String) valueList.get(5));
+			} else {
+				transaction = new TransactionDto((LocalDate) valueList.get(0), (String) valueList.get(1), (String) valueList
+					.get(2), payment, (Double) valueList.get(4), periode);
+			}
 			transactionList.add(transaction);
 		}
 		return transactionList;
+	}
+
+	protected PaymentType convertStringToPayment(String stringToConvert) {
+		try {
+			String normalizeString = Normalizer.normalize(stringToConvert, Normalizer.Form.NFD);
+			Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+			stringToConvert = pattern.matcher(normalizeString)
+				.replaceAll("")
+				.toUpperCase();
+			return PaymentType.valueOf(stringToConvert);
+		} catch (IllegalArgumentException e) {
+			return PaymentType.INCONNU;
+		}
+
 	}
 
 	public Map<Integer, ColumnDescription> getRecurringItemFileDescription() {

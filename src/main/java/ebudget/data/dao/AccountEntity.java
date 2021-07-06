@@ -31,14 +31,27 @@ public class AccountEntity implements Serializable {
 	@Enumerated(EnumType.STRING)
 	AccountType accountType;
 
-	@Column(name = "Description", unique = false, nullable = false, length = 100)
-	private String description;
+	@Column(name = "main", unique = false, nullable = false, columnDefinition = "tinyint(1) default 0")
+	private boolean main;
 
 	@Column(name = "initialAmount", unique = false, nullable = false)
 	private Double initialAmount;
 
 	@Column(name = "finalAmount", unique = false, nullable = false)
 	private Double finalAmount;
+
+	public AccountEntity() {
+		super();
+	}
+
+	public AccountEntity(AccountDto account) {
+		super();
+		this.name = account.getName();
+		this.accountType = account.getAccountType();
+		this.main = account.isMain();
+		this.initialAmount = account.getInitialAmount();
+		this.finalAmount = account.getFinalAmount();
+	}
 
 	public String getName() {
 		return name;
@@ -48,20 +61,20 @@ public class AccountEntity implements Serializable {
 		this.name = name;
 	}
 
+	public void setMain(boolean main) {
+		this.main = main;
+	}
+
+	public boolean getMain() {
+		return main;
+	}
+
 	public AccountType getAccountType() {
 		return accountType;
 	}
 
 	public void setAccountType(AccountType accountType) {
 		this.accountType = accountType;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Double getInitialAmount() {
@@ -81,7 +94,8 @@ public class AccountEntity implements Serializable {
 	}
 
 	public static boolean save(AccountDto account) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
 
 		Transaction tx = null;
 		String stId = null;
@@ -90,9 +104,9 @@ public class AccountEntity implements Serializable {
 			AccountEntity accountEntity = new AccountEntity();
 			accountEntity.setName(account.getName());
 			accountEntity.setAccountType(account.getAccountType());
-			accountEntity.setDescription(account.getDescription());
 			accountEntity.setInitialAmount(account.getInitialAmount());
 			accountEntity.setFinalAmount(account.getFinalAmount());
+			accountEntity.setMain(account.isMain());
 
 			stId = (String) session.save(accountEntity);
 			tx.commit();
@@ -114,13 +128,15 @@ public class AccountEntity implements Serializable {
 		Transaction tx = null;
 		try {
 
-			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
+			Session sessionTwo = HibernateUtil.getSessionFactory()
+				.openSession();
 			tx = sessionTwo.beginTransaction();
 
 			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM Account");
 			queryDelete.executeUpdate();
 
-			sessionTwo.getTransaction().commit();
+			sessionTwo.getTransaction()
+				.commit();
 			LOGGER.log(Level.INFO, "suppression de toutes les comptes");
 
 		} catch (Exception e) {
@@ -130,4 +146,5 @@ public class AccountEntity implements Serializable {
 				tx.rollback();
 		}
 	}
+
 }

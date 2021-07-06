@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import java.time.Month;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ebudget.data.Accounts;
 import ebudget.data.Categories;
 import ebudget.data.dto.AccountDto;
 import ebudget.data.dto.AccountType;
 import ebudget.data.dto.CategoryDto;
+import ebudget.data.dto.PaymentType;
 import ebudget.data.dto.PeriodDTo;
 import ebudget.data.dto.TransactionDto;
 
@@ -39,10 +41,10 @@ class TransactionSummaryTest {
 	void getBalanceTest() {
 		TransactionSummary transactionSummary = new TransactionSummary(PERIOD);
 
-		transactionSummary.addTransaction(SALAIRE, date, "description", "payment", 400.0);
-		transactionSummary.addTransaction(TAXI, date, "description", "payment", 100.0);
-		transactionSummary.addTransaction(TAXI, date, "description", "payment", 100.0);
-		transactionSummary.addTransaction(TAXI, date, "description", "payment", 100.0);
+		transactionSummary.addTransaction(SALAIRE, date, "description", PaymentType.ESPECE, 400.0);
+		transactionSummary.addTransaction(TAXI, date, "description", PaymentType.ESPECE, 100.0);
+		transactionSummary.addTransaction(TAXI, date, "description", PaymentType.ESPECE, 100.0);
+		transactionSummary.addTransaction(TAXI, date, "description", PaymentType.ESPECE, 100.0);
 
 		assertEquals(100, transactionSummary.getBalance(), PRECISION);
 	}
@@ -51,7 +53,7 @@ class TransactionSummaryTest {
 	void getCategorySummaryWhenCategoryDontExistTest() {
 		TransactionSummary transactionSummary = new TransactionSummary(PERIOD);
 
-		transactionSummary.addTransaction(LOYER, date, "description", "payment", 100.0);
+		transactionSummary.addTransaction(LOYER, date, "description", PaymentType.ESPECE, 100.0);
 
 		assertEquals(0, transactionSummary.getSummary(TAXI), PRECISION);
 	}
@@ -60,10 +62,10 @@ class TransactionSummaryTest {
 	void getCategorySummaryTest() {
 		TransactionSummary transactionSummary = new TransactionSummary(PERIOD);
 
-		transactionSummary.addTransaction(LOYER, date, "description", "payment", 100.0);
-		transactionSummary.addTransaction(TAXI, date, "description", "payment", 100.0);
-		transactionSummary.addTransaction(TAXI, date, "description", "payment", 100.0);
-		transactionSummary.addTransaction(TAXI, date, "description", "payment", 100.0);
+		transactionSummary.addTransaction(LOYER, date, "description", PaymentType.ESPECE, 100.0);
+		transactionSummary.addTransaction(TAXI, date, "description", PaymentType.ESPECE, 100.0);
+		transactionSummary.addTransaction(TAXI, date, "description", PaymentType.ESPECE, 100.0);
+		transactionSummary.addTransaction(TAXI, date, "description", PaymentType.ESPECE, 100.0);
 
 		assertEquals(300, transactionSummary.getSummary(TAXI), PRECISION);
 	}
@@ -71,13 +73,13 @@ class TransactionSummaryTest {
 	@Test
 	void getAccountSummaryTest() {
 		TransactionSummary transactionSummary = new TransactionSummary(PERIOD);
-		AccountDto LivretA = new AccountDto("pactole", AccountType.EPARGNE, "description", 100.0);
+		AccountDto LivretA = new AccountDto("pactole", AccountType.EPARGNE, false, 100.0);
 
-		transactionSummary.addTransaction(LOYER, date, "description", "payment", 100.0, LivretA);
-		transactionSummary.addTransaction(TAXI, date, "description", "payment", 100.0);
-		transactionSummary.addTransaction(TAXI, date, "description", "payment", 100.0);
-		transactionSummary.addTransaction(TAXI, date, "description", "payment", 100.0);
-		transactionSummary.addTransaction(SALAIRE, date, "description", "payment", 500.0);
+		transactionSummary.addTransaction(LOYER, date, "description", PaymentType.ESPECE, 100.0, LivretA);
+		transactionSummary.addTransaction(TAXI, date, "description", PaymentType.ESPECE, 100.0);
+		transactionSummary.addTransaction(TAXI, date, "description", PaymentType.ESPECE, 100.0);
+		transactionSummary.addTransaction(TAXI, date, "description", PaymentType.ESPECE, 100.0);
+		transactionSummary.addTransaction(SALAIRE, date, "description", PaymentType.ESPECE, 500.0);
 
 		assertEquals(-100, transactionSummary.getSummary(LivretA), PRECISION);
 		assertEquals(200, transactionSummary.getSummaryMainAccount(), PRECISION);
@@ -87,7 +89,7 @@ class TransactionSummaryTest {
 	void getSummaryMainAccountIsDefaultAccount() {
 		TransactionSummary transactionSummary = new TransactionSummary(PERIOD);
 
-		assertEquals(TransactionDto.DEFAULT_ACCOUNT, transactionSummary.getMainAccount());
+		assertEquals(Accounts.getDefaultAccount(), transactionSummary.getMainAccount());
 	}
 
 }

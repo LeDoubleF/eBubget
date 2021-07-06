@@ -4,9 +4,9 @@ public class AccountDto {
 
 	private String name;
 	private AccountType accountType;
-	private String description;
 	private Double initialAmount;
 	private Double finalAmount;
+	boolean isMain;
 
 	/**
 	 * 
@@ -16,13 +16,21 @@ public class AccountDto {
 	 * @param initialBalance
 	 * @param finalBalance
 	 */
-	public AccountDto(String name, AccountType accountType, String description, Double initialAmount) {
+	public AccountDto(String name, AccountType accountType, boolean isMain, Double initialAmount) {
 		super();
 		this.name = name;
 		this.accountType = accountType;
-		this.description = description;
 		this.initialAmount = initialAmount;
 		this.finalAmount = initialAmount;
+		this.isMain = isMain;
+	}
+
+	public boolean isMain() {
+		return isMain;
+	}
+
+	public void setMain(boolean isMain) {
+		this.isMain = isMain;
 	}
 
 	public String getName() {
@@ -39,14 +47,6 @@ public class AccountDto {
 
 	public void setAccountType(AccountType accountType) {
 		this.accountType = accountType;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public Double getInitialAmount() {

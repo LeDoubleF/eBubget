@@ -1,5 +1,6 @@
 package ebudget;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +14,8 @@ import ebudget.calculation.AnnualBudget;
 import ebudget.calculation.BaseBudget;
 import ebudget.calculation.Calculator;
 import ebudget.calculation.RecurringItem;
+import ebudget.calculation.TransactionSummary;
+import ebudget.data.Accounts;
 import ebudget.data.Categories;
 import ebudget.data.dao.AccountEntity;
 import ebudget.data.dao.PeriodEntity;
@@ -65,6 +68,12 @@ public class Ebudget {
 		// inititalisation des catégories
 		Categories.initCategories();
 
+		AccountEntity.save(new AccountDto("poste", AccountType.CPP, false, 0.0));
+		AccountEntity.save(new AccountDto("portefeuille", AccountType.CPP, false, 0.0));
+		AccountEntity.save(new AccountDto("joint", AccountType.CPP, false, 0.0));
+		AccountEntity.save(new AccountDto("principal", AccountType.CPP, true, 0.0));
+		Accounts.initAccounts();
+
 		// //InputStream inForFileName = System.in;
 		// ByteArrayInputStream inForFileName = new
 		// ByteArrayInputStream("C:\\Users\\ffazer\\Documents\\ebudget
@@ -100,20 +109,41 @@ public class Ebudget {
 		System.out.println("\n\t" + annualBudget.getBalance());
 
 		// charger les transactions
-		File transactionFileName = new File(classLoader.getResource("releveJanvier.csv")
+		File transactionFileName = new File(classLoader.getResource("transaction.csv")
 			.getFile());
 		List<TransactionDto> fileContentList = view.readTransaction(transactionFileName.getAbsolutePath(), periode);
 
+		// TransactionSummary transactionSummary = new
+		// TransactionSummary(PERIOD);
+		//
+		// transactionSummary.addTransaction(TAXI, date, "description",
+		// "payment", 100.0);
+		//
+		// assertEquals(100, transactionSummary.getBalance(), PRECISION);
+		//
+		// annualBudget.print();
+		//
+		// annualBudget.setTransaction(MONTH, TAXI, date, "facture perdue",
+		// "CB", 180.0);
+		// annualBudget.setTransaction(MONTH, LOYER, date, "facture perdue",
+		// "CB", 800.0);
+		// annualBudget.setTransaction(MONTH, DIVERS, date, "facture perdue",
+		// "CB", 40.0);
+		// annualBudget.setTransaction(MONTH, SALAIRE, date, "facture perdue",
+		// "CB", 1000.0);
+		//
+		// annualBudget.closeBudget(1);
+		//
+		// annualBudget.print();
+
 		fileContentList.forEach(TransactionEntity::save);
-		double transactionSum = TransactionEntity.sumAccount();
+		// double transactionSum = TransactionEntity.sumAccount();
 
-		ByteArrayInputStream in = new ByteArrayInputStream("100".getBytes());
-
-		double finalBalance = calculator.calculateFinalBalance(initialBalance, transactionSum);
-		view.printValue("Solde final : ", Double.toString(finalBalance));
-
-		AccountDto cpp = new AccountDto("cpp", AccountType.CPP, "compte courant", initialBalance);
-		AccountEntity.save(cpp);
+		// ByteArrayInputStream in = new ByteArrayInputStream("100".getBytes());
+		//
+		// double finalBalance =
+		// calculator.calculateFinalBalance(initialBalance, transactionSum);
+		// view.printValue("Solde final : ", Double.toString(finalBalance));
 
 		LOGGER.log(Level.INFO, "fin du programme");
 

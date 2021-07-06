@@ -49,7 +49,7 @@ class CreateBudgetTest {
 		assertEquals(2000.0, baseBudget.getAmount(SALAIRE));
 		baseBudget.print();
 		System.out.println("\n\t" + baseBudget.getBalance());
-		assertEquals(250.0, baseBudget.getBalance(), PRECISION);
+		assertEquals(350.0, baseBudget.getBalance(), PRECISION);
 
 		// ajout des dépenses reccurrente depuis un fichier
 		File recurringItemFile = new File(classLoader.getResource("recurringIntegrationTest.csv")
@@ -68,12 +68,12 @@ class CreateBudgetTest {
 
 		for (int i = 1; i < 9; i++) {
 
-			assertEquals(1311.0, annualBudget.getBalanceByMonth(i), 0.001);
+			assertEquals(1411.0, annualBudget.getBalanceByMonth(i), 0.001);
 		}
-		assertEquals(1324.31, annualBudget.getBalanceByMonth(9), PRECISION);
-		assertEquals(1311.0, annualBudget.getBalanceByMonth(10), PRECISION);
-		assertEquals(571.0, annualBudget.getBalanceByMonth(11), PRECISION);
-		assertEquals(-806.0, annualBudget.getBalanceByMonth(12), PRECISION);
+		assertEquals(1424.31, annualBudget.getBalanceByMonth(9), PRECISION);
+		assertEquals(1411.0, annualBudget.getBalanceByMonth(10), PRECISION);
+		assertEquals(671.0, annualBudget.getBalanceByMonth(11), PRECISION);
+		assertEquals(-706.0, annualBudget.getBalanceByMonth(12), PRECISION);
 
 	}
 
@@ -96,7 +96,7 @@ class CreateBudgetTest {
 		assertEquals(2000.0, baseBudget.getAmount(SALAIRE));
 		baseBudget.print();
 		System.out.println("\n\t" + baseBudget.getBalance());
-		assertEquals(250.0, baseBudget.getBalance(), PRECISION);
+		assertEquals(350.0, baseBudget.getBalance(), PRECISION);
 
 		// ajout des dépenses reccurrente depuis un fichier
 		File recurringItemFile = new File(classLoader.getResource("recurringIntegrationTest.csv")
@@ -113,19 +113,19 @@ class CreateBudgetTest {
 
 		// verification des montants
 		for (int i = 1; i < 6; i++) {
-			assertEquals(1311.0, annualBudget.getBalanceByMonth(i), PRECISION);
+			assertEquals(1411.0, annualBudget.getBalanceByMonth(i), PRECISION);
 		}
-		assertEquals(-8689.0, annualBudget.getBalanceByMonth(6), PRECISION);
+		assertEquals(-8589.0, annualBudget.getBalanceByMonth(6), PRECISION);
 		for (int i = 7; i < 9; i++) {
-			assertEquals(1311.0, annualBudget.getBalanceByMonth(i), PRECISION);
+			assertEquals(1411.0, annualBudget.getBalanceByMonth(i), PRECISION);
 		}
-		assertEquals(1324.31, annualBudget.getBalanceByMonth(9), PRECISION);
-		assertEquals(1311.0, annualBudget.getBalanceByMonth(10), PRECISION);
-		assertEquals(571.0, annualBudget.getBalanceByMonth(11), PRECISION);
-		assertEquals(-806.0, annualBudget.getBalanceByMonth(12), PRECISION);
+		assertEquals(1424.31, annualBudget.getBalanceByMonth(9), PRECISION);
+		assertEquals(1411.0, annualBudget.getBalanceByMonth(10), PRECISION);
+		assertEquals(671.0, annualBudget.getBalanceByMonth(11), PRECISION);
+		assertEquals(-706.0, annualBudget.getBalanceByMonth(12), PRECISION);
 
 		for (int i = 1; i < 7; i++) {
-			assertEquals(-355.67, annualBudget.getAmountToFitPerMonthList(i), PRECISION);
+			assertEquals(-255.67, annualBudget.getAmountToFitPerMonthList(i), PRECISION);
 		}
 		for (int i = 7; i < 13; i++) {
 			assertEquals(0.0, annualBudget.getAmountToFitPerMonthList(i), PRECISION);

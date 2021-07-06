@@ -17,6 +17,7 @@ import ebudget.data.Categories;
 import ebudget.data.dao.CategoryEntity;
 import ebudget.data.dao.PeriodEntity;
 import ebudget.data.dto.CategoryDto;
+import ebudget.data.dto.PaymentType;
 import ebudget.data.dto.PeriodDTo;
 
 public class AnnualBudgetTest {
@@ -192,10 +193,10 @@ public class AnnualBudgetTest {
 
 		annualBudget.print();
 
-		annualBudget.setTransaction(MONTH, TAXI, date, "facture perdue", "CB", 180.0);
-		annualBudget.setTransaction(MONTH, LOYER, date, "facture perdue", "CB", 800.0);
-		annualBudget.setTransaction(MONTH, DIVERS, date, "facture perdue", "CB", 40.0);
-		annualBudget.setTransaction(MONTH, SALAIRE, date, "facture perdue", "CB", 1000.0);
+		annualBudget.setTransaction(MONTH, TAXI, date, "facture perdue", PaymentType.CB, 180.0);
+		annualBudget.setTransaction(MONTH, LOYER, date, "facture perdue", PaymentType.CB, 800.0);
+		annualBudget.setTransaction(MONTH, DIVERS, date, "facture perdue", PaymentType.CB, 40.0);
+		annualBudget.setTransaction(MONTH, SALAIRE, date, "facture perdue", PaymentType.CB, 1000.0);
 
 		annualBudget.closeBudget(1);
 

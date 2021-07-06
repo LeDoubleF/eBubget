@@ -30,7 +30,7 @@ class AccountEntityTest {
 		try {
 			String description = "compte courant";
 			double delta = 0.0;
-			AccountDto cpp = new AccountDto("pactole", AccountType.CPP, description, delta);
+			AccountDto cpp = new AccountDto("pactole", AccountType.CPP, false, delta);
 			AccountEntity.save(cpp);
 
 			String name = new String("pactole");
@@ -44,7 +44,6 @@ class AccountEntityTest {
 			AccountEntity account = (AccountEntity) session.load(AccountEntity.class, (Serializable) "pactole");
 			assertEquals(name, account.getName());
 			assertEquals(AccountType.CPP, account.getAccountType());
-			assertEquals(description, account.getDescription());
 			assertEquals(delta, account.getInitialAmount(), delta);
 			assertEquals(0.0, account.getFinalAmount(), delta);
 

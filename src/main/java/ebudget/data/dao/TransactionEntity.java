@@ -22,6 +22,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ebudget.data.Categories;
+import ebudget.data.dto.AccountDto;
+import ebudget.data.dto.AccountType;
 import ebudget.data.dto.CategoryDto;
 import ebudget.data.dto.PeriodDTo;
 import ebudget.data.dto.TransactionDto;
@@ -41,6 +43,10 @@ public class TransactionEntity implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "Category", nullable = false)
 	private CategoryEntity category;
+
+	@ManyToOne
+	@JoinColumn(name = "Account", nullable = false)
+	private AccountEntity account;
 
 	@ManyToOne
 	@JoinColumns({@JoinColumn(name = "annee", nullable = false), @JoinColumn(name = "trimestre", nullable = false),
@@ -119,6 +125,20 @@ public class TransactionEntity implements Serializable {
 		this.category = category;
 	}
 
+	public AccountEntity getAccount() {
+		return account;
+	}
+
+	public void setAccount(AccountEntity account) {
+		this.account = account;
+
+	}
+
+	public void setAccount(AccountDto account) {
+		this.account = new AccountEntity(account);
+
+	}
+
 	public static boolean save(TransactionDto transaction) {
 		Session session = HibernateUtil.getSessionFactory()
 			.openSession();
@@ -140,9 +160,16 @@ public class TransactionEntity implements Serializable {
 				transactionEntity.setCategory(Categories.getDefaultCategory());
 			}
 			transactionEntity.setDescription(transaction.getDescription());
-			transactionEntity.setPayment(transaction.getPayment());
+			transactionEntity.setPayment(transaction.getPaymentString());
 			transactionEntity.setAmount(transaction.getAmount());
 			transactionEntity.setPeriode(transaction.getPeriod());
+			AccountDto account = new AccountDto(transaction.getAccount()
+				.getName(), transaction.getAccount()
+					.getAccountType(), transaction.getAccount()
+						.isMain(), transaction.getAccount()
+							.getInitialAmount());
+			AccountEntity.save(account);
+			transactionEntity.setAccount(account);
 			stId = (Integer) session.save(transactionEntity);
 			tx.commit();
 		} catch (HibernateException ex) {
