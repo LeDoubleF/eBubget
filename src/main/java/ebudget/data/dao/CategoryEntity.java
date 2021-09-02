@@ -67,7 +67,8 @@ public class CategoryEntity implements Serializable {
 	}
 
 	public CategoryEntity(CategoryDto category) {
-		this.name = category.getName().toLowerCase();
+		this.name = category.getName()
+			.toLowerCase();
 	}
 
 	@OneToMany(mappedBy = "category")
@@ -77,8 +78,13 @@ public class CategoryEntity implements Serializable {
 		return CategoryEntity.save(name, false);
 	}
 
+	public static boolean save(CategoryDto category) {
+		return CategoryEntity.save(category.getName(), category.isIncome());
+	}
+
 	public static boolean save(String name, boolean income) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
 		Transaction tx = null;
 		String stId = null;
 		try {

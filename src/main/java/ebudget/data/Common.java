@@ -28,7 +28,8 @@ public class Common {
 	/***************************************************************************/
 
 	public static void loadForecats(String sqlFile) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
 
 		Transaction tx = null;
 		try {
@@ -37,14 +38,16 @@ public class Common {
 			File file = new File(sqlFile);
 
 			String sqlScript = null;
-			sqlScript = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8).trim().toLowerCase();
+			sqlScript = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8).trim()
+				.toLowerCase();
 
 			tx = session.beginTransaction();
 
 			Query query = session.createSQLQuery(sqlScript);
 			query.executeUpdate();
 
-			session.getTransaction().commit();
+			session.getTransaction()
+				.commit();
 			LOGGER.log(Level.INFO, "création des prévisions");
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "File Not Found", e);
@@ -67,13 +70,15 @@ public class Common {
 			TransactionEntity.deleteAll();
 			RecurringExpensesEntity.deleteAll();
 
-			Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
+			Session sessionTwo = HibernateUtil.getSessionFactory()
+				.openSession();
 			tx = sessionTwo.beginTransaction();
 
 			Query queryDelete = sessionTwo.createSQLQuery("DELETE FROM category");
 			queryDelete.executeUpdate();
 
-			sessionTwo.getTransaction().commit();
+			sessionTwo.getTransaction()
+				.commit();
 			LOGGER.log(Level.INFO, "suppression de toutes les catégories de la base de donnée");
 			Categories.clearAllCategory();
 			LOGGER.log(Level.INFO, "suppression de toutes les catégories de la liste");
@@ -94,7 +99,9 @@ public class Common {
 
 	public static void reinitializeDataBase() {
 		clearDataBase();
-		CategoryEntity.save(Categories.getDefaultCategory().getName());
+		CategoryEntity.save(Categories.getDefaultCategory()
+			.getName());
+		AccountEntity.save(Accounts.getDefaultAccount());
 	}
 
 	private static ArrayList<Double> calulateBalanceByMonth() {
@@ -116,17 +123,20 @@ public class Common {
 		for (String thisMonth : month) {
 			try {
 				// TODO requete apparait deux fois dans les log
-				Session sessionTwo = HibernateUtil.getSessionFactory().openSession();
+				Session sessionTwo = HibernateUtil.getSessionFactory()
+					.openSession();
 				tx = sessionTwo.beginTransaction();
 
 				Query queryIncome = sessionTwo.createSQLQuery("SELECT SUM(amount) FROM forecast WHERE " + thisMonth + "=1 and income =TRUE;");
 
-				Double incomListResult = (Double) queryIncome.list().get(0);
+				Double incomListResult = (Double) queryIncome.list()
+					.get(0);
 				Double amountIncome = incomListResult == null ? 0 : (Double) incomListResult;
 
 				Query queryExpense = sessionTwo.createSQLQuery("SELECT SUM(amount) FROM forecast WHERE " + thisMonth + "=1 and income =FALSE;");
 
-				Double expenseList = (Double) queryExpense.list().get(0);
+				Double expenseList = (Double) queryExpense.list()
+					.get(0);
 				Double amountExpense = expenseList == null ? 0 : expenseList;
 
 				balanceByMonth.add(amountIncome - amountExpense);

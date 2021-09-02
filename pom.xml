@@ -43,13 +43,13 @@
 		<!-- hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>3.0.0.ga</version>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.2.12.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.3.0.ga</version>
+			<artifactId>hibernate-spatial</artifactId>
+			<version>5.2.12.Final</version>
 		</dependency>
 
 		<dependency>
@@ -132,7 +132,7 @@
 					</archive>
 				</configuration>
 			</plugin>
-		
+
 		</plugins>
 	</build>
 

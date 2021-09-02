@@ -11,13 +11,14 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import ebudget.data.dao.CategoryEntity;
 import ebudget.data.dao.HibernateUtil;
 import ebudget.data.dto.CategoryDto;
+import ebudget.io.CSVReader;
 
 /**
  * Permet de connaitre et de gérer les catégories existantes
@@ -55,6 +56,7 @@ public class Categories {
 	}
 
 	public static boolean isCategory(CategoryDto category) {
+
 		return allCategory.contains(category);
 	}
 
@@ -87,18 +89,18 @@ public class Categories {
 		allCategory.add(defaultCategory);
 		if (allCategory.size() <= 1) {
 			if (countCategoryEntity().equals(BigInteger.valueOf(0))) {
-				File categoryFile = null;
 				try {
-					categoryFile = new File(".//category.sql");
-					createCategories(categoryFile);
+					createCategories("Categories.csv");
 					CategoryEntity.save(defaultCategory.getName());
 				} catch (Exception e) {
+					System.out.println(e.getMessage());
 					LOGGER.log(Level.SEVERE, e.getMessage());
 					e.printStackTrace();
 				}
 
 			} else {
-				Session session = HibernateUtil.getSessionFactory().openSession();
+				Session session = HibernateUtil.getSessionFactory()
+					.openSession();
 				Transaction tx = null;
 				try {
 					tx = session.beginTransaction();
@@ -116,6 +118,8 @@ public class Categories {
 	}
 
 	private static CategoryDto intDefaultCategory() {
+		// TODO voir importExportIntegrationTest pour la gestion des properties
+		// TODO a quoi sert data-spring-config.xml?
 		ResourceBundle bundle = ResourceBundle.getBundle("ebudget.properties.config");
 		return new CategoryDto(bundle.getString("app.DefaultCategory"));
 
@@ -127,11 +131,12 @@ public class Categories {
 	 * @return
 	 */
 	protected static BigInteger countCategoryEntity() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
-			Query query = session.createSQLQuery("SELECT count(*) FROM CATEGORY");
+			Query<BigInteger> query = session.createSQLQuery("SELECT count(*) FROM CATEGORY");
 			@SuppressWarnings("unchecked")
 			List<BigInteger> count = query.list();
 			return count.get(0);
@@ -145,26 +150,28 @@ public class Categories {
 
 	}
 
-	private static void createCategories(File sqlFile) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+	@SuppressWarnings("unchecked")
+	private static void createCategories(String fileName) {
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
 
 		Transaction tx = null;
 		try {
 			// TODO acceder au fichier par parametrage à l'installation
-
-			String sqlScript = null;
-			sqlScript = new String(Files.readAllBytes(sqlFile.toPath()), StandardCharsets.UTF_8).trim().toLowerCase();
+			CSVReader csvReader = new CSVReader();
+			List<CategoryDto> categoryList = csvReader.readCategoriesFile(fileName);
 
 			tx = session.beginTransaction();
 
-			Query query = session.createSQLQuery(sqlScript);
-			query.executeUpdate();
+			for (CategoryDto category : categoryList) {
+				CategoryEntity.save(category);
+			}
 
 			selectAllCategories(session);
-			session.getTransaction().commit();
-			LOGGER.log(Level.INFO, "Création des catégories à partir du fichier {0}", sqlFile);
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "File Not Found", e);
+			session.getTransaction()
+				.commit();
+			LOGGER.log(Level.INFO, "Création des catégories à partir du fichier {0}", fileName);
+
 		} catch (Exception e) {
 			LOGGER.log(Level.SEVERE, e.getMessage());
 			// Rollback in case of an error occurred.
@@ -176,7 +183,7 @@ public class Categories {
 
 	protected static void selectAllCategories(Session session) {
 		String hql = "FROM CategoryEntity";
-		Query query = session.createQuery(hql);
+		Query<CategoryEntity> query = session.createQuery(hql);
 		@SuppressWarnings("unchecked")
 		List<CategoryEntity> listCategories = query.list();
 

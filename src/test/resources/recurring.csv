@@ -2,7 +2,7 @@ category;description;mandatory;variable;amount;1;2;3;4;5;6;7;8;9;10;11;12
 Assurance habitation;accident;true;true;88,17;false;false;false;false;true;false;false;false;false;false;false;false
 Assurance habitation;GMF;true;true;186,58;false;false;false;false;false;false;false;false;false;false;false;true
 Autre Revenu;parking;false;true;-40;true;true;true;true;true;true;true;true;true;true;true;true
-Cadeaux;ismaÃ«l;false;true;25;true;true;true;true;true;true;true;true;true;true;true;true
+Cadeaux;ismaël;false;true;25;true;true;true;true;true;true;true;true;true;true;true;true
 Cadeaux;Issa;false;true;15;true;true;true;true;true;true;true;true;true;true;true;true
 Cadeaux;Issa;false;true;-50;false;true;false;false;false;false;false;false;false;false;false;false
 Cadeaux;ismaÃ«l;false;true;50;true;false;false;false;false;false;false;false;false;false;false;false
@@ -13,11 +13,11 @@ Cadeaux;jallana;false;true;50;false;false;true;false;false;false;false;false;fal
 Cadeaux;clochar;false;true;2;true;true;true;true;true;true;true;true;true;true;true;true
 Cadeaux;st valentin;false;true;69,95;false;true;false;false;false;false;false;false;false;false;false;false
 CAF;AF;true;false;-131;true;true;true;true;true;true;true;true;true;true;true;true
-Credit;sofinco;true;false;633;true;true;true;true;true;true;true;true;true;true;true;true
-Credit;sofinco;true;false;-300;true;true;true;true;true;true;true;true;true;true;true;true
+Crédit;sofinco;true;false;633;true;true;true;true;true;true;true;true;true;true;true;true
+Crédit;sofinco;true;false;-300;true;true;true;true;true;true;true;true;true;true;true;true
 EDF;edf;true;false;111,63;true;true;true;true;true;true;true;true;true;true;true;true
-Epargne;grain de riz;true;false;10;true;true;true;true;true;true;true;true;true;true;true;true
-Epargne;avance1750;true;false;50;true;true;true;true;true;true;true;true;true;true;true;true
+épargne;grain de riz;true;false;10;true;true;true;true;true;true;true;true;true;true;true;true
+épargne;avance1750;true;false;50;true;true;true;true;true;true;true;true;true;true;true;true
 Formule Compte;la poste;true;false;42,6;true;false;false;true;false;false;true;false;false;true;false;false
 Frais de Garde;crÃ¨che;true;true;44,28;true;true;true;true;true;true;true;true;true;false;true;true
 Frais de Garde;dÃ©partement;true;false;-70;true;true;true;true;true;true;true;false;true;true;true;true
@@ -42,5 +42,5 @@ Loisirs;pulaar;false;true;600;false;false;false;false;false;false;false;false;fa
 Loisirs;abdo;false;true;60;false;true;false;false;false;false;false;false;true;false;false;false
 Salaire;Ippudo;true;true;506;true;true;true;true;true;true;true;true;true;true;true;true
 Cadeaux;Oumar;false;true;40;false;false;false;true;false;false;false;false;false;false;false;false
-impÃ´t sur revenu;frais de garde;true;true;-343;false;false;false;false;false;false;true;false;false;false;false;false
+impôts;frais de garde;true;true;-343;false;false;false;false;false;false;true;false;false;false;false;false
 Cadeaux;noel;false;true;300;false;false;false;false;false;false;false;false;false;false;false;true

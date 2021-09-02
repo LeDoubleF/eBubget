@@ -22,6 +22,7 @@ import ebudget.data.dao.HibernateUtil;
 import ebudget.data.dto.AccountDto;
 import ebudget.data.dto.AccountType;
 import ebudget.data.dto.CategoryDto;
+import ebudget.exception.FileReaderException;
 
 /**
  * Permet de connaitre et de gérer les comptes existants
@@ -55,11 +56,30 @@ public class Accounts {
 	}
 
 	public static AccountDto getAccounts(String accountName) {
-		return allAccounts.get(accountName);
+		if (allAccounts.containsKey(accountName))
+			return allAccounts.get(accountName);
+		else {
+			LOGGER.log(Level.SEVERE, "Le compte {0} n existe pas", accountName);
+			throw new FileReaderException(accountName + "is not an account");
+		}
+	}
+
+	public static void setFinalBalance(String accountName, double finalBalance) {
+		allAccounts.get(accountName)
+			.setFinalBalance(finalBalance);
+	}
+
+	public static Double getFinalBalance(String accountName) {
+		return allAccounts.get(accountName)
+			.getFinalBalance();
+	}
+
+	public static Double getInitialBalance(String accountName) {
+		return allAccounts.get(accountName)
+			.getInitialBalance();
 	}
 
 	public static void addAccount(AccountDto account) {
-		AccountEntity.save(account);
 		allAccounts.put(account.getName(), account);
 	}
 
@@ -71,6 +91,7 @@ public class Accounts {
 
 		if (allAccounts.size() == 0) {
 			if (countAccountEntity().equals(BigInteger.valueOf(0))) {
+
 				addAccount(defaultAccount);
 
 			} else {
@@ -111,9 +132,9 @@ public class Accounts {
 		try {
 			tx = session.beginTransaction();
 			String hql = "FROM AccountEntity";
-			Query query = session.createQuery(hql);
+			Query<AccountEntity> query = session.createQuery(hql);
 			@SuppressWarnings("unchecked")
-			List<AccountEntity> listAccount = query.list();
+			List<AccountEntity> listAccount = query.getResultList();
 
 			for (AccountEntity account : listAccount) {
 				allAccounts.put(account.getName(),
@@ -129,6 +150,25 @@ public class Accounts {
 		} finally {
 			session.close();
 		}
+	}
+
+	public static void saveOrUpdate(String accountName) {
+		AccountEntity account = AccountEntity.get(accountName);
+		account.setFinalAmount(Accounts.getFinalBalance(accountName));
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.saveOrUpdate(account);
+		} catch (RuntimeException e) {
+			if (tx != null)
+				tx.rollback();
+			throw e;
+		} finally {
+			session.close();
+		}
+
 	}
 
 }

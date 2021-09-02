@@ -49,8 +49,8 @@ public class AccountEntity implements Serializable {
 		this.name = account.getName();
 		this.accountType = account.getAccountType();
 		this.main = account.isMain();
-		this.initialAmount = account.getInitialAmount();
-		this.finalAmount = account.getFinalAmount();
+		this.initialAmount = account.getInitialBalance();
+		this.finalAmount = account.getFinalBalance();
 	}
 
 	public String getName() {
@@ -104,11 +104,33 @@ public class AccountEntity implements Serializable {
 			AccountEntity accountEntity = new AccountEntity();
 			accountEntity.setName(account.getName());
 			accountEntity.setAccountType(account.getAccountType());
-			accountEntity.setInitialAmount(account.getInitialAmount());
-			accountEntity.setFinalAmount(account.getFinalAmount());
+			accountEntity.setInitialAmount(account.getInitialBalance());
+			accountEntity.setFinalAmount(account.getFinalBalance());
 			accountEntity.setMain(account.isMain());
 
 			stId = (String) session.save(accountEntity);
+			tx.commit();
+		} catch (HibernateException ex) {
+			LOGGER.log(Level.SEVERE, ex.getMessage());
+			if (tx != null)
+				tx.rollback();
+		} finally {
+			session.close();
+		}
+
+		return stId != null;
+	}
+
+	public static boolean save(AccountEntity account) {
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
+
+		Transaction tx = null;
+		String stId = null;
+		try {
+			tx = session.beginTransaction();
+
+			stId = (String) session.save(account);
 			tx.commit();
 		} catch (HibernateException ex) {
 			LOGGER.log(Level.SEVERE, ex.getMessage());
@@ -147,4 +169,69 @@ public class AccountEntity implements Serializable {
 		}
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((accountType == null) ? 0 : accountType.hashCode());
+		result = prime * result + ((finalAmount == null) ? 0 : finalAmount.hashCode());
+		result = prime * result + ((initialAmount == null) ? 0 : initialAmount.hashCode());
+		result = prime * result + (main ? 1231 : 1237);
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AccountEntity other = (AccountEntity) obj;
+		if (accountType != other.accountType)
+			return false;
+		if (finalAmount == null) {
+			if (other.finalAmount != null)
+				return false;
+		} else if (!finalAmount.equals(other.finalAmount))
+			return false;
+		if (initialAmount == null) {
+			if (other.initialAmount != null)
+				return false;
+		} else if (!initialAmount.equals(other.initialAmount))
+			return false;
+		if (main != other.main)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+
+	public static AccountEntity get(String accountName) {
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
+
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			String hql = " FROM " + AccountEntity.class.getName() + "  where name= :accountName";
+			AccountEntity account = (AccountEntity) session.createQuery(hql)
+				.setParameter("accountName", accountName)
+				.getSingleResult();
+			return account;
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "erreur lors de la selection d'un compte en bdd ", e);
+
+			// Rollback in case of an error occurred.
+			if (tx != null)
+				tx.rollback();
+		}
+		return null;
+	}
 }

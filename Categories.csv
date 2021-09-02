@@ -1,0 +1,41 @@
+name;income
+agios;false
+Alimentation;false
+Appartement;false
+assurance enfant;false
+assurance habitation;false
+autre revenu;true
+cadeaux;false
+caf;true
+coiffure;false
+charges;false
+cpam;true
+crédit;false
+edf;false
+électromenager;false
+emprunt;false
+épargne;false
+formule compte;false
+frais bancaire;false
+frais de garde;false
+hygiène;false
+impôts;false
+indemnité;false
+jeux;false
+laboratoire;false
+loisirs;false
+loyer;false
+médecin;false
+mobile;false
+mutuelle;false
+navigo;false
+net;false
+pharmacie;false
+psy;false
+reliquat;false
+salaire;true
+taxe habitation;false
+taxi;false
+ticket;false
+vacances;false
+vêtements;false

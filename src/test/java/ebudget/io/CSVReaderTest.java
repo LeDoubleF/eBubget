@@ -26,6 +26,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import ebudget.calculation.RecurringItem;
 import ebudget.data.Accounts;
 import ebudget.data.Categories;
+import ebudget.data.dao.AccountEntity;
 import ebudget.data.dto.AccountDto;
 import ebudget.data.dto.AccountType;
 import ebudget.data.dto.CategoryDto;
@@ -47,8 +48,11 @@ class CSVReaderTest {
 	private static final CategoryDto LOYER = new CategoryDto("Loyer");
 	private static final CategoryDto SALAIRE = new CategoryDto("Salaire", true);
 	private static final CategoryDto TAXI = new CategoryDto("Taxi");
+	private static final CategoryDto ALIMENTATION = new CategoryDto("Alimentation");
 
 	private static final AccountDto PORTEFEUILLE = new AccountDto("portefeuille", AccountType.ESPECE, false, 0.0);
+	private static final AccountDto POSTE = new AccountDto("poste", AccountType.CPP, false, 0.0);
+	private static final AccountDto JOINT = new AccountDto("joint", AccountType.CPP, false, 0.0);
 
 	@BeforeAll
 
@@ -59,9 +63,12 @@ class CSVReaderTest {
 		Categories.addCategory(LOYER);
 		Categories.addCategory(TAXI);
 		Categories.addCategory(DIVERS);
+		Categories.addCategory(ALIMENTATION);
 		Categories.setDefaultCategory(DIVERS);
 
 		Accounts.addAccount(PORTEFEUILLE);
+		Accounts.addAccount(POSTE);
+		Accounts.addAccount(JOINT);
 	}
 
 	@Test
@@ -120,7 +127,7 @@ class CSVReaderTest {
 	}
 
 	@Test
-	final void testReadFileCsv() {
+	final void testReadTransactionFileCsv() {
 		for (PaymentType day : PaymentType.values()) {
 			System.out.println(day);
 		}
@@ -142,7 +149,21 @@ class CSVReaderTest {
 		assertEquals(t1, transaction.get(0));
 		assertEquals(t2, transaction.get(1));
 		assertEquals(t3, transaction.get(2));
+	}
 
+	@Test
+	final void testReadCategoriesFileCsv() {
+		String absolutePath = getResourceAbsolutePath("CategoriesTest.csv", classLoader);
+
+		List<CategoryDto> categoryList = csvReader.readCategoriesFile(absolutePath);
+
+		CategoryDto t1 = new CategoryDto("t1", true);
+		CategoryDto t2 = new CategoryDto("t2", false);
+		CategoryDto t3 = new CategoryDto("t3", false);
+
+		assertEquals(t1, categoryList.get(0));
+		assertEquals(t2, categoryList.get(1));
+		assertEquals(t3, categoryList.get(2));
 	}
 
 	@Test

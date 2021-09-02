@@ -81,6 +81,29 @@ public class CSVReader {
 		return recurringItemList;
 	}
 
+	public List<CategoryDto> readCategoriesFile(String filePath) {
+		List<CategoryDto> categoryDtoList = new ArrayList<>();
+
+		verifyFile(filePath);
+
+		Map<Integer, ColumnDescription> columnDescription = new HashMap<>();
+		columnDescription.put(0, new ColumnDescription(CVSParameter.STRING, "name"));
+		columnDescription.put(1, new ColumnDescription(CVSParameter.BOOLEAN, "income"));
+		List<Object> fileContentList = readFile(filePath, columnDescription);
+
+		for (Object filContent : fileContentList) {
+			@SuppressWarnings("unchecked")
+			List<Object> valueList = (List<Object>) filContent;
+
+			String categoryName = (String) valueList.get(0);
+			Boolean income = (Boolean) valueList.get(1);
+			CategoryDto category = new CategoryDto(categoryName, income);
+			categoryDtoList.add(category);
+		}
+
+		return categoryDtoList;
+	}
+
 	private List<Object> readFile(String filePath, Map<Integer, ColumnDescription> fileDescription) {
 		List<Object> fileContentList = new ArrayList<>();
 		verifyFile(filePath);

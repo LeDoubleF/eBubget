@@ -13,6 +13,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ebudget.data.Accounts;
 import ebudget.data.Categories;
 import ebudget.data.Common;
 import ebudget.data.dto.PaymentType;
@@ -151,10 +152,10 @@ class TransactionEntityTest {
 			TransactionDto transaction4 = new TransactionDto(date, categoryName, "description", PaymentType.ESPECE, 17.0, periode);
 			TransactionEntity.save(transaction4);
 			// when
-			Double sum = TransactionEntity.sumAccount();
+			Double sum = TransactionEntity.sumMainAccount();
 
 			// then
-			assertEquals(32.0, sum, delta);
+			assertEquals(49.0, sum, delta);
 
 		} catch (Exception e) {
 			e.printStackTrace();

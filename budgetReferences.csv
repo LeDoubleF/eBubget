@@ -1,11 +1,11 @@
 categories;Moyenne
 Salaire;3130.00
-Salaire;520.00
+Salaire;820.00
 CAF;217.82
 Autre Revenu;40.00
 Formule Compte;15.00
 Frais Bancaire;2.00
-épargne;60.00
+epargne;60.00
 Crédit;333.30
 Loyer;856.00
 Assurance habitation;25.00
@@ -18,13 +18,13 @@ ticket;5.00
 Frais de Garde;905.00
 Alimentation;500.00
 hygiène;100.00
-électromenager;50.00
+electromenager;50.00
 vêtements;100.00
 Coiffure;20.00
 Divers;40.00
 Psy;130.00
 Laboratoire;10.00
-médecin;50.00
+medecin;50.00
 Pharmacie;20.00
 Loisirs;100.00
 Cadeaux;90.00
@@ -32,3 +32,4 @@ Vacances;100.00
 Jeux;5.00
 reliquat;2.00
 impôts;-85.00
+"";

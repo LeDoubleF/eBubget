@@ -11,7 +11,7 @@ import ebudget.data.dto.CategoryDto;
 
 class CategorieTest {
 
-	private static final Integer NBCategories = 39;
+	private static final Integer NBCategories = 45;
 
 	@BeforeEach
 	public void clean() {
@@ -33,7 +33,7 @@ class CategorieTest {
 	}
 
 	@Test
-	void initCategoryWithSQLFile() {
+	void initCategoryWithFile() {
 		Categories.initCategories();
 		assertEquals(NBCategories, Categories.countCategory());
 	}

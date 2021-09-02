@@ -21,6 +21,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import ebudget.data.Accounts;
 import ebudget.data.Categories;
 import ebudget.data.dto.AccountDto;
 import ebudget.data.dto.AccountType;
@@ -146,6 +147,9 @@ public class TransactionEntity implements Serializable {
 		Transaction tx = null;
 		Integer stId = null;
 		try {
+			System.out.println(transaction.getDescription());
+			System.out.println(transaction.getCategory()
+				.getName());
 			tx = session.beginTransaction();
 			TransactionEntity transactionEntity = new TransactionEntity();
 			transactionEntity.setDate(transaction.getDate());
@@ -163,16 +167,11 @@ public class TransactionEntity implements Serializable {
 			transactionEntity.setPayment(transaction.getPaymentString());
 			transactionEntity.setAmount(transaction.getAmount());
 			transactionEntity.setPeriode(transaction.getPeriod());
-			AccountDto account = new AccountDto(transaction.getAccount()
-				.getName(), transaction.getAccount()
-					.getAccountType(), transaction.getAccount()
-						.isMain(), transaction.getAccount()
-							.getInitialAmount());
-			AccountEntity.save(account);
-			transactionEntity.setAccount(account);
+			transactionEntity.setAccount(transaction.getAccount());
 			stId = (Integer) session.save(transactionEntity);
 			tx.commit();
 		} catch (HibernateException ex) {
+
 			LOGGER.log(Level.SEVERE, ex.getMessage());
 			if (tx != null)
 				tx.rollback();
@@ -181,39 +180,6 @@ public class TransactionEntity implements Serializable {
 		}
 
 		return stId != null;
-	}
-
-	public static Double sumAccount() {
-		Session session = HibernateUtil.getSessionFactory()
-			.openSession();
-
-		Transaction tx = null;
-		try {
-			tx = session.beginTransaction();
-
-			String hql = "SELECT SUM(E.amount)FROM " + TransactionEntity.class.getName() + " E " + " WHERE E.payment <>'espèce' ";
-			Query query = session.createQuery(hql);
-
-			// Execute query.
-			@SuppressWarnings({"unchecked"})
-			List<Double> sum = query.list();
-
-			// Commit data.
-			session.getTransaction()
-				.commit();
-
-			return BigDecimal.valueOf(sum.get(0))
-				.setScale(2, RoundingMode.HALF_UP)
-				.doubleValue();
-		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "erreur calcul somme total ", e);
-
-			// Rollback in case of an error occurred.
-			if (tx != null)
-				tx.rollback();
-		}
-		return null;
-
 	}
 
 	public static Double sumCash() {
@@ -260,5 +226,41 @@ public class TransactionEntity implements Serializable {
 			if (tx != null)
 				tx.rollback();
 		}
+	}
+
+	public static Double sum(AccountEntity accountToSum) {
+		Session session = HibernateUtil.getSessionFactory()
+			.openSession();
+
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			String hql = "SELECT SUM(T.amount) FROM " + TransactionEntity.class.getName() + " T where T.account= :accountToSum";
+			Double sum = (Double) session.createQuery(hql)
+				.setParameter("accountToSum", accountToSum)
+				.getSingleResult();
+			if (sum == null)
+				return 0.0;
+			return sum;
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, "erreur calcul somme total ", e);
+
+			// Rollback in case of an error occurred.
+			if (tx != null)
+				tx.rollback();
+		}
+		return null;
+
+	}
+
+	public static Double sumMainAccount() {
+		return sum(Accounts.getDefaultAccount()
+			.getName());
+	}
+
+	public static Double sum(String accountName) {
+		AccountEntity account = AccountEntity.get(accountName);
+		return sum(account);
 	}
 }

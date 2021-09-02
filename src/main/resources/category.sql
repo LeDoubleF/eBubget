@@ -18,7 +18,7 @@ INSERT INTO `category` (`NAME`) VALUES
 	('frais bancaire'),
 	('frais de garde'),
 	('hygiène'),
-	('impôt sur revenu'),
+	('imp�ts'),
 	('indemnité'),
 	('jeux'),
 	('laboratoire'),

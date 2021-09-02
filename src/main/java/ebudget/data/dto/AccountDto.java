@@ -1,11 +1,13 @@
 package ebudget.data.dto;
 
+import ebudget.data.dao.AccountEntity;
+
 public class AccountDto {
 
 	private String name;
 	private AccountType accountType;
-	private Double initialAmount;
-	private Double finalAmount;
+	private Double initialBalance;
+	private Double finalBalance;
 	boolean isMain;
 
 	/**
@@ -20,8 +22,8 @@ public class AccountDto {
 		super();
 		this.name = name;
 		this.accountType = accountType;
-		this.initialAmount = initialAmount;
-		this.finalAmount = initialAmount;
+		this.initialBalance = initialAmount;
+		this.finalBalance = initialAmount;
 		this.isMain = isMain;
 	}
 
@@ -49,20 +51,21 @@ public class AccountDto {
 		this.accountType = accountType;
 	}
 
-	public Double getInitialAmount() {
-		return initialAmount;
+	public Double getInitialBalance() {
+		return initialBalance;
 	}
 
-	public void setInitialAmount(Double initialAmount) {
-		this.initialAmount = initialAmount;
+	public Double getFinalBalance() {
+		return finalBalance;
 	}
 
-	public Double getFinalAmount() {
-		return finalAmount;
+	public void setFinalBalance(Double finalBalance) {
+		this.finalBalance = finalBalance;
+
 	}
 
-	public void setFinalAmount(Double finalAmount) {
-		this.finalAmount = finalAmount;
+	public void setInitialBalance(Double initialBalance) {
+		this.initialBalance = initialBalance;
 	}
 
 }

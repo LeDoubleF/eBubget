@@ -2,6 +2,7 @@ package ebudget.data.dto;
 
 import java.time.LocalDate;
 import ebudget.data.Accounts;
+import ebudget.data.Categories;
 import java.text.Normalizer;
 import java.util.regex.Pattern;
 
@@ -49,9 +50,9 @@ public class TransactionDto {
 
 	}
 
-	public TransactionDto(LocalDate date, String category, String description, PaymentType payment, Double amount, PeriodDTo period,
+	public TransactionDto(LocalDate date, String categoryName, String description, PaymentType payment, Double amount, PeriodDTo period,
 			String accountName) {
-		this(date, new CategoryDto(category.toLowerCase()), description, payment, amount, period, Accounts.getAccounts(accountName));
+		this(date, Categories.getCategory(categoryName), description, payment, amount, period, Accounts.getAccounts(accountName));
 	}
 
 	public TransactionDto(LocalDate date, CategoryDto category, String description, PaymentType payment, Double amount, PeriodDTo period,
